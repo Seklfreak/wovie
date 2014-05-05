@@ -1,0 +1,66 @@
+{% extends 'SLMNWovieMainBundle::email/layout.html.twig' %}
+
+{% block content %}
+    {{ email.tableRow('
+    <td>
+        <h4>Hello!</h4>
+        <p>Here is your account data for your new WOVIE account.</p>
+    </td>
+    ') }}
+    {{ email.tableRow('
+    <td class="panel">
+          <table class="row">
+            <tr>
+              <td class="wrapper">
+                <table class="three columns">
+                  <tr>
+                    <td>
+                      Username
+                    </td>
+                    <td class="expander"></td>
+                  </tr>
+                </table>
+              </td>
+              <td class="wrapper last">
+                <table class="nine columns">
+                  <tr>
+                    <td>
+                      ' ~ username|default('#username') ~ '
+                    </td>
+                    <td class="expander"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="wrapper">
+                <table class="three columns">
+                  <tr>
+                    <td>
+                      Password
+                    </td>
+                    <td class="expander"></td>
+                  </tr>
+                </table>
+              </td>
+              <td class="wrapper last">
+                <table class="nine columns">
+                  <tr>
+                    <td>
+                      ' ~ password|default('#password') ~ ' (please change your password)
+                    </td>
+                    <td class="expander"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+    </td>
+    ') }}
+    {{ email.tableRow('
+    <td>
+        <p>Have fun!</p>
+    </td>
+    ') }}
+{% endblock content %}

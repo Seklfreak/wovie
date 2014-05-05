@@ -1,0 +1,30 @@
+# Public
+slmn_wovie_public_requestNewPassword:
+    path:   /recover
+    defaults: { _controller: SLMNWovieMainBundle:Public:requestNewPassword }
+    methods:  [GET, POST]
+
+slmn_wovie_public_redeemNewPassword:
+    path:   /recover/{token}
+    defaults: { _controller: SLMNWovieMainBundle:Public:redeemNewPassword }
+    methods:  [GET, POST]
+    requirements:
+        token: "^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890]{50}+$"
+
+# User
+slmn_wovie_user_dashboard:
+    pattern:  /
+    defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
+    methods:  [GET]
+
+# System
+login:
+    path:   /login
+    defaults:  { _controller: SLMNWovieMainBundle:User:login }
+    methods:  [GET]
+login_check:
+    path:   /login_check
+    methods:  [POST]
+logout:
+    path:   /logout
+    methods:  [GET]

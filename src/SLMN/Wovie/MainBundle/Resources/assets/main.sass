@@ -1,0 +1,18 @@
+$primary-color: #5d5d5d !default
+$topbar-bg-color: $primary-color !default
+$topbar-link-bg-hover: darken($topbar-bg-color, 3%) !default
+
+//$topbar-link-bg-active: #00749d !default
+//$topbar-menu-link-color-toggled: #fff !default
+//$topbar-menu-icon-color-toggled: #fff !default
+//$topbar-dropdown-bg: #008cba !default
+
+@import "../../../../../../vendor/zurb/foundation/scss/foundation.scss"
+@import "compass/layout/sticky-footer"
+
+$fa-font-path: "../../../bundles/seklmainfoundation" !default
+@import "../../../../../../vendor/fortawesome/font-awesome/scss/font-awesome.scss"
+
+@include sticky-footer(0px)
+
+@import "main.scss"

@@ -1,0 +1,13 @@
+email:
+  placeholder: your@email.com
+  invalid: Please enter an valid email.
+password:
+  placeholder: Your password
+  repeat: The passwords must be the same
+  input:
+    first: Password
+    second: Password verification
+  invalid: Please enter an valid password.
+username:
+  placeholder: Your username
+  invalid: Please enter an valid username.

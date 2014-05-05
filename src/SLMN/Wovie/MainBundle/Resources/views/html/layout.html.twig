@@ -1,0 +1,107 @@
+{% extends "SeklMainFoundationBundle::main.html.twig" %}
+{% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
+
+{% block header %}
+    {# TODO: <link rel="icon" href="favicon.ico" type="image/x-icon"> #}
+    {% stylesheets filter="?uglifycss" filter="compass"
+    "@SLMNWovieMainBundle/Resources/assets/main.sass"
+    output='compiled/css/main.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock header %}
+
+{% block templatebody %}
+    <div id="root">
+        <nav class="top-bar flat-nav" data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1>
+                        <a href="{{ path('slmn_wovie_user_dashboard') }}">
+                            WOVIE
+                        </a>
+                    </h1>
+                </li>
+                {% if is_granted('ROLE_USER') %}
+                    <li class="toggle-topbar menu-icon">
+                        <a href=""><span>Menu</span></a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <section class="top-bar-section">
+                <ul class="right">
+                    {% if is_granted('ROLE_USER') %}
+                        <li>
+                            <a href="{{ path('logout') }}">
+                                <i class="fa fa-power-off"></i> Logout
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="left">
+                    <li class="has-form">
+                        <div class="row collapse">
+                            <div class="large-10 small-11 columns">
+                                <input type="text" placeholder="search…">
+                            </div>
+                            <div class="large-2 small-1 columns">
+                                <a href="#" class="secondary button expand"><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-list"></i> Shelf
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-clock-o"></i> History
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+
+        <div class="row">
+            <div class="large-12 columns">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div data-alert class="alert-box success radius" style="margin-bottom: 0; margin-top: 10px;">
+                        {{ flashMessage }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div data-alert class="alert-box warning radius" style="margin-bottom: 0; margin-top: 10px;">
+                        {{ flashMessage }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('info') %}
+                    <div data-alert class="alert-box radius" style="margin-bottom: 0; margin-top: 10px;">
+                        {{ flashMessage }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% block body %}{% endblock body %}
+        <div id="root_footer"></div>
+    </div>
+    <footer id="footer">
+    </footer>
+{% endblock templatebody %}
+
+{% block endbody %}
+    {% javascripts
+    '@SLMNWovieMainBundle/Resources/assets/add.js'
+    output='compiled/js/add.js' filter='?uglifyjs2'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        $(function(){
+            $(document).foundation({});
+        });
+    </script>
+{% endblock endbody %}

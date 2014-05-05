@@ -1,0 +1,54 @@
+{% extends "SeklMainFoundationBundle::email/main.html.twig" %}
+
+{% block mainheader %}
+    {{ include('SLMNWovieMainBundle::email/layout_css.html.twig') }}
+{% endblock %}
+
+{% block maincontent %}
+    <table class="row header">
+        <tr>
+            <td class="center" align="center">
+                <center>
+                    <table class="container">
+                        <tr>
+                            <td class="wrapper last">
+
+                                <table class="twelve columns">
+                                    <tr>
+                                        <td class="six sub-columns">
+                                            <h3>{{ mailHeader }}</h3>
+                                        </td>
+                                        <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
+                                            Automatic email
+                                        </td>
+                                        <td class="expander"></td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <table class="container">
+        <tr>
+            <td>
+                {% block content %}{% endblock content %}
+                <table class="row">
+                    <tr>
+                        <td class="wrapper last">
+                            <table class="twelve columns">
+                                <tr>
+                                    <td class="expander"></td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock maincontent %}

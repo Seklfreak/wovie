@@ -1,0 +1,42 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - dashboard{% endblock pagetitle %}
+
+{% block body %}
+    {% set moviesCount = random(10..20) %}
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="row collapse">
+                <div class="large-12 small-12 columns">
+                    <h4>Updated in the last two weeks <small>{{ moviesCount }} movies and episodes watched</small></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <table>
+                <tbody>
+                <ul class="small-block-grid-4 medium-block-grid-5 large-block-grid-6">
+                    {% for i in 1..moviesCount %}
+                    <li class="cover-entry">
+                        <ul class="inline-list">
+                            <li>
+                                <h5>Title <small><i class="fa fa-times"></i>{{ random(1..5) }}</small></h5>
+                                <img src="http://placehold.it/121x171&text=cover {{ i }}">
+                            </li>
+                            <li class="expand">
+                                <p>
+                                    <icon class="fa fa-clock-o"></icon> {{ random(10..160) }} minutes <br>
+                                    <icon class="fa fa-info"></icon> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock body %}

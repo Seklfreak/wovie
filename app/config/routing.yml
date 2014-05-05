@@ -1,0 +1,4 @@
+slmn_wovie_main:
+    resource: "@SLMNWovieMainBundle/Resources/config/routing.yml"
+    prefix:   /
+

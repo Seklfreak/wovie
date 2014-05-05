@@ -1,0 +1,17 @@
+.cover-entry > .inline-list > .expand {
+  display: none;
+  z-index: 9999;
+  position: absolute;
+  left: 109px;
+  background: #dadada;
+  width: 250px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.cover-entry {
+  position: relative;
+  /*width: 300px;*/
+}
+.cover-entry:hover > .inline-list > .expand {
+  display: block;
+}

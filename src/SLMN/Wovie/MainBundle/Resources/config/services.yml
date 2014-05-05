@@ -1,0 +1,7 @@
+parameters:
+#    slmn_wovie_main.example.class: SLMN\Wovie\MainBundle\Example
+
+services:
+#    slmn_wovie_main.example:
+#        class: %slmn_wovie_main.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
