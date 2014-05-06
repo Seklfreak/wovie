@@ -29,15 +29,6 @@
             </ul>
 
             <section class="top-bar-section">
-                <ul class="right">
-                    {% if is_granted('ROLE_USER') %}
-                        <li>
-                            <a href="{{ path('logout') }}">
-                                <i class="fa fa-power-off"></i> Logout
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
                 <ul class="left">
                     <li class="has-form">
                         <div class="row collapse">
@@ -59,6 +50,15 @@
                             <i class="fa fa-clock-o"></i> History
                         </a>
                     </li>
+                </ul>
+                <ul class="right">
+                    {% if is_granted('ROLE_USER') %}
+                        <li>
+                            <a href="{{ path('logout') }}">
+                                <i class="fa fa-power-off"></i> Logout
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </section>
         </nav>
