@@ -36,7 +36,19 @@ slmn_wovie_action_search_external:
     pattern: /action/search-external/{query}
     defaults: { _controller: SLMNWovieMainBundle:Action:searchExternal }
     methods: [GET]
+    options:
+        expose: true
     # TODO: requirements: …
+
+# Image
+slmn_wovie_image_externalCover:
+    pattern: /image/cover/{id}.jpg
+    defaults: { _controller: SLMNWovieMainBundle:Image:externalCover }
+    methods: [GET]
+    requirements:
+        id: "^([A-Za-z0-9]{45,50}[@]{1,2}\._V1_SX[0-9]{3})([A-Z_]{4})?$"
+    options:
+        expose: true
 
 # System
 login:

@@ -80,7 +80,7 @@ class MediaApi
         curl_setopt($curl_handle, CURLOPT_URL, $url);
         curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
         curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/0.1');
+        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->container->get('kernel')->getEnvironment());
         $rawResult = curl_exec($curl_handle);
         curl_close($curl_handle);
         //$rawResult = file_get_contents($url, NULL, $context);

@@ -39,6 +39,7 @@
                                                 name="q"
                                                 type="text"
                                                 placeholder="search…"
+                                                required=""
                                                 {% if query is defined %}value="{{ query }}"{% endif %}
                                                 >
                                     </div>
@@ -122,14 +123,14 @@
 
 {% block endbody %}
     {% javascripts
+    'bundles/fosjsrouting/js/router.js'
+    'js/fos_js_routes.js'
     '@SLMNWovieMainBundle/Resources/assets/add.js'
     output='compiled/js/add.js' filter='?uglifyjs2'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script type="text/javascript">
-        $(function(){
-            $(document).foundation({});
-        });
-    </script>
+    {% if app.environment != 'prod'  %}
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    {% endif %}
 {% endblock endbody %}
