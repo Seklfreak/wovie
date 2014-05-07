@@ -2,6 +2,8 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\Media;
+use SLMN\Wovie\MainBundle\MediaApi\MediaApi;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -30,11 +32,53 @@ class UserController extends Controller
         );
     }
 
-    public function dashboardAction(Request $request)
+    public function dashboardAction()
     {
         return $this->render(
             'SLMNWovieMainBundle:html/user:dashboard.html.twig',
             array(
+            )
+        );
+    }
+
+    public function addMovieAction(Request $request)
+    {
+        $newMedia = new Media();
+        $newMediaForm = $this->createForm('media', $newMedia);
+
+        $newMediaForm->handleRequest($request);
+
+        if ($newMediaForm->isValid()) {
+            $newMedia->setCreatedBy($this->getUser());
+            $newMedia->setCreatedAt(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newMedia);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_add')); // TODO: Redirect to shelf?
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:addMovie.html.twig',
+            array(
+                'newMediaForm' => $newMediaForm->createView()
+            )
+        );
+    }
+
+    public function searchAction(Request $request)
+    {
+        $query = trim($request->query->get('q'));
+
+        //$mediaApi = new MediaApi();
+        //var_dump($mediaApi->search($query));
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:search.html.twig',
+            array(
+                'query' => $query
             )
         );
     }

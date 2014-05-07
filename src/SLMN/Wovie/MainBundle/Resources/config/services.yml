@@ -1,7 +1,11 @@
 parameters:
-#    slmn_wovie_main.example.class: SLMN\Wovie\MainBundle\Example
+    slmn_wovie_main.service.media_api.class: SLMN\Wovie\MainBundle\MediaApi\MediaApi
+    slmn_wovie_main.form.type.media.class: SLMN\Wovie\MainBundle\Form\Type\MediaType
 
 services:
-#    slmn_wovie_main.example:
-#        class: %slmn_wovie_main.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    media_api:
+        class: %slmn_wovie_main.service.media_api.class%
+    slmn_wovie_main.form.type.media:
+        class: %slmn_wovie_main.form.type.media.class%
+        tags:
+            - { name: form.type, alias: media }

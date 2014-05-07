@@ -30,26 +30,54 @@
 
             <section class="top-bar-section">
                 <ul class="left">
-                    <li class="has-form">
-                        <div class="row collapse">
-                            <div class="large-10 small-11 columns">
-                                <input type="text" placeholder="search…">
-                            </div>
-                            <div class="large-2 small-1 columns">
-                                <a href="#" class="secondary button expand"><i class="fa fa-search"></i></a>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-list"></i> Shelf
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-clock-o"></i> History
-                        </a>
-                    </li>
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="has-form">
+                            <form type="get" action="{{ path('slmn_wovie_user_search') }}">
+                                <div class="row collapse">
+                                    <div class="small-10 columns">
+                                        <input
+                                                name="q"
+                                                type="text"
+                                                placeholder="search…"
+                                                {% if query is defined %}value="{{ query }}"{% endif %}
+                                                >
+                                    </div>
+                                    <div class="small-2 columns">
+                                        <button type="submit" class="button secondary postfix topbar-postfix">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    {#
+                                    <div class="large-10 sm all-11 columns">
+                                        <input type="text" name="q" placeholder="search…" {% if query is defined %}value="{{ query }}"{% endif %}>
+                                    </div>
+                                    <div class="large-2 small-1 columns">
+                                        <button class="secondary button expand">A</button>
+                                        {#
+                                        <button type="submit" class="secondary button expand">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    #}
+                             </div>
+                            </form>
+                        </li>
+                        <li>
+                            <a href="{{ path('slmn_wovie_user_movie_add') }}">
+                                <ai class="fa fa-plus"></ai> Add
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-list"></i> Shelf
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-clock-o"></i> History
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul class="right">
                     {% if is_granted('ROLE_USER') %}

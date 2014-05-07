@@ -1,3 +1,11 @@
+/* TOPBAR */
+.topbar-postfix {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1.85rem !important;
+  height: 1.8rem;
+}
+
 /* COVER STYLES */
 .cover {
   z-index: 9999;
@@ -36,4 +44,3 @@
   top: 2px;
   z-index: 99999;
 }
-

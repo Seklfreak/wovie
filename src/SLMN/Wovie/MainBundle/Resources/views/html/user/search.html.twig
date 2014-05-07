@@ -1,0 +1,26 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - search result for {{ query }}{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <h4>Results for "{{ query }}" in shelf</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            {{ main.alertBox('Not implented yet', '', 0) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <h4>Results for "{{ query }}" to add <small>data from the <a target="_blank" href="http://www.omdbapi.com/">OMDb API</a></small></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+{% endblock body %}

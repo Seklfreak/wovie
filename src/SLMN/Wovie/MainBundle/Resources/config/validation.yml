@@ -1,0 +1,12 @@
+SLMN\Wovie\MainBundle\Entity\Media:
+    #constraints:
+    #    - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: alias
+    properties:
+        title:
+            - NotBlank:
+                message: "not_blank"
+            - Length:
+                min: 1
+                max: 100
+                minMessage: "media.title.min_message" # TODO: Translation
+                maxMessage: "media.title.max_message" # TODO: Translation

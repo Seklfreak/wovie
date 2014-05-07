@@ -1,3 +1,4 @@
+not_blank: This field must not be blank.
 email:
   placeholder: your@email.com
   invalid: Please enter an valid email.

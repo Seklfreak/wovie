@@ -1,0 +1,20 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - add{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-4 columns">
+            <h3>Cover</h3>
+            <img src="http://placehold.it/300x450">
+        </div>
+        <div class="large-6 columns left">
+            <h3>Add new media</h3>
+            {{ form_start(newMediaForm) }}
+            {{ form_errors(newMediaForm) }}
+            {{ form_row(newMediaForm.title) }}
+            {{ form_row(newMediaForm.submit) }}
+            {{ form_end(newMediaForm) }}
+        </div>
+    </div>
+{% endblock body %}
