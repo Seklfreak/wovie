@@ -6,6 +6,39 @@
   height: 1.8rem;
 }
 
+/* SEARCH */
+.result-inline-list {
+  @include inline-list();
+  margin-bottom: 0px;
+  h5 {
+    margin-bottom: 3px;
+  }
+}
+.result-plot {
+  margin-bottom: 4px;
+  width: 99%;
+}
+.only-labels {
+  margin-bottom: 5px;
+  li:first-child {
+    margin-left: 22px !important;
+  }
+}
+.big-label-inlist {
+  margin-left: 8px !important;
+  margin-top: 0px !important;
+  span {
+    padding-bottom: 4px;
+  }
+}
+.label-inlist {
+  margin-left: 8px !important;
+  margin-top: 6px !important;
+  span {
+    padding-bottom: 4px;
+  }
+}
+
 /* COVER STYLES */
 .cover {
   z-index: 9999;
@@ -49,4 +82,11 @@
   box-shadow: 0 0 6px #888;
   height: 100px;
   margin-right: 10px;
+  margin-top: 10px;
+}
+.small-cover:hover {
+  position: absolute;
+  z-index: 99999;
+  @include transition-duration(0.3s);
+  @include transform(scale(3.0));
 }
