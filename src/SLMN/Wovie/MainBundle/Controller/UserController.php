@@ -3,7 +3,6 @@
 namespace SLMN\Wovie\MainBundle\Controller;
 
 use SLMN\Wovie\MainBundle\Entity\Media;
-use SLMN\Wovie\MainBundle\MediaApi\MediaApi;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -71,9 +70,6 @@ class UserController extends Controller
     public function searchAction(Request $request)
     {
         $query = trim($request->query->get('q'));
-
-        //$mediaApi = new MediaApi();
-        //var_dump($mediaApi->search($query));
 
         return $this->render(
             'SLMNWovieMainBundle:html/user:search.html.twig',

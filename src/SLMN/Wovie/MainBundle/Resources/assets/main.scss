@@ -7,11 +7,16 @@
 }
 
 /* SEARCH */
+.label.middle {
+  background-color: #f08a24;
+  color: white;
+}
 .result-inline-list {
   @include inline-list();
   margin-bottom: 0px;
   h5 {
     margin-bottom: 3px;
+    white-space: nowrap;
   }
 }
 .result-plot {

@@ -2,19 +2,24 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
-use SLMN\Wovie\MainBundle\MediaApi\MediaApi;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class ActionController extends Controller
 {
-    public function searchExternalAction($query)
+    public function searchExternalAction(Request $request)
     {
-        $mediaApi = new MediaApi();
-        $result = $mediaApi->search($query, true);
+        $query = trim($request->query->get('q'));
 
-        $response = new Response(json_encode($result));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $mediaApi = $this->get('media_api');
+        $result = $mediaApi->search($query, true);
+        // TODO: Check if movie already in DB
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/ajax:searchExternalResult.html.twig',
+            array(
+                'media' => $result
+            )
+        );
     }
 }

@@ -5,6 +5,7 @@ parameters:
 services:
     media_api:
         class: %slmn_wovie_main.service.media_api.class%
+        arguments: [@kernel]
     slmn_wovie_main.form.type.media:
         class: %slmn_wovie_main.form.type.media.class%
         tags:

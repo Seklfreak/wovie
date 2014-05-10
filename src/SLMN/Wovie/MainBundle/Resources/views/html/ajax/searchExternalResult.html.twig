@@ -1,0 +1,121 @@
+{% if media == false %}
+    <div data-alert="" class="alert-box warning radius">
+        No results found
+    </div>
+{% else %}
+    {% for item in media %}
+        <ul class="inline-list">
+            <li style="width: 8%;">
+                <img
+                        class="small-cover"
+                        src=" {{ path('slmn_wovie_image_externalCover', { id: item.Poster|split('/')|last|split('.', -1)|join('.')|default(0) }) }}"
+                        >
+                    <span>
+                        <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.imdbID }) }}"
+                           style="margin-left: 10px;">
+                            <i class="fa fa-plus"></i> Add
+                        </a>
+                    </span>
+            </li>
+            <li style="width: 87%;">
+                <div class="row">
+                    <ul class="result-inline-list">
+                        <li>
+                            <h5>{{ item.Title }}
+                                <small>
+                                    by <a
+                                            href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ item.Writer|trim }) }}"
+                                            >
+                                        {{ item.Writer }}
+                                    </a>
+                                </small>
+                            </h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
+                        {% if item.imdbRating != "N/A" %}
+                            <li class="big-label-inlist">
+                                <span
+                                        data-tooltip
+                                        title="{{ item.imdbVotes }} imdb votes"
+                                        class="
+                                        has-tip
+                                        label
+                                        {% if item.imdbRating <= 3.7 %}
+                                            alert
+                                        {% elseif item.imdbRating <= 6.7 %}
+                                            middle
+                                        {% else %}
+                                            success
+                                        {% endif %}
+                                        "
+                                        >
+                                    {{ item.imdbRating }}
+                                </span>
+                            </li> {# TODO: Rating based label color #}
+                        {% endif %}
+                        <li class="big-label-inlist">
+                            <span class="label secondary">{{ item.Type }}</span>
+                        </li>
+                        <li class="big-label-inlist">
+                            <span class="label secondary">{{ item.Country }}</span>
+                        </li>
+                        <li class="big-label-inlist">
+                            <span class="label secondary">{{ item.Year }}</span>
+                        </li>
+                        {% if item.Runtime != "N/A" %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <i class="fa fa-clock-o"></i> {{ item.Runtime }}
+                                </span>
+                            </li>
+                        {% endif %}
+                        <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <a href="http://www.imdb.com/title/{{ item.imdbID }}" target="_blank">
+                                        <i class="fa fa-external-link"></i> imdb
+                                    </a>
+                                </span>
+                        </li>
+                        {# TODO: Amazon buy link? #}
+                    </ul>
+                </div>
+                {% if item.Plot != "N/A" %}
+                    <div class="row">
+                        <p class="result-plot">{{ item.Plot }}</p>
+                    </div>
+                {% else %}
+                    <div class="row" style="margin-top: 5px;"></div>
+                {% endif %}
+                <div class="row">
+                    <ul class="result-inline-list only-labels">
+                        {% for genre in item.Genre|split(',') %}
+                            <li class="big-label-inlist">
+                                    <span class="label secondary">
+                                        <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
+                                            <i class="fa fa-tag"></i> {{ genre|trim }}
+                                        </a>
+                                    </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="row">
+                    <ul class="result-inline-list only-labels">
+                        {% for actor in item.Actors|split(',') %}
+                            <li class="big-label-inlist">
+                                    <span class="label secondary">
+                                        <a href="{{ path('slmn_wovie_user_search', { 'q':'actor:' ~ actor|trim }) }}">
+                                            <i class="fa fa-user"></i> {{ actor|trim }}
+                                        </a>
+                                    </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+{% endif %}

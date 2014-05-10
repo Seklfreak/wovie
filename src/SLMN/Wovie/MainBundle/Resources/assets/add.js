@@ -15,12 +15,11 @@ $(function() {
     if (typeof getUrlParameter('q') !== "undefined")
     {
         $.ajax({
-            url: Routing.generate('slmn_wovie_action_search_external', { query: getUrlParameter('q') })
+            url: Routing.generate('slmn_wovie_action_ajax_search_external', { q: getUrlParameter('q') })
         })
             .success(function(data) {
-                $.each(data, function(key, value) {
-                    //console.debug(value);
-                })
+                $('#ajax-externalSearchContainer').html(data);
+                $(document).foundation({});
             });
     }
 });

@@ -2,17 +2,21 @@
 
 namespace SLMN\Wovie\MainBundle\MediaApi;
 
+use Symfony\Component\HttpKernel\Kernel;
+
 class MediaApi
 {
     protected $apiUrl;
     protected $defaultParameter;
+    protected $kernel;
 
-    public function __construct($apiUrl='http://www.omdbapi.com/')
+    public function __construct(Kernel $kernel, $apiUrl='http://www.omdbapi.com/')
     {
         $this->apiUrl = $apiUrl;
         $this->defaultParameter = array(
             'r' => 'JSON'
         );
+        $this->kernel = $kernel;
     }
 
     public function search($query, $lookup=false)
@@ -20,8 +24,11 @@ class MediaApi
         $result = $this->request(array(
             's' => $query
         ));
+        if (!array_key_exists('Search', $result))
+        {
+            return false;
+        }
         $result = $this->removeOtherMediaTypes($result['Search']);
-        // TODO: Error Handling! (No results)
         if ($lookup == false)
         {
             return $result;
@@ -80,7 +87,7 @@ class MediaApi
         curl_setopt($curl_handle, CURLOPT_URL, $url);
         curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
         curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->container->get('kernel')->getEnvironment());
+        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->kernel->getEnvironment());
         $rawResult = curl_exec($curl_handle);
         curl_close($curl_handle);
         //$rawResult = file_get_contents($url, NULL, $context);

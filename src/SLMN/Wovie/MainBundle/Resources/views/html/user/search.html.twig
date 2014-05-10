@@ -1,6 +1,6 @@
 {% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
 
-{% block pagetitle %}WOVIE - search result for {{ query }}{% endblock pagetitle %}
+{% block pagetitle %}WOVIE - search result for "{{ query }}"{% endblock pagetitle %}
 
 {% block body %}
     <div class="row">
@@ -18,89 +18,9 @@
             <h4>Results for "{{ query }}" to add <small>data from the <a target="_blank" href="http://www.omdbapi.com/">OMDb API</a></small></h4>
         </div>
     </div>
-    {% for i in 0..10 %}
     <div class="row">
-        <div class="large-12 columns">
-            <ul class="inline-list">
-                <li style="width: 8%;">
-                    <img
-                            class="small-cover"
-                            src=" {{ path('slmn_wovie_image_externalCover', { id: 'MV5BMTQ0NDIyNzAzNF5BMl5BanBnXkFtZTcwOTcxNjYzMQ@@._V1_SX300' }) }}"
-                            >
-                    <span>
-                        <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill':'tt0131179' }) }}" style="margin-left: 10px;">
-                            <i class="fa fa-plus"></i> Add
-                        </a>
-                    </span>
-                </li>
-                <li style="width: 87%;">
-                    <div class="row">
-                        <ul class="result-inline-list">
-                            <li><h5>Detective Conan <small>by Gôshô Aoyama</small></h5></li>
-                            <li class="label-inlist"><span class="label success">8.4</span></li>
-                            <li class="label-inlist">
-                                <span class="label secondary">series</span>
-                            </li>
-                            <li class="label-inlist">
-                                <span class="label secondary">Japan</span>
-                            </li>
-                            <li class="label-inlist">
-                                <span class="label secondary">1996–</span
-                            </li>
-                            <li class="label-inlist">
-                                <span class="label secondary">
-                                    <i class="fa fa-clock-o"></i> 30 min
-                                </span>
-                            </li>
-                            <li class="label-inlist">
-                                <span class="label secondary">
-                                    <a href="http://www.imdb.com/title/tt0131179" target="_blank">
-                                        <i class="fa fa-external-link"></i> imdb
-                                    </a>
-                                </span>
-                            </li>
-                            {# TODO: Amazon buy link? #}
-                        </ul>
-                    </div>
-                    <div class="row">
-                        <p class="result-plot">The cases of a detective whose physical age was chemically reversed to that of a prepubescent boy but must hide his true mental development.</p>
-                    </div>
-                    <div class="row">
-                        <ul class="result-inline-list only-labels">
-                            {% for genre in "Animation, Comedy, Crime"|split(',') %}
-                                <li class="big-label-inlist">
-                                    <span class="label secondary">
-                                        <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
-                                            <i class="fa fa-tag"></i> {{ genre|trim }}
-                                        </a>
-                                    </span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="row">
-                        <ul class="result-inline-list only-labels">
-                            {% for actor in "Minami Takayama, Wakana Yamazaki, Akira Kamiya, Wataru Takagi"|split(',') %}
-                                <li class="big-label-inlist">
-                                    <span class="label secondary">
-                                        <a href="{{ path('slmn_wovie_user_search', { 'q':'actor:' ~ actor|trim }) }}">
-                                            <i class="fa fa-user"></i> {{ actor|trim }}
-                                        </a>
-                                    </span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+        <div class="large-12 columns" id="ajax-externalSearchContainer">
+            <i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>
         </div>
     </div>
-    {% endfor %}
-    {#
-    <div class="row">
-        <div class="large-12 columns">
-            <i class="fa fa-spinner fa-spin"></i>
-        </div>
-    </div>
-    #}
 {% endblock body %}
