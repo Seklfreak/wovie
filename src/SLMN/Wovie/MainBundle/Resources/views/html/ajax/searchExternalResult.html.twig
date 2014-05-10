@@ -22,6 +22,7 @@
                     <ul class="result-inline-list">
                         <li>
                             <h5>{{ item.Title }}
+                                {% if item.Writer != "N/A" %}
                                 <small>
                                     by <a
                                             href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ item.Writer|trim }) }}"
@@ -29,6 +30,7 @@
                                         {{ item.Writer }}
                                     </a>
                                 </small>
+                                {% endif %}
                             </h5>
                         </li>
                     </ul>
