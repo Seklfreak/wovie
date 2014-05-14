@@ -4,14 +4,19 @@
     </div>
 {% else %}
     {% for item in media %}
+        {# dump(item)|raw #}
         <ul class="inline-list">
             <li style="width: 8%;">
                 <img
                         class="small-cover"
-                        src=" {{ path('slmn_wovie_image_externalCover', { id: item.Poster|split('/')|last|split('.', -1)|join('.')|default(0) }) }}"
+                        {% if item["/common/topic/image"]|length <= 0 %}
+                            src="http://placehold.it/400x600&text=No+cover!"
+                        {% else %}
+                            src="https://usercontent.googleapis.com/freebase/v1/image/{{ item["/common/topic/image"]|last["id"] }}?maxwidth=400&maxheight=600&mode=fill{# TODO: or mode fit? #}"
+                        {% endif %}
                         >
                     <span>
-                        <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.imdbID }) }}"
+                        <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.id }) }}"
                            style="margin-left: 10px;">
                             <i class="fa fa-plus"></i> Add
                         </a>
@@ -21,15 +26,30 @@
                 <div class="row">
                     <ul class="result-inline-list">
                         <li>
-                            <h5>{{ item.Title }}
-                                {% if item.Writer != "N/A" %}
-                                <small>
-                                    by <a
-                                            href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ item.Writer|trim }) }}"
-                                            >
-                                        {{ item.Writer }}
-                                    </a>
-                                </small>
+                            <h5>{{ item.name }}
+                                {% if item.program_creater is defined and item.program_creater|length >= 1 %}
+                                    <small>by
+                                    {% for creator in item.program_creator %}
+                                        <a
+                                                href="{{ path('slmn_wovie_user_search', { 'q':'creator:' ~ creator|trim }) }}"
+                                                >
+                                            {{ creator }}
+                                        </a>
+                                        {% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                    </small>
+                                {% endif %}
+                                {% if item.directed_by is defined and item.directed_by|length >= 1 %}
+                                    <small>by
+                                        {% for creator in item.directed_by %}
+                                            <a
+                                                    href="{{ path('slmn_wovie_user_search', { 'q':'creator:' ~ creator|trim }) }}"
+                                                    >
+                                                {{ creator }}
+                                            </a>
+                                            {% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </small>
                                 {% endif %}
                             </h5>
                         </li>
@@ -37,7 +57,7 @@
                 </div>
                 <div class="row">
                     <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
-                        {% if item.imdbRating != "N/A" %}
+                        {#{% if item.imdbRating != "N/A" %}
                             <li class="big-label-inlist">
                                 <span
                                         data-tooltip
@@ -56,44 +76,87 @@
                                         >
                                     {{ item.imdbRating }}
                                 </span>
-                            </li> {# TODO: Rating based label color #}
-                        {% endif %}
+                            </li>
+                        {% endif %}#}
                         <li class="big-label-inlist">
-                            <span class="label secondary">{{ item.Type }}</span>
+                            <span class="label secondary">{{ item.type }}</span>
                         </li>
-                        <li class="big-label-inlist">
-                            <span class="label secondary">{{ item.Country }}</span>
-                        </li>
-                        <li class="big-label-inlist">
-                            <span class="label secondary">{{ item.Year }}</span>
-                        </li>
-                        {% if item.Runtime != "N/A" %}
+                        {% if item.country is defined and item.country|length >= 1 %}
                             <li class="big-label-inlist">
                                 <span class="label secondary">
-                                    <i class="fa fa-clock-o"></i> {{ item.Runtime }}
+                                    {% for country in item.country %}
+                                        {{ country }}
+                                        {% if not loop.last %}, {% endif %}
+                                    {% endfor %}
                                 </span>
                             </li>
                         {% endif %}
+                        {% if item.country_of_origin is defined and item.country_of_origin|length >= 1 %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    {% for country in item.country_of_origin %}
+                                        {{ country }}
+                                        {% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                </span>
+                            </li>
+                        {% endif %}
+                        {% if item.initial_release_date is defined and item.initial_release_date|length >= 1 %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    {{  item.initial_release_date }} {# TODO: Only show year #}
+                                </span>
+                            </li>
+                        {% endif %}
+                        {% if item.air_date_of_first_episode is defined and item.air_date_of_first_episode != '' %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    {{ item.air_date_of_first_episode }} -
+                                    {% if item.air_date_of_final_episode != '' %}
+                                        {{ item.air_date_of_final_episode }}
+                                    {% else %}
+                                        now
+                                    {% endif %}
+                                    {# TODO: Only show year #}
+                                </span>
+                            </li>
+                        {% endif %}
+                        {% if item.runtime is defined and item.runtime|length >= 1 %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <i class="fa fa-clock-o"></i> {{ item.runtime|last }} min
+                                </span>
+                            </li>
+                        {% endif %}
+                        {% if item.episode_running_time is defined and item.episode_running_time|length >= 1 %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <i class="fa fa-clock-o"></i> {{ item.episode_running_time|last }} min
+                                </span>
+                            </li>
+                        {% endif %}
+                        {% if item["/imdb/topic/title_id"] != "" %}
                         <li class="big-label-inlist">
                                 <span class="label secondary">
-                                    <a href="http://www.imdb.com/title/{{ item.imdbID }}" target="_blank">
+                                    <a href="http://www.imdb.com/title/{{ item["/imdb/topic/title_id" ]}}" target="_blank">
                                         <i class="fa fa-external-link"></i> imdb
                                     </a>
                                 </span>
                         </li>
+                        {% endif %}
                         {# TODO: Amazon buy link? #}
                     </ul>
                 </div>
-                {% if item.Plot != "N/A" %}
+                {% if item["/common/topic/description"] != '' %}
                     <div class="row">
-                        <p class="result-plot">{{ item.Plot }}</p>
+                        <p class="result-plot">{{ item["/common/topic/description"] }}</p>
                     </div>
                 {% else %}
                     <div class="row" style="margin-top: 5px;"></div>
                 {% endif %}
                 <div class="row">
                     <ul class="result-inline-list only-labels">
-                        {% for genre in item.Genre|split(',') %}
+                        {% for genre in item.genre %}
                             <li class="big-label-inlist">
                                     <span class="label secondary">
                                         <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
@@ -104,6 +167,7 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {#
                 <div class="row">
                     <ul class="result-inline-list only-labels">
                         {% for actor in item.Actors|split(',') %}
@@ -116,7 +180,7 @@
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
+                </div>#}
             </li>
         </ul>
     {% endfor %}

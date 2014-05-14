@@ -12,11 +12,13 @@ class ActionController extends Controller
         $query = trim($request->query->get('q'));
 
         $mediaApi = $this->get('media_api');
-        $result = $mediaApi->search($query, true);
+        $result = $mediaApi->searchByName($query);
+
+        /*
         if ($result != false)
         {
             $result = array_unique($result, SORT_REGULAR);
-        }
+        }*/
         // TODO: Check if movie already in DB
 
         return $this->render(
