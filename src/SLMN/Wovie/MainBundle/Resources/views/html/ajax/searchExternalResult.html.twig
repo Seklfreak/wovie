@@ -12,7 +12,7 @@
                         {% if item["poster"] is not defined %}
                             src="http://placehold.it/400x600&text=No+cover!"
                         {% else %}
-                            src="https://usercontent.googleapis.com/freebase/v1/image/{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fill{# TODO: or mode fit? #}"
+                            src="https://usercontent.googleapis.com/freebase/v1/image/{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fit"
                         {% endif %}
                         >
                     <span>
@@ -60,16 +60,18 @@
                                         {% else %}
                                             success
                                         {% endif %}
-                                        "
+                                        "media
                                         >
                                     {{ item.imdbRating }}
                                 </span>
                             </li>
                         {% endif %}#}
 
-                        {#<li class="big-label-inlist">
-                            <span class="label secondary">{{ item.type }}</span>
-                        </li>#}
+                        {% if item.type is defined %}
+                            <li class="big-label-inlist">
+                                <span class="label secondary">{{ item.type }}</span>
+                            </li>
+                        {% endif %}
 
                         {% if item.countries is defined and item.countries|length >= 1 %}
                             <li class="big-label-inlist">
