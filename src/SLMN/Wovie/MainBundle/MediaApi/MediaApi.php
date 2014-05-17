@@ -6,7 +6,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class MediaApi
 {
-    protected $apiUrl = 'https://www.googleapis.com/freebase/v1/search';
     protected $apiKey;
     protected $kernel;
     protected $lang = 'en'; // TODO: $this->setLang()
@@ -18,9 +17,34 @@ class MediaApi
         $this->kernel = $kernel;
     }
 
+    public function fetchDescription($id)
+    {
+        $url = 'https://www.googleapis.com/freebase/v1/topic'.$id.'?';
+        $parameter = array(
+            'key' => $this->apiKey,
+            'lang' => $this->lang,
+            'filter' => '/common/topic/description'
+        );
+
+        foreach ($parameter as $key=>$value)
+        {
+            $url .= $key.'='.urlencode($value).'&';
+        }
+
+        $result = $this->request($url);
+        if (array_key_exists('property', $result) && array_key_exists('/common/topic/description', $result['property']))
+        {
+            return $result['property']['/common/topic/description']['values'][0]['value'];
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function search($filter)
     {
-        // TODO: Cache result (via parameter?!)
 
         $parameter = array(
             'key' => $this->apiKey,
@@ -61,21 +85,13 @@ class MediaApi
         $outputString .= '}]';
         $parameter['mql_output'] = $outputString;
 
-        $url = $this->apiUrl.'?';
+        $url = 'https://www.googleapis.com/freebase/v1/search'.'?';
         foreach ($parameter as $key=>$value)
         {
             $url .= $key.'='.urlencode($value).'&';
         }
 
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, $url);
-        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->kernel->getEnvironment());
-        $rawResult = curl_exec($curl_handle);
-        curl_close($curl_handle);
-
-        $result = json_decode($rawResult, true);
+        $result = $this->request($url);
 
         if (array_key_exists('result', $result))
         {
@@ -200,8 +216,23 @@ class MediaApi
         }
         else
         {
-            //var_dump($result);
             return false;
         }
+    }
+
+    protected function request($url)
+    {
+        // TODO: Cache result (via url?!)
+
+        $curl_handle = curl_init();
+        curl_setopt($curl_handle, CURLOPT_URL, $url);
+        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->kernel->getEnvironment());
+        $rawResult = curl_exec($curl_handle);
+        curl_close($curl_handle);
+
+        $result = json_decode($rawResult, true);
+        return $result;
     }
 } 

@@ -39,6 +39,13 @@ slmn_wovie_action_ajax_search_external:
     options:
         expose: true
     # TODO: requirements: …
+slmn_wovie_actions_ajax_fetch_description:
+    pattern: /action/ajax/fetch-description.html
+    defaults: { _controller: SLMNWovieMainBundle:Action:fetchDescription }
+    methods: [GET]
+    options:
+      expose: true
+    # TODO: Regex for id
 
 # Image
 slmn_wovie_image_externalCover:

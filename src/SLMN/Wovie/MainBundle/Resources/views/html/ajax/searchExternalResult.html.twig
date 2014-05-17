@@ -10,10 +10,12 @@
                 <img
                         class="small-cover"
                         {% if item["poster"] is not defined %}
+                            {# TODO: Fallback to imdb image? (Complete data with omdb data, download via paypal) #}
                             src="http://placehold.it/400x600&text=No+cover!"
                         {% else %}
                             src="https://usercontent.googleapis.com/freebase/v1/image/{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fit"
                         {% endif %}
+                        {# TODO: Lazy image loading #}
                         >
                     <span>
                         <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}"
@@ -112,13 +114,16 @@
                         {# TODO: Amazon buy link? #}
                     </ul>
                 </div>
-                {% if item.description is defined %}
+                <div class="row ajax-fetchTopic" data-id="{{ item.mid }}">
+                    <p class="result-plot"><i class="fa fa-spinner fa-spin fa-lg"></i></p>
+                </div>
+                {# {% if item.description is defined %}
                     <div class="row">
                         <p class="result-plot">{{ item.description }}</p>
                     </div>
                 {% else %}
                     <div class="row" style="margin-top: 5px;"></div>
-                {% endif %}
+                {% endif %} #}
                 {% if item.genres is defined %}
                     <div class="row">
                         <ul class="result-inline-list only-labels">

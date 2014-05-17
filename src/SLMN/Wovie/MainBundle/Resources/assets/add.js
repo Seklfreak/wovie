@@ -17,9 +17,19 @@ $(function() {
         $.ajax({
             url: Routing.generate('slmn_wovie_action_ajax_search_external', { q: getUrlParameter('q') })
         })
+            // TODO: Error handling
             .success(function(data) {
                 $('#ajax-externalSearchContainer').html(data);
-                $(document).foundation({});
+                $('.ajax-fetchTopic').each(function() { // Lazy?
+                    var field = $(this);
+                    $.ajax({
+                        url: Routing.generate('slmn_wovie_actions_ajax_fetch_description', { id: $(this).data('id') })
+                    })
+                        // TODO: Error handling
+                        .success(function(data) {
+                            $(field).html(data);
+                        });
+                });
             });
     }
 });
