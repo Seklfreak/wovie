@@ -6,10 +6,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class MediaApi
 {
-    protected $apiUrl = 'https://www.googleapis.com/freebase/v1/mqlread';
+    protected $apiUrl = 'https://www.googleapis.com/freebase/v1/search';
     protected $apiKey;
     protected $kernel;
-    protected $lang = '/lang/en'; // TODO: $this->setLang()
+    protected $lang = 'en'; // TODO: $this->setLang()
+    protected $limit = 50; // TODO: Option
 
     public function __construct(Kernel $kernel, $apiKey)
     {
@@ -17,57 +18,15 @@ class MediaApi
         $this->kernel = $kernel;
     }
 
-    public function searchByName($name)
+    public function searchByName($name, $filter)
     {
-        $seriesQuery = array(
-            'type' => null,
-            'type' => '/tv/tv_program',
-            'name' => null,
-            'name~=' => $name, // TODO: ~=, OR: /common/topic/alias
-            'id' => null,
-            '/common/topic/description' => null,
-            'air_date_of_first_episode' => null,
-            'air_date_of_final_episode' => null,
-            'country_of_origin' => array(),
-            'episode_running_time' => array(),
-            'program_creator' => array(),
-            'genre' => array(),
-            'number_of_seasons' => null,
-            'number_of_episodes' => null,
-            '/common/topic/image' =>
-                array(
-                    array(
-                        'id' => null,
-                        'optional' => true,
-                    ),
-                ),
-            '/imdb/topic/title_id' => null
-        );
-        $filmQuery = array(
-            'type' => null,
-            'type' => '/film/film',
-            'name' => null,
-            'name~=' => $name, // OR: /common/topic/alias
-            'id' => null,
-            '/common/topic/description' => null,
-            'initial_release_date' => null,
-            'country' => array(),
-            'runtime' => array(),
-            'directed_by' => array(),
-            'genre' => array(),
-            '/common/topic/image' =>
-                array(
-                    array(
-                        'id' => null,
-                        'optional' => true,
-                    ),
-                ),
-            '/imdb/topic/title_id' => null
-        );
 
-        $result = array();
-        $series = $this->query(array($seriesQuery));
-        $films = $this->query(array($filmQuery));
+        $result = $this->search($name, $filter);
+        //$result = array();
+        //$series = $this->query(array($seriesQuery));
+        //$films = $this->query(array($filmQuery));
+
+        var_dump($result);
 
         if (array_key_exists('result', $series))
         {
@@ -94,20 +53,33 @@ class MediaApi
         }
     }
 
-    protected function query($queryArray)
+    public function search($filter, $output=false)
     {
         // TODO: Cache result (via parameter?!)
 
         $parameter = array(
             'key' => $this->apiKey,
             'lang' => $this->lang,
-            'query' => json_encode($queryArray)
+            'limit' => $this->limit,
+            'filter' => $filter,
+            //'mql_output' => '[{ "/film/film/country": [] }]'
         );
+
+        if ($output != false)
+        {
+            $outputString = '(';
+            foreach ($output as $element)
+            {
+                $outputString .= ' '.$element;
+            }
+            $outputString .= ')';
+            $parameter['output'] = $outputString;
+        }
 
         $url = $this->apiUrl.'?';
         foreach ($parameter as $key=>$value)
         {
-            $url .= $key.'='.$value.'&';
+            $url .= $key.'='.urlencode($value).'&';
         }
 
         $curl_handle = curl_init();
@@ -118,7 +90,123 @@ class MediaApi
         $rawResult = curl_exec($curl_handle);
         curl_close($curl_handle);
 
-        return json_decode($rawResult, true);
+        $result = json_decode($rawResult, true);
+
+        var_dump($url);
+        var_dump($result);
+
+        if (array_key_exists('result', $result))
+        {
+            $toReturn = array();
+            $i = 0;
+            foreach ($result['result'] as $object)
+            {
+                $myObject = array();
+
+                $myObject['mid'] = $object['mid'];
+                $myObject['score'] = $object['score'];
+
+                foreach ($object['output'] as $key=>$value)
+                {
+                    if (empty($value))
+                    {
+                        continue;
+                    }
+                    switch ($key)
+                    {
+                        case 'name':
+                            $myObject['name'] = end($value['/type/object/name']);
+                            break;
+                        case '/common/topic/description':
+                            $myObject['description'] = end($value['/common/topic/description']);
+                            break;
+                        case '/film/film/initial_release_date':
+                            $myObject['release_date'] = end($value['/film/film/initial_release_date']);
+                            break;
+                        case '/tv/tv_program/air_date_of_first_episode':
+                            $myObject['release_date'] = end($value['/tv/tv_program/air_date_of_first_episode']);
+                            break;
+                        case '/tv/tv_program/air_date_of_final_episode':
+                            $myObject['final_episode'] = end($value['/tv/tv_program/air_date_of_final_episode']);
+                            break;
+                        case '/film/film/country':
+                            $myObject['countries'] = array();
+                            foreach ($value['/film/film/country'] as $country)
+                            {
+                                $myObject['countries'][] = $country['name'];
+                            }
+                            break;
+                        case '/tv/tv_program/country_of_origin':
+                            $myObject['countries'] = array();
+                            foreach ($value['/tv/tv_program/country_of_origin'] as $country)
+                            {
+                                $myObject['countries'][] = $country['name'];
+                            }
+                            break;
+                        case '/film/film_cut/runtime':
+                            $myObject['runtime'] = end($value['/film/film_cut/runtime']);
+                            $myObject['runtime'] = preg_replace('/^([0-9]+)(\.)?([0-9]+)?([\ A-Za-z]+)?$/', '$1', $myObject['runtime']);
+                            break;
+                        case '/tv/tv_program/episode_running_time':
+                            $myObject['runtime'] = end($value['/tv/tv_program/episode_running_time']);
+                            $myObject['runtime'] = preg_replace('/^([0-9]+)(\.)?([0-9]+)?([\ A-Za-z]+)?$/', '$1', $myObject['runtime']);
+                            break;
+                        case '/film/film/written_by':
+                            $myObject['written_by'] = array();
+                            foreach ($value['/film/film/written_by'] as $directed_by)
+                            {
+                                $myObject['written_by'][] = $directed_by['name'];
+                            }
+                            break;
+                        case '/tv/tv_program/program_creator':
+                            $myObject['written_by'] = array();
+                            foreach ($value['/tv/tv_program/program_creator'] as $directed_by)
+                            {
+                                $myObject['written_by'][] = $directed_by['name'];
+                            }
+                            break;
+                        case '/film/film/genre':
+                            $myObjeToichi_Kurobact['genres'] = array();
+                            foreach ($value['/film/film/genre'] as $genre)
+                            {
+                                $myObject['genres'][] = $genre['name'];
+                            }
+                            break;
+                        case '/tv/tv_program/genre':
+                            $myObject['genres'] = array();
+                            foreach ($value['/tv/tv_program/genre'] as $genre)
+                            {
+                                $myObject['genres'][] = $genre['name'];
+                            }
+                            break;
+                        case '/tv/tv_program/number_of_seasons':
+                            $myObject['number_of_seasons'] = end($value['/tv/tv_program/number_of_seasons']);
+                            break;
+                        case '/tv/tv_program/number_of_episodes':
+                            $myObject['number_of_episodes'] = end($value['/tv/tv_program/number_of_episodes']);
+                            break;
+                        case '/common/topic/image':
+                            $myObject['poster'] = end($value['/common/topic/image'])['mid'];
+                            break;
+                        case '/imdb/topic/title_id':
+                            $myObject['imdbId'] = end($value['/imdb/topic/title_id']);
+                            break;
+                        default:
+                            echo $key.' => '.print_r($value, true)."\n";
+                            break;
+                    }
+                }
+                //var_dump($myObject);
+                $toReturn[] = $myObject;
+                $i++;
+            }
+            return $toReturn;
+        }
+        else
+        {
+            //var_dump($result);
+            return false;
+        }
     }
 
     /*
