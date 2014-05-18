@@ -16,6 +16,15 @@ class MediaType extends AbstractType
                     'invalid_message' => 'not_blank'
                 )
             ))
+            ->add('mediaType', 'choice', array(
+                'label' => 'Type',
+                'choices' => array(
+                    '1' => 'Movie',
+                    '2' => 'Series'
+                ),
+                'expanded' => true,
+                'multiple' => false
+            ))
             ->add('freebaseId', 'text', array(
                 'disabled' => true,
                 'required' => false

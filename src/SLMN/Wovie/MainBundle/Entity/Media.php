@@ -44,6 +44,27 @@ class Media
     protected $createdAt;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $mediaType;
+
+    /**
+     * @return mixed
+     */
+    public function getMediaType()
+    {
+        return $this->mediaType;
+    }
+
+    /**
+     * @param mixed $mediaType
+     */
+    public function setMediaType($mediaType)
+    {
+        $this->mediaType = $mediaType;
+    }
+
+    /**
      * @return mixed
      */
     public function getFreebaseId()

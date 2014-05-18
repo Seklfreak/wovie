@@ -78,3 +78,9 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+liip_doctrine_cache:
+    namespaces:
+        slmn_wovie:
+            namespace: slmn_wovie
+            type: apc

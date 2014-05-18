@@ -51,11 +51,20 @@ class UserController extends Controller
             $result = $mediaApi->search('(all (all id:"'.$fbId.'") (any type:/film/film type:/tv/tv_program))');
             if (array_key_exists(0, $result))
             {
+                // Preset data
                 $result = $result[0];
-                //var_dump($result);
                 $newMedia->setTitle($result['name']);
                 $newMedia->setFreebaseId($result['mid']);
                 $newMedia->setImdbId($result['imdbId']);
+                switch ($result['type'])
+                {
+                    case 'movie':
+                        $newMedia->setMediaType(1);
+                        break;
+                    case 'series':
+                        $newMedia->setMediaType(2);
+                        break;
+                }
             }
         }
 
