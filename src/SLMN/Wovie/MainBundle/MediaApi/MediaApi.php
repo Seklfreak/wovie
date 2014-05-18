@@ -121,14 +121,17 @@ class MediaApi
                         case '/film/film/initial_release_date':
                             $myObject['type'] = 'movie';
                             $myObject['release_date'] = end($value);
+                            $myObject['release_date'] = preg_replace('/^([0-9]{4}).+$/', '$1', $myObject['release_date']);
                             break;
                         case '/tv/tv_program/air_date_of_first_episode':
                             $myObject['type'] = 'series';
                             $myObject['release_date'] = end($value);
+                            $myObject['release_date'] = preg_replace('/^([0-9]{4}).+$/', '$1', $myObject['release_date']);
                             break;
                         case '/tv/tv_program/air_date_of_final_episode':
                             $myObject['type'] = 'series';
                             $myObject['final_episode'] = end($value);
+                            $myObject['final_episode'] = preg_replace('/^([0-9]{4}).+$/', '$1', $myObject['final_episode']);
                             break;
                         case '/film/film/country':
                             $myObject['type'] = 'movie';
