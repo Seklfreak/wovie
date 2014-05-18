@@ -135,8 +135,8 @@
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {% endif %}
 
-    <script type="text/javascript">
-        {% if piwikUrl != null and piwikSiteId != null %}
+    {% if piwikUrl != null and piwikSiteId != null %}
+        <script type="text/javascript">
             var _paq = _paq || [];
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
@@ -147,6 +147,6 @@
                 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
                 g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
             })();
-        {% endif %}
-    </script>
+        </script>
+    {% if piwikUrl != null and piwikSiteId != null %}
 {% endblock endbody %}

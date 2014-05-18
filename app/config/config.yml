@@ -34,6 +34,8 @@ twig:
             - 'SeklMainFoundationBundle::Form/fields.html.twig'
     globals:
         mailHeader: %slmn_main_userbundle.mail.subject%
+        piwikUrl: %slmn_main_userbundle.piwik.url%
+        piwikSiteId: %slmn_main_userbundle.piwik.site_id%
 
 # Assetic Configuration
 assetic:
