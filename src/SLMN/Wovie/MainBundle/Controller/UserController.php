@@ -108,7 +108,8 @@ class UserController extends Controller
                 $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
                 if (array_key_exists('poster', $result))
                 {
-                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image/'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
+                    // TODO: Download image to disc
+                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
                 } // TODO: IMDB image fallback
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
                 if (array_key_exists('type', $result))

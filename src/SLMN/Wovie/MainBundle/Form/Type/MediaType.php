@@ -72,11 +72,9 @@ class MediaType extends AbstractType
                 )
             ))
             ->add('posterImage', 'url', array(
+                'disabled' => true,
                 'label' => 'Cover url',
-                'required' => false,
-                'attr' => array(
-                    'invalid_message' => 'url.invalid'
-                )
+                'required' => false
             ))
             ->add('freebaseId', 'text', array(
                 'disabled' => true,

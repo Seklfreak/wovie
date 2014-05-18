@@ -14,7 +14,7 @@
                             {# TODO: Fallback to imdb image? (Complete data with omdb data, download via paypal) #}
                             src="http://placehold.it/400x600&text=No+cover!"
                         {% else %}
-                            src="https://usercontent.googleapis.com/freebase/v1/image/{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fit"
+                            src="https://usercontent.googleapis.com/freebase/v1/image{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fit"
                         {% endif %}
                         {# TODO: Lazy image loading #}
                         >

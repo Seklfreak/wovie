@@ -7,8 +7,9 @@
         {{ form_start(newMediaForm) }}
         <div class="large-4 columns">
             <h3>Cover</h3>
-            {{ form_row(newMediaForm.posterImage) }}
             <img src="{{ newMediaForm.vars.value.posterImage|default('http://placehold.it/400x600&text=No+cover!') }}">
+            {{ form_row(newMediaForm.posterImage, {'label': false}) }}
+            {# TODO: Upload field: HTML5 uploader, changes url, reload image preview #}
         </div>
         <div class="large-6 columns left">
             <h3>Add new media</h3>
