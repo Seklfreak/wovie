@@ -23,6 +23,16 @@ class Media
     protected $title;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $freebaseId;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $imdbId;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Sekl\Main\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="createdBy", referencedColumnName="id")
      */
@@ -32,6 +42,38 @@ class Media
      * @ORM\Column(type="datetime")
      */
     protected $createdAt;
+
+    /**
+     * @return mixed
+     */
+    public function getFreebaseId()
+    {
+        return $this->freebaseId;
+    }
+
+    /**
+     * @param mixed $freebaseId
+     */
+    public function setFreebaseId($freebaseId)
+    {
+        $this->freebaseId = $freebaseId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImdbId()
+    {
+        return $this->imdbId;
+    }
+
+    /**
+     * @param mixed $imdbId
+     */
+    public function setImdbId($imdbId)
+    {
+        $this->imdbId = $imdbId;
+    }
 
     /**
      * @return mixed

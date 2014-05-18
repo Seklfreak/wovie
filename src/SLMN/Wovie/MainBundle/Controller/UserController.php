@@ -43,16 +43,42 @@ class UserController extends Controller
     public function addMovieAction(Request $request)
     {
         $newMedia = new Media();
-        $newMediaForm = $this->createForm('media', $newMedia);
 
+        $fbId = trim($request->query->get('prefill'));
+        if ($fbId != '')
+        {
+            $mediaApi = $this->get('media_api');
+            $result = $mediaApi->search('(all (all id:"'.$fbId.'") (any type:/film/film type:/tv/tv_program))');
+            if (array_key_exists(0, $result))
+            {
+                $result = $result[0];
+                //var_dump($result);
+                $newMedia->setTitle($result['name']);
+                $newMedia->setFreebaseId($result['mid']);
+                $newMedia->setImdbId($result['imdbId']);
+            }
+        }
+
+        $newMediaForm = $this->createForm('media', $newMedia);
         $newMediaForm->handleRequest($request);
+
+        if ($fbId == '')
+        {
+            $newMediaForm->remove('imdbId');
+            $newMediaForm->remove('freebaseId');
+        }
 
         if ($newMediaForm->isValid()) {
             $newMedia->setCreatedBy($this->getUser());
             $newMedia->setCreatedAt(new \DateTime());
+            if ($fbId != '') // TODO: Test this
+            {
+                $newMedia->setFreebaseId($result['mid']);
+                $newMedia->setImdbId($result['imdbId']);
+            }
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($newMedia);
+            //$em->persist($newMedia);
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');

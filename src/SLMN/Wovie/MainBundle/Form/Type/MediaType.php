@@ -16,6 +16,14 @@ class MediaType extends AbstractType
                     'invalid_message' => 'not_blank'
                 )
             ))
+            ->add('freebaseId', 'text', array(
+                'disabled' => true,
+                'required' => false
+            ))
+            ->add('imdbId', 'text', array(
+                'disabled' => true,
+                'required' => false
+            ))
             ->add('submit', 'submit', array(
                 'attr' => array(
                     'class' => 'expand'

@@ -14,6 +14,16 @@
             {{ form_errors(newMediaForm) }}
             {{ form_row(newMediaForm.title) }}
             {{ form_row(newMediaForm.submit) }}
+            {% if newMediaForm.freebaseId is defined and newMediaForm.imdbId is defined %}
+            <div class="row">
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.freebaseId) }}
+                </div>
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.imdbId) }}
+                </div>
+            </div>
+            {% endif %}
             {{ form_end(newMediaForm) }}
         </div>
     </div>
