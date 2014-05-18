@@ -4,16 +4,46 @@
 
 {% block body %}
     <div class="row">
+        {{ form_start(newMediaForm) }}
         <div class="large-4 columns">
             <h3>Cover</h3>
-            <img src="http://placehold.it/300x450">
+            {{ form_row(newMediaForm.posterImage) }}
+            <img src="{{ newMediaForm.vars.value.posterImage|default('http://placehold.it/400x600&text=No+cover!') }}">
         </div>
         <div class="large-6 columns left">
             <h3>Add new media</h3>
-            {{ form_start(newMediaForm) }}
             {{ form_errors(newMediaForm) }}
             {{ form_row(newMediaForm.mediaType) }} {# TODO: Disable and enable fields depending on selected type #}
             {{ form_row(newMediaForm.title) }}
+            {{ form_row(newMediaForm.description) }}
+            {{ form_row(newMediaForm.countries) }}
+            {{ form_row(newMediaForm.writtenBy) }}
+            {{ form_row(newMediaForm.genres) }}
+            {{ form_label(newMediaForm.runtime) }}
+            <div class="row collapse">
+                <div class="small-11 columns">
+                    {{ form_row(newMediaForm.runtime, {'label': false}) }}
+                </div>
+                <div class="small-1 columns">
+                    <span class="postfix radius">min</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.releaseYear) }}
+                </div>
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.finalYear) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.numberOfSeasons) }}
+                </div>
+                <div class="large-6 columns">
+                    {{ form_row(newMediaForm.numberOfEpisodes) }}
+                </div>
+            </div>
             {{ form_row(newMediaForm.submit) }}
             {% if newMediaForm.freebaseId is defined and newMediaForm.imdbId is defined %}
                 <div class="row">

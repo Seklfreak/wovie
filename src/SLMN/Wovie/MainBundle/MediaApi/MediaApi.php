@@ -115,9 +115,6 @@ class MediaApi
                         case 'name':
                             $myObject['name'] = end($value);
                             break;
-                        case '/common/topic/description':
-                            $myObject['description'] = $value;
-                            break;
                         case '/film/film/initial_release_date':
                             $myObject['type'] = 'movie';
                             $myObject['release_date'] = end($value);

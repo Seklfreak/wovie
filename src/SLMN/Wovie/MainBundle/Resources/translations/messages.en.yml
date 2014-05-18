@@ -1,4 +1,6 @@
 not_blank: This field must not be blank.
+url:
+  invalid: Please enter an valid url.
 email:
   placeholder: your@email.com
   invalid: Please enter an valid email.
@@ -12,3 +14,7 @@ password:
 username:
   placeholder: Your username
   invalid: Please enter an valid username.
+integer:
+  invalid: Please enter an valid integer.
+year:
+  invalid: Please enter an valid year. (4 numbers)

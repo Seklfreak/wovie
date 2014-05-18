@@ -16,6 +16,18 @@ class MediaType extends AbstractType
                     'invalid_message' => 'not_blank'
                 )
             ))
+            ->add('description', 'textarea', array(
+                'required' => false
+            ))
+            ->add('countries', 'text', array(
+                'required' => false
+            ))
+            ->add('writtenBy', 'text', array(
+                'required' => false
+            ))
+            ->add('genres', 'text', array(
+                'required' => false
+            ))
             ->add('mediaType', 'choice', array(
                 'label' => 'Type',
                 'choices' => array(
@@ -24,6 +36,47 @@ class MediaType extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => false
+            ))
+            ->add('releaseYear', 'integer', array(
+                'label' => 'Release of movie or first episode',
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'year.invalid'
+                )
+            ))
+            ->add('finalYear', 'integer', array(
+                'label' => 'Release of final episode',
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'year.invalid'
+                )
+            ))
+            ->add('runtime', 'integer', array(
+                'label' => 'Runtime (average of episodes)',
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'integer.invalid'
+                )
+            ))
+            ->add('numberOfSeasons', 'integer', array(
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'year.invalid'
+                )
+            ))
+            ->add('numberOfEpisodes', 'integer', array(
+                'label' => 'Number of total episodes',
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'year.invalid'
+                )
+            ))
+            ->add('posterImage', 'url', array(
+                'label' => 'Cover url',
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'url.invalid'
+                )
             ))
             ->add('freebaseId', 'text', array(
                 'disabled' => true,
@@ -38,6 +91,7 @@ class MediaType extends AbstractType
                     'class' => 'expand'
                 )
             ));
+        // TODO: Validation
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

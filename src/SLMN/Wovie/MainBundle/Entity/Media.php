@@ -23,12 +23,22 @@ class Media
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $countries;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     protected $freebaseId;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     protected $imdbId;
 
@@ -47,6 +57,206 @@ class Media
      * @ORM\Column(type="integer")
      */
     protected $mediaType;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $releaseYear;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $finalYear;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $runtime;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $writtenBy;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $genres;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $numberOfSeasons;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $numberOfEpisodes;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $posterImage;
+
+    /**
+     * @return mixed
+     */
+    public function getPosterImage()
+    {
+        return $this->posterImage;
+    }
+
+    /**
+     * @param mixed $posterImage
+     */
+    public function setPosterImage($posterImage)
+    {
+        $this->posterImage = $posterImage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfEpisodes()
+    {
+        return $this->numberOfEpisodes;
+    }
+
+    /**
+     * @param mixed $numberOfEpisodes
+     */
+    public function setNumberOfEpisodes($numberOfEpisodes)
+    {
+        $this->numberOfEpisodes = $numberOfEpisodes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfSeasons()
+    {
+        return $this->numberOfSeasons;
+    }
+
+    /**
+     * @param mixed $numberOfSeasons
+     */
+    public function setNumberOfSeasons($numberOfSeasons)
+    {
+        $this->numberOfSeasons = $numberOfSeasons;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    /**
+     * @param mixed $genres
+     */
+    public function setGenres($genres)
+    {
+        $this->genres = $genres;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWrittenBy()
+    {
+        return $this->writtenBy;
+    }
+
+    /**
+     * @param mixed $writtenBy
+     */
+    public function setWrittenBy($writtenBy)
+    {
+        $this->writtenBy = $writtenBy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRuntime()
+    {
+        return $this->runtime;
+    }
+
+    /**
+     * @param mixed $runtime
+     */
+    public function setRuntime($runtime)
+    {
+        $this->runtime = $runtime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountries()
+    {
+        return $this->countries;
+    }
+
+    /**
+     * @param mixed $countries
+     */
+    public function setCountries($countries)
+    {
+        $this->countries = $countries;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFinalYear()
+    {
+        return $this->finalYear;
+    }
+
+    /**
+     * @param mixed $finalYear
+     */
+    public function setFinalYear($finalYear)
+    {
+        $this->finalYear = $finalYear;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReleaseYear()
+    {
+        return $this->releaseYear;
+    }
+
+    /**
+     * @param mixed $releaseYear
+     */
+    public function setReleaseYear($releaseYear)
+    {
+        $this->releaseYear = $releaseYear;
+    }
 
     /**
      * @return mixed

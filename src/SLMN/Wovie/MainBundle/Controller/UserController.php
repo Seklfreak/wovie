@@ -53,17 +53,75 @@ class UserController extends Controller
             {
                 // Preset data
                 $result = $result[0];
-                $newMedia->setTitle($result['name']);
-                $newMedia->setFreebaseId($result['mid']);
-                $newMedia->setImdbId($result['imdbId']);
-                switch ($result['type'])
+                $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
+                $newMedia->setTitle(array_key_exists('name', $result) ? $result['name'] : null);
+                $newMedia->setDescription(($description=$mediaApi->fetchDescription($fbId)) ? $description : null);
+                $newMedia->setReleaseYear(array_key_exists('release_date', $result) ? $result['release_date'] : null);
+                $newMedia->setFinalYear(array_key_exists('final_episode', $result) ? $result['final_episode'] : null);
+                if (array_key_exists('countries', $result))
                 {
-                    case 'movie':
-                        $newMedia->setMediaType(1);
-                        break;
-                    case 'series':
-                        $newMedia->setMediaType(2);
-                        break;
+                    $countriesString = '';
+                    $i = 0;
+                    foreach ($result['countries'] as $country)
+                    {
+                        if ($i > 0)
+                        {
+                            $countriesString .= ', ';
+                        }
+                        $countriesString .= $country;
+                        $i++;
+                    }
+                    $newMedia->setCountries($countriesString);
+                }
+                $newMedia->setRuntime(array_key_exists('runtime', $result) ? $result['runtime'] : null);
+                if (array_key_exists('written_by', $result))
+                {
+                    $writersString = '';
+                    $i = 0;
+                    foreach ($result['written_by'] as $writer)
+                    {
+                        if ($i > 0)
+                        {
+                            $writersString .= ', ';
+                        }
+                        $writersString .= $writer;
+                        $i++;
+                    }
+                    $newMedia->setWrittenBy($writersString);
+                }
+                if (array_key_exists('genres', $result))
+                {
+                    $genresString = '';
+                    $i = 0;
+                    foreach ($result['genres'] as $genre)
+                    {
+                        if ($i > 0)
+                        {
+                            $genresString .= ', ';
+                        }
+                        $genresString .= $genre;
+                        $i++;
+                    }
+                    $newMedia->setGenres($genresString);
+                }
+                $newMedia->setNumberOfSeasons(array_key_exists('number_of_seasons', $result) ? $result['number_of_seasons'] : null);
+                $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
+                if (array_key_exists('poster', $result))
+                {
+                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image/'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
+                } // TODO: IMDB image fallback
+                $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
+                if (array_key_exists('type', $result))
+                {
+                    switch ($result['type'])
+                    {
+                        case 'movie':
+                            $newMedia->setMediaType(1);
+                            break;
+                        case 'series':
+                            $newMedia->setMediaType(2);
+                            break;
+                    }
                 }
             }
         }
