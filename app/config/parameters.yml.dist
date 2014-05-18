@@ -17,3 +17,6 @@ parameters:
     slmn_main_userbundle.mail.sender.email: wovie@example.org
     slmn_main_userbundle.mail.sender.title: wovie
     slmn_main_userbundle.mail.subject: wovie
+
+    slmn_main_userbundle.piwik.url: ~
+    slmn_main_userbundle.piwik.site_id: ~
