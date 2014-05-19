@@ -235,8 +235,6 @@ class MediaApi
             curl_close($curl_handle);
             $result = json_decode($rawResult, true);
 
-            var_dump($result);
-
             $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
         }
         return $result;
