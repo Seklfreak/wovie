@@ -20,6 +20,33 @@ $(function() {
         $('#media_numberOfSeasons').prop('disabled', false);
         $('#media_numberOfEpisodes').prop('disabled', false);
     });
+    $('.watched_it').click(function() {
+        var button = $(this);
+        if ($(button).data('media-id') != null)
+        {
+            $(button).prop('disabled', true);
+            $(button).html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
+                type: "POST",
+                data: { media_id: $(button).data('media-id') }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('success');
+                        $(button).html('Watched!');
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                    console.debug(data);
+                });
+        }
+    });
 
     $(document).foundation({});
 

@@ -16,6 +16,10 @@ slmn_wovie_user_dashboard:
     pattern:  /
     defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
     methods:  [GET]
+slmn_wovie_user_movie_shelf:
+    pattern:  /shelf/
+    defaults: { _controller: SLMNWovieMainBundle:User:shelf }
+    methods:  [GET]
 slmn_wovie_user_movie_add:
     pattern:  /add/
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }
@@ -45,7 +49,12 @@ slmn_wovie_actions_ajax_fetch_description:
     methods: [GET]
     options:
       expose: true
-    # TODO: Regex for id
+slmn_wovie_actions_ajax_watchedit:
+    pattern: /action/ajax/watchedit.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:watchedIt }
+    methods: [POST]
+    options:
+      expose: true
 
 # Image
 slmn_wovie_image_externalCover:

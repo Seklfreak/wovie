@@ -54,6 +54,11 @@ class Media
     protected $createdAt;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $lastUpdatedAt;
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $mediaType;
@@ -97,6 +102,22 @@ class Media
      * @ORM\Column(type="text", nullable=true)
      */
     protected $posterImage;
+
+    /**
+     * @return mixed
+     */
+    public function getLastUpdatedAt()
+    {
+        return $this->lastUpdatedAt;
+    }
+
+    /**
+     * @param mixed $lastUpdatedAt
+     */
+    public function setLastUpdatedAt($lastUpdatedAt)
+    {
+        $this->lastUpdatedAt = $lastUpdatedAt;
+    }
 
     /**
      * @return mixed

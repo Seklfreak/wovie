@@ -23,7 +23,7 @@ class ImageController extends Controller
         {
             // TODO: Read placeholder
             $curl_handle = curl_init();
-            curl_setopt($curl_handle, CURLOPT_URL, 'http://placehold.it/400x600&text=No+cover!');
+            curl_setopt($curl_handle, CURLOPT_URL, 'http://placehold.it/400x600&text=No+cover!'); // TODO: From parameter
             curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
             curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->container->get('kernel')->getEnvironment());

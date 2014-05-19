@@ -40,6 +40,15 @@ class UserController extends Controller
         );
     }
 
+    public function shelfAction()
+    {
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:shelf.html.twig',
+            array(
+            )
+        );
+    }
+
     public function addMovieAction(Request $request)
     {
         $newMedia = new Media();
@@ -139,7 +148,8 @@ class UserController extends Controller
         if ($newMediaForm->isValid()) {
             $newMedia->setCreatedBy($this->getUser());
             $newMedia->setCreatedAt(new \DateTime());
-            if ($fbId != '') // TODO: Test this
+            $newMedia->setLastUpdatedAt(new \DateTime());
+            if ($fbId != '')
             {
                 $newMedia->setFreebaseId($result['mid']);
                 $newMedia->setImdbId($result['imdbId']);
@@ -156,7 +166,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');
-            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_add')); // TODO: Redirect to shelf?
+            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf'));
         }
 
         return $this->render(

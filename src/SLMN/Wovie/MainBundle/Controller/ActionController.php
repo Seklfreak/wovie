@@ -5,6 +5,7 @@ namespace SLMN\Wovie\MainBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ActionController extends Controller
 {
@@ -49,5 +50,45 @@ class ActionController extends Controller
             Response::HTTP_OK,
             array('content-type' => 'text/html')
         );
+    }
+
+    public function watchedItAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($mediaId=intval($request->get('media_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediaRepo->findOneById($mediaId);
+            if ($media != null && $media->getCreatedBy() == $this->getUser())
+            {
+                if ($media->getMediaType() == 1)
+                {
+                    // TODO: Add watched object
+                    $response->setData(array(
+                        'status' => 'success'
+                    ));
+                }
+                else
+                {
+                    $response->setData(array(
+                        'status' => 'todo'
+                    ));
+                }
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
     }
 }
