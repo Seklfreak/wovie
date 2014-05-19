@@ -9,6 +9,7 @@ class SlmnWovieExtension extends \Twig_Extension
     public function __construct($cacheHandler)
     {
         $this->cacheHandler = $cacheHandler;
+        $this->cacheHandler->setNamespace('slmn_wovie_main_twig_slmnwovieextension');
     }
 
     public function getFunctions()
@@ -20,9 +21,9 @@ class SlmnWovieExtension extends \Twig_Extension
 
     public function wovieRevisionFunction()
     {
-        if (false === ($revision = $this->cacheHandler->fetch('twig_extension_wovie_revision'))) {
+        if (false === ($revision = $this->cacheHandler->fetch('revision'))) {
             $revision = shell_exec('git log --pretty=format:%h -n 1');
-            $this->cacheHandler->save('twig_extension_wovie_revision', $revision, 86400); // 86400 seconds = 1 day
+            $this->cacheHandler->save('revision', $revision, 86400); // 86400 seconds = 1 day
         }
 
         return $revision;

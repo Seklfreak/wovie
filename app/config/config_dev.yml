@@ -32,11 +32,5 @@ monolog:
 assetic:
     use_controller: true
 
-liip_doctrine_cache:
-    namespaces:
-        slmn_wovie:
-            namespace: slmn_wovie
-            type: file_system
-            directory: /tmp/slmn-wovie-fs-cache
 #swiftmailer:
 #    delivery_address: me@example.com

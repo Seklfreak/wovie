@@ -31,8 +31,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "sekl/main/foundationbundle": "dev-master",
         "sekl/main/userbundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "1.5.x",
-        "liip/doctrine-cache-bundle": "~1.0"
+        "friendsofsymfony/jsrouting-bundle": "1.5.x"
     },
     "scripts": {
         "post-install-cmd": [

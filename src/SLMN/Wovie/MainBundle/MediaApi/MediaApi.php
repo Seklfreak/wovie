@@ -10,11 +10,14 @@ class MediaApi
     protected $kernel;
     protected $lang = 'en'; // TODO: $this->setLang()
     protected $limit = 50; // TODO: Option
+    protected $cacheHandler;
 
-    public function __construct(Kernel $kernel, $apiKey)
+    public function __construct(Kernel $kernel, $apiKey, $cacheHandler)
     {
         $this->apiKey = $apiKey;
         $this->kernel = $kernel;
+        $this->cacheHandler = $cacheHandler;
+        $this->cacheHandler->setNamespace('slmn_wovie_main_mediaapi_mediaapi');
     }
 
     public function fetchDescription($id)
@@ -35,7 +38,6 @@ class MediaApi
         if (array_key_exists('property', $result) && array_key_exists('/common/topic/description', $result['property']))
         {
             return $result['property']['/common/topic/description']['values'][0]['value'];
-            return true;
         }
         else
         {
@@ -222,17 +224,19 @@ class MediaApi
 
     protected function request($url)
     {
-        // TODO: Cache result (via url?!)
+        $cacheKey = 'request_'.$this->lang.'_'.$this->limit.'_'.md5($url);
+        if (false === ($result = $this->cacheHandler->fetch($cacheKey))) {
+            $curl_handle = curl_init();
+            curl_setopt($curl_handle, CURLOPT_URL, $url);
+            curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->kernel->getEnvironment());
+            $rawResult = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            $result = json_decode($rawResult, true);
 
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, $url);
-        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->kernel->getEnvironment());
-        $rawResult = curl_exec($curl_handle);
-        curl_close($curl_handle);
-
-        $result = json_decode($rawResult, true);
+            $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
+        }
         return $result;
     }
 } 

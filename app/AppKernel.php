@@ -19,8 +19,7 @@ class AppKernel extends Kernel
             new Sekl\Main\UserBundle\SeklMainUserBundle(),
             new Sekl\Main\FoundationBundle\SeklMainFoundationBundle(),
             new SLMN\Wovie\MainBundle\SLMNWovieMainBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Liip\DoctrineCacheBundle\LiipDoctrineCacheBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
