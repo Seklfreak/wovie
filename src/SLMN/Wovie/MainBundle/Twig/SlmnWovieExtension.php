@@ -20,8 +20,62 @@ class SlmnWovieExtension extends \Twig_Extension
     {
         return array(
             'getMyMovies' => new \Twig_Function_Method($this, 'getMyMoviesFunction'),
+            'viewsOfId' => new \Twig_Function_Method($this, 'viewsOfId'),
+            'viewsOfSeries' => new \Twig_Function_Method($this, 'viewsOfSeries'),
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
         );
+    }
+
+    public function viewsOfSeries($id)
+    {
+        $mediaRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+        $viewRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
+        $media = $mediaRepo->findOneById($id);
+        if ($media != null)
+        {
+            $query = $viewRepo->createQueryBuilder('view')
+                ->where('view.media = :media')
+                ->groupBy('view.episode')
+                ->setParameter('media', $media)
+                ->getQuery();
+
+            $views = $query->getResult();
+            return count($views);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function viewsOfId($id, $episode=null)
+    {
+        $mediaRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+        $viewRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
+        $media = $mediaRepo->findOneById($id);
+        if ($media != null)
+        {
+            if ($media->getMediaType() == 1) {
+                $views = $viewRepo->findByMedia($media);
+                return count($views);
+            } else {
+                $query = $viewRepo->createQueryBuilder('view')
+                    ->where('view.media = :media')
+                    ->andWhere('view.episode = :episode')
+                    ->setParameters(array(
+                        'media' => $media,
+                        'episode' => $episode
+                    ))
+                    ->getQuery();
+
+                $views = $query->getResult();
+                return count($views);
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function getMyMoviesFunction()

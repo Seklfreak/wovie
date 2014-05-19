@@ -1,0 +1,54 @@
+{% extends "SeklMainFoundationBundle::main.html.twig" %}
+{% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
+
+{% block header %}
+    {# TODO: <link rel="icon" href="favicon.ico" type="image/x-icon"> #}
+    {% stylesheets filter="?uglifycss" filter="compass"
+    "@SLMNWovieMainBundle/Resources/assets/main.sass"
+    output='compiled/css/main.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock header %}
+
+{% block templatebody %}
+    <div id="root">
+        {% block body %}{% endblock body %}
+        <div id="root_footer"></div>
+    </div>
+    <footer id="footer">
+    </footer>
+{% endblock templatebody %}
+
+{% block endbody %}
+    {% javascripts
+    'bundles/fosjsrouting/js/router.js'
+    'js/fos_js_routes.js'
+    '@SLMNWovieMainBundle/Resources/assets/add.js'
+    output='compiled/js/add.js' filter='?uglifyjs2'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% if app.environment != 'prod'  %}
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    {% endif %}
+
+    {% if piwikUrl != null and piwikSiteId != null %}
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            {% if is_granted('ROLE_USER') %}
+            _paq.push(["setCustomVariable", 1, "User status", "LoggedIn", "visit"]);
+            {% else %}
+            _paq.push(["setCustomVariable", 1, "User status", "Anonymous", "visit"]);
+            {% endif %}
+            (function() {
+                var u=(("https:" == document.location.protocol) ? "https" : "http") + "://{{ piwikUrl }}/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', {{ piwikSiteId }}]);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+                g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+    {% endif %}
+{% endblock endbody %}

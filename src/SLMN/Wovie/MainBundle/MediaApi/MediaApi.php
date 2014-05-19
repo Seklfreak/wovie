@@ -45,6 +45,52 @@ class MediaApi
         }
     }
 
+    public function fetchEpisodes($id,\DateTime $asOfTime=null)
+    {
+        $url = 'https://www.googleapis.com/freebase/v1/mqlread'.'?';
+        $parameter = array(
+            'key' => $this->apiKey,
+            'lang' => '/lang/'.$this->lang,
+            'query' => json_encode(array(
+                'id' => $id,
+                '/tv/tv_program/episodes' => array(
+                    array(
+                        'name' => null,
+                        'season_number' => null,
+                        'episode_number' => null
+                    )
+                )
+            ))
+        );
+        if ($asOfTime != null)
+        {
+            $parameter['as_of_time'] = $asOfTime->format(\DateTime::ISO8601);
+        }
+
+        foreach ($parameter as $key=>$value)
+        {
+            $url .= $key.'='.urlencode($value).'&';
+        }
+
+        $result = $this->request($url);
+
+        if (array_key_exists('result', $result) && array_key_exists('/tv/tv_program/episodes', $result['result']))
+        {
+            $episodesArray = array();
+            $result = $result['result']['/tv/tv_program/episodes'];
+            foreach ($result as $episode)
+            {
+                $episodesArray[$episode['season_number']][$episode['episode_number']] = $episode['name'];
+            }
+            return $episodesArray;
+            //return $result['result']['/tv/tv_program/episodes'];
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public function search($filter)
     {
 

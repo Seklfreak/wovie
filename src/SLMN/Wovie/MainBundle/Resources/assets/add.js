@@ -10,6 +10,13 @@ function getUrlParameter(sParam) {
 }
 
 $(function() {
+    boxes = $('.shelf-media-titles');
+    maxHeight = Math.max.apply(
+        Math, boxes.map(function() {
+            return $(this).height();
+        }).get());
+    boxes.height(maxHeight);
+
     $('input[type=radio][id=media_mediaType_0]').click(function() {
         $('#media_finalYear').prop('disabled', true);
         $('#media_numberOfSeasons').prop('disabled', true);
@@ -29,7 +36,7 @@ $(function() {
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
                 type: "POST",
-                data: { media_id: $(button).data('media-id') }
+                data: { media_id: $(button).data('media-id'), episode_id: $(button).data('episode-id') }
             })
                 // TODO: Error handling
                 .success(function(data) {
@@ -37,13 +44,16 @@ $(function() {
                     {
                         $(button).addClass('success');
                         $(button).html('Watched!');
+                        if ($(button).data('episode-id') != null)
+                        {
+                            window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                        }
                     }
                     else
                     {
                         $(button).addClass('alert');
                         $(button).html('Error!');
                     }
-                    console.debug(data);
                 });
         }
     });

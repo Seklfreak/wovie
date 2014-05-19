@@ -1,0 +1,47 @@
+{% extends "SLMNWovieMainBundle::html/layout_frame.html.twig" %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <h4>Which episode did you watch?</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="no-bullet">
+                {# TODO: Automatically scroll to the episode, he could watch next. #}
+                {% if episodes != false %}
+                    {% set curSeason = 1 %}
+                    {% set curEpisodeInSeason = 1 %}
+                {% endif %}
+                {% for i in 1..media.numberOfEpisodes %}
+                    {% if episodes != false %}
+                        {% if curEpisodeInSeason == 1 %}
+                            <h6>Season {{ curSeason }}</h6>
+                        {% endif %}
+                    {% endif %}
+                    <li>
+                        <button class="button watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
+                            {# TODO: Show how often the user has watched the episode #}
+                            {{ i }}
+                            {% if episodes != false %}
+                                {% set curEpisodeInSeason = curEpisodeInSeason+1 %}
+                                {% if episodes[curSeason] is defined and episodes[curSeason][curEpisodeInSeason-1] is defined %}
+                                    {{ episodes[curSeason][curEpisodeInSeason-1] }}
+                                    {% if media.numberOfEpisodes > i and episodes[curSeason][curEpisodeInSeason] is not defined %}
+                                        {% set curEpisodeInSeason = 1 %}
+                                        {% set curSeason = curSeason+1 %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% set views = viewsOfId(media.id, i) %}
+                            {% if views > 0 %}
+                                <i class="fa fa-check-square"></i> {% if views > 1 %} {{ views }}{% endif %}
+                            {% endif %}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock body %}

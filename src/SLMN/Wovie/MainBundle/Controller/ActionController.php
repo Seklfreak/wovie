@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,16 +65,46 @@ class ActionController extends Controller
             {
                 if ($media->getMediaType() == 1)
                 {
-                    // TODO: Add watched object
+                    $newView = new View();
+                    $newView->setCreatedAt(new \DateTime());
+                    $newView->setMedia($media);
+                    $em->persist($newView);
+                    $em->flush();
+
                     $response->setData(array(
                         'status' => 'success'
                     ));
                 }
                 else
                 {
-                    $response->setData(array(
-                        'status' => 'todo'
-                    ));
+                    if (($episodeId=intval($request->get('episode_id'))) != null)
+                    {
+                        if ($episodeId <= $media->getNumberOfEpisodes())
+                        {
+                            $newView = new View();
+                            $newView->setCreatedAt(new \DateTime());
+                            $newView->setMedia($media);
+                            $newView->setEpisode($episodeId);
+                            $em->persist($newView);
+                            $em->flush();
+
+                            $response->setData(array(
+                                'status' => 'success'
+                            ));
+                        }
+                        else
+                        {
+                            $response->setData(array(
+                                'status' => 'error'
+                            ));
+                        }
+                    }
+                    else
+                    {
+                        $response->setData(array(
+                            'status' => 'error'
+                        ));
+                    }
                 }
             }
             else

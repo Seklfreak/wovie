@@ -55,6 +55,14 @@ slmn_wovie_actions_ajax_watchedit:
     methods: [POST]
     options:
       expose: true
+    requirements:
+        id: \d+
+
+# Frames
+slmn_wovie_action_frames_choose_episode:
+    pattern: /frame/choose-episode/{id}/
+    defaults: { _controller: SLMNWovieMainBundle:Frame:chooseEpisode }
+    methods: [GET]
 
 # Image
 slmn_wovie_image_externalCover:

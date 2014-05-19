@@ -15,51 +15,62 @@
     </div>
     <div class="row">
         <div class="large-12 columns">
-            <table>
-                <tbody>
-                <ul class="small-block-grid-4 medium-block-grid-5 large-block-grid-4" data-equalizer>
-                    {% for movie in myMovies %}
-                        {% set i = 0 %}
-                        {% set series = random(0..1) %}
-                        <li>
-                            <div class="clearfix" data-equalizer-watch>
-                                <h6 class="left">{{ movie.title }}</h6>
-                            </div>
-                            <div style="position: relative;">
-                                <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
-                                    <img class="cover" src="{{ movie.posterImage|default(coverPlaceholder) }}">
-                                </a>
-                                {% if movie.mediaType == 2 %}
-                                    <div class="cover-progress large-12">
-                                        <span class="meter" style="width: {{ random(25..75) }}%">
+            <ul class="small-block-grid-4 medium-block-grid-5 large-block-grid-4" data-equalizer>
+                {% for movie in myMovies %}
+                    {% set i = 0 %}
+                    {% set series = random(0..1) %}
+                    <li>
+                        <div class="clearfix shelf-media-titles">
+                            <h6 class="left">{{ movie.title }}</h6>
+                        </div>
+                        <div style="position: relative;">
+                            <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
+                                <img class="cover" src="{{ movie.posterImage|default(coverPlaceholder) }}">
+                            </a>
+                            {% if movie.mediaType == 2 %}
+                                <div class="cover-progress large-12">
+                                        <span class="meter"
+                                              style="width: {{ viewsOfSeries(movie.id) / (movie.numberOfEpisodes / 100) }}%">
                                             <p>
                                                 <b>
-                                                    {{ random(1..50) }}/{{ movie.numberOfEpisodes }}
+                                                    {{ viewsOfSeries(movie.id) }}/{{ movie.numberOfEpisodes }}
                                                 </b>
                                             </p>
                                         </span>
+                                </div>
+                            {% else %}
+                                {% set views = viewsOfId(movie.id) %}
+                                {% if views > 0 %}
+                                    <div class="cover-complete">
+                                        <i class="fa fa-check-square"></i>
+                                        {% if views > 1 %} {{ views }}{% endif %}
                                     </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="large-6 columns">
+                                {% if movie.mediaType == 1 %}
+                                    <button class="button watched_it" data-media-id="{{ movie.id }}">I watched it!
+                                    </button>
                                 {% else %}
-                                    {% if random(0..1) == 1 %}
-                                        <div class="cover-complete">
-                                            <i class="fa fa-check-square"></i>
-                                        </div>
-                                    {% endif %}
+                                    <button
+                                            class="button watched_it"
+                                            data-reveal-id="modal-frame-choose-episode"
+                                            onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
+                                            >
+                                        I watched an episode!
+                                    </button>
                                 {% endif %}
                             </div>
-                            <div class="row">
-                                <div class="large-6 columns">
-                                    <button class="button watched_it" data-media-id="{{ movie.id }}">I watched it!</button>
-                                </div>
-                                <div class="large-6 columns">
-                                    <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="right">more <i class="fa fa-angle-double-right"></i></a>
-                                </div>
+                            <div class="large-6 columns">
+                                <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="right">more
+                                    <i class="fa fa-angle-double-right"></i></a>
                             </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-                </tbody>
-            </table>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock body %}

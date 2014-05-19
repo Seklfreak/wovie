@@ -151,8 +151,13 @@ class UserController extends Controller
             $newMedia->setLastUpdatedAt(new \DateTime());
             if ($fbId != '')
             {
-                $newMedia->setFreebaseId($result['mid']);
-                $newMedia->setImdbId($result['imdbId']);
+                $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
+                if (array_key_exists('poster', $result))
+                {
+                    // TODO: Download image to disc
+                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
+                } // TODO: IMDB image fallback
+                $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
             }
             if ($newMedia->getMediaType() == 1) // if movie, reset series fields
             {
