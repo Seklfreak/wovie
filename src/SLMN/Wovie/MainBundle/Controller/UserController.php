@@ -144,9 +144,15 @@ class UserController extends Controller
                 $newMedia->setFreebaseId($result['mid']);
                 $newMedia->setImdbId($result['imdbId']);
             }
+            if ($newMedia->getMediaType() == 1) // if movie, reset series fields
+            {
+                $newMedia->setFinalYear(null);
+                $newMedia->setNumberOfEpisodes(null);
+                $newMedia->setNumberOfSeasons(null);
+            }
 
             $em = $this->getDoctrine()->getManager();
-            //$em->persist($newMedia);
+            $em->persist($newMedia);
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');

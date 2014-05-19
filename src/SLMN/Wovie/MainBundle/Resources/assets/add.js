@@ -10,6 +10,17 @@ function getUrlParameter(sParam) {
 }
 
 $(function() {
+    $('input[type=radio][id=media_mediaType_0]').click(function() {
+        $('#media_finalYear').prop('disabled', true);
+        $('#media_numberOfSeasons').prop('disabled', true);
+        $('#media_numberOfEpisodes').prop('disabled', true);
+    });
+    $('input[type=radio][id=media_mediaType_1]').click(function() {
+        $('#media_finalYear').prop('disabled', false);
+        $('#media_numberOfSeasons').prop('disabled', false);
+        $('#media_numberOfEpisodes').prop('disabled', false);
+    });
+
     $(document).foundation({});
 
     if (typeof getUrlParameter('q') !== "undefined")

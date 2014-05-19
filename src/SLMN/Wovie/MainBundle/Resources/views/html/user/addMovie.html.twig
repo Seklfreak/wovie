@@ -34,15 +34,27 @@
                     {{ form_row(newMediaForm.releaseYear) }}
                 </div>
                 <div class="large-6 columns">
-                    {{ form_row(newMediaForm.finalYear) }}
+                    {% if newMediaForm.vars.value.mediaType|default(0) == 1 %}
+                        {{ form_row(newMediaForm.finalYear, {'disabled': true}) }}
+                    {% else %}
+                        {{ form_row(newMediaForm.finalYear) }}
+                    {% endif %}
                 </div>
             </div>
             <div class="row">
                 <div class="large-6 columns">
-                    {{ form_row(newMediaForm.numberOfSeasons) }}
+                    {% if newMediaForm.vars.value.mediaType|default(0) == 1 %}
+                        {{ form_row(newMediaForm.numberOfSeasons, {'disabled': true}) }}
+                    {% else %}
+                        {{ form_row(newMediaForm.numberOfSeasons) }}
+                    {% endif %}
                 </div>
                 <div class="large-6 columns">
-                    {{ form_row(newMediaForm.numberOfEpisodes) }}
+                    {% if newMediaForm.vars.value.mediaType|default(0) == 1 %}
+                        {{ form_row(newMediaForm.numberOfEpisodes, {'disabled': true}) }}
+                    {% else %}
+                        {{ form_row(newMediaForm.numberOfEpisodes) }}
+                    {% endif %}
                 </div>
             </div>
             {{ form_row(newMediaForm.submit) }}

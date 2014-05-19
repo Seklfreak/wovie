@@ -60,36 +60,47 @@ class PublicController extends Controller
         $pendingPasswordChange = $pendingPasswordChangesRepo->findOneByToken($token);
         if ($pendingPasswordChange != null) {
             $pendingUser = $pendingPasswordChange->getCreatedBy();
-            if ($pendingUser != null) {
-                $pendingUserForm = $this->createForm('user', $pendingUser)
-                    ->remove('username')
-                    ->remove('email')
-                    ->remove('roles');
-                $pendingUserForm->handleRequest($request);
+            if ($pendingPasswordChange->getCreatedAt()->getTimestamp() >= strtotime('-24 hours'))
+            {
+                if ($pendingUser != null) {
+                    $pendingUserForm = $this->createForm('user', $pendingUser)
+                        ->remove('username')
+                        ->remove('email')
+                        ->remove('roles');
+                    $pendingUserForm->handleRequest($request);
 
-                if ($pendingUserForm->isValid()) {
-                    $pendingUser->setSalt(md5(uniqid(null, true)));
+                    if ($pendingUserForm->isValid()) {
+                        $pendingUser->setSalt(md5(uniqid(null, true)));
 
-                    $factory = $this->get('security.encoder_factory');
+                        $factory = $this->get('security.encoder_factory');
 
-                    $encoder = $factory->getEncoder($pendingUser);
-                    $password = $encoder->encodePassword($pendingUser->getPassword(), $pendingUser->getSalt());
-                    $pendingUser->setPassword($password);
+                        $encoder = $factory->getEncoder($pendingUser);
+                        $password = $encoder->encodePassword($pendingUser->getPassword(), $pendingUser->getSalt());
+                        $pendingUser->setPassword($password);
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($pendingUser);
-                    $em->remove($pendingPasswordChange);
-                    $em->flush();
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($pendingUser);
+                        $em->remove($pendingPasswordChange);
+                        $em->flush();
 
-                    $this->get('session')->getFlashBag()->add('success', 'Password changed!');
+                        $this->get('session')->getFlashBag()->add('success', 'Password changed!');
+                        return $this->redirect($this->generateUrl('login'));
+                    }
+
+                    return $this->render('SLMNWovieMainBundle:html/public:redeemNewPassword.html.twig', array(
+                        'pendingUserForm' => $pendingUserForm->createView()
+                    ));
+                } else {
+                    $this->get('session')->getFlashBag()->add('error', 'User not found!');
                     return $this->redirect($this->generateUrl('login'));
                 }
-
-                return $this->render('SLMNWovieMainBundle:html/public:redeemNewPassword.html.twig', array(
-                    'pendingUserForm' => $pendingUserForm->createView()
-                ));
-            } else {
-                $this->get('session')->getFlashBag()->add('error', 'User not found!');
+            }
+            else
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($pendingPasswordChange);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('error', 'Link expired, please request an new one.');
                 return $this->redirect($this->generateUrl('login'));
             }
         } else {
