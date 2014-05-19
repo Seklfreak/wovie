@@ -63,7 +63,7 @@
 .cover:hover {
   z-index: 99;
   position: absolute;
-  @include transition-duration(0.3s);
+  /*@include transition-duration(0.3s);*/
   @include transform(scale(1.3));
 }
 
