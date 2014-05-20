@@ -45,7 +45,7 @@ class MediaApi
         }
     }
 
-    public function fetchEpisodes($id,\DateTime $asOfTime=null)
+    public function fetchEpisodes($id)
     {
         $url = 'https://www.googleapis.com/freebase/v1/mqlread'.'?';
         $parameter = array(
@@ -62,10 +62,6 @@ class MediaApi
                 )
             ))
         );
-        if ($asOfTime != null)
-        {
-            $parameter['as_of_time'] = $asOfTime->format(\DateTime::ISO8601);
-        }
 
         foreach ($parameter as $key=>$value)
         {
