@@ -72,7 +72,7 @@ $(function() {
             $('#modal-frame-choose-episode > .modal-loading').addClass('hide');
         }
     });
-    $(document).on('closed', '#modal-frame-choose-episode', function () {
+    $(document).on('close', '#modal-frame-choose-episode', function () {
         $('#modal-frame-choose-episode > iframe').attr('src', '');
         $('#modal-frame-choose-episode > .modal-loading').removeClass('hide');
     });

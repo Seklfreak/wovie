@@ -5,9 +5,15 @@
     {# TODO: <link rel="icon" href="favicon.ico" type="image/x-icon"> #}
     {% stylesheets filter="?uglifycss" filter="compass"
     "@SLMNWovieMainBundle/Resources/assets/main.sass"
-    output='compiled/css/main.css' %}
+    output='css/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
+    {% javascripts
+    '../vendor/sekl/main/foundationbundle/src/Sekl/Main/FoundationBundle/Resources/assets/modernizr.js'
+    output='js/header.js' filter='?uglifyjs2'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock header %}
 
 {% block templatebody %}
@@ -132,10 +138,28 @@
 
 {% block endbody %}
     {% javascripts
+    '../vendor/sekl/main/foundationbundle/src/Sekl/Main/FoundationBundle/Resources/assets/jquery-2.1.1.js'
+    '../vendor/sekl/main/foundationbundle/src/Sekl/Main/FoundationBundle/Resources/assets/fastclick.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.abide.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.accordion.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.alert.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.clearing.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.dropdown.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.equalizer.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.interchange.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.joyride.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.magellan.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.offcanvas.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.orbit.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.reveal.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.tab.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.tooltip.js'
+    '../vendor/zurb/foundation/js/foundation/foundation.topbar.js'
     'bundles/fosjsrouting/js/router.js'
     'js/fos_js_routes.js'
     '@SLMNWovieMainBundle/Resources/assets/add.js'
-    output='compiled/js/add.js' filter='?uglifyjs2'
+    output='js/main.js' filter='?uglifyjs2'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
