@@ -10,13 +10,17 @@ function getUrlParameter(sParam) {
 }
 
 $(function() {
+    // Init foundation
+    $(document).foundation({});
+    // Shelf titles all same high
+    // TODO: Calculate max high PER LINE
     boxes = $('.shelf-media-titles');
     maxHeight = Math.max.apply(
         Math, boxes.map(function() {
             return $(this).height();
         }).get());
     boxes.height(maxHeight);
-
+    // Change add/edit form based on media type
     $('input[type=radio][id=media_mediaType_0]').click(function() {
         $('#media_finalYear').prop('disabled', true);
         $('#media_numberOfSeasons').prop('disabled', true);
@@ -27,6 +31,7 @@ $(function() {
         $('#media_numberOfSeasons').prop('disabled', false);
         $('#media_numberOfEpisodes').prop('disabled', false);
     });
+    // Watched it button action
     $('.watched_it').click(function() {
         var button = $(this);
         if ($(button).data('media-id') != null)
@@ -57,9 +62,11 @@ $(function() {
                 });
         }
     });
-
-    $(document).foundation({});
-
+    // Reset modals on close
+    $(document).on('close', '#modal-frame-choose-episode', function () {
+        $('#modal-frame-choose-episode > iframe').attr('src', '');
+    });
+    // Search actions
     if (typeof getUrlParameter('q') !== "undefined")
     {
         $.ajax({
