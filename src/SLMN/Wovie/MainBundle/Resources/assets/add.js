@@ -63,13 +63,16 @@ $(function() {
         }
     });
     // Modal actions
+    /* TODO: Load modal only with loading indicator -> when iframe is loaded
+                Show modal with iframe. No loading screen glitches anymore!
+     */
     $('#modal-frame-choose-episode > iframe').load(function() {
         if ($('#modal-frame-choose-episode > iframe').attr('src') != '')
         {
             $('#modal-frame-choose-episode > .modal-loading').addClass('hide');
         }
     });
-    $(document).on('close', '#modal-frame-choose-episode', function () {
+    $(document).on('closed', '#modal-frame-choose-episode', function () {
         $('#modal-frame-choose-episode > iframe').attr('src', '');
         $('#modal-frame-choose-episode > .modal-loading').removeClass('hide');
     });
