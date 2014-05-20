@@ -106,3 +106,9 @@
   @include transition-duration(0.3s);
   @include transform(scale(3.0));
 }
+
+/* MODALS */
+.modal-loading {
+  margin-left: 10px;
+  margin-top: 10px !important;
+}

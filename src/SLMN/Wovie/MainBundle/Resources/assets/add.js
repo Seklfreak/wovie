@@ -62,9 +62,16 @@ $(function() {
                 });
         }
     });
-    // Reset modals on close
+    // Modal actions
+    $('#modal-frame-choose-episode > iframe').load(function() {
+        if ($('#modal-frame-choose-episode > iframe').attr('src') != '')
+        {
+            $('#modal-frame-choose-episode > .modal-loading').addClass('hide');
+        }
+    });
     $(document).on('close', '#modal-frame-choose-episode', function () {
         $('#modal-frame-choose-episode > iframe').attr('src', '');
+        $('#modal-frame-choose-episode > .modal-loading').removeClass('hide');
     });
     // Search actions
     if (typeof getUrlParameter('q') !== "undefined")
