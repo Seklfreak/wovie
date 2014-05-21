@@ -26,30 +26,34 @@ class SlmnWovieExtension extends \Twig_Extension
         );
     }
 
-    public function viewsOfSeries($id)
+    public function viewsOfId($id, $episode=null)
     {
-        $mediaRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
         $viewRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
-        $media = $mediaRepo->findOneById($id);
-        if ($media != null)
+        if ($episode == null)
         {
             $query = $viewRepo->createQueryBuilder('view')
+                ->add('select', 'COALESCE(view.episode, view.id) as unq_episode')
                 ->where('view.media = :media')
-                ->groupBy('view.episode')
-                ->setParameter('media', $media)
+                ->groupBy('unq_episode')
+                ->setParameter('media', $id)
                 ->getQuery();
-
-            $views = $query->getResult();
+                $views = $query->getResult();
             return count($views);
         }
         else
         {
-            return false;
+            $query = $viewRepo->createQueryBuilder('view')
+                ->where('view.media = :media')
+                ->andWhere('view.episode = :episode')
+                ->setParameters(array(
+                    'media' => $id,
+                    'episode' => $episode
+                ))
+                ->getQuery();
+            $views = $query->getResult();
+            return count($views);
         }
-    }
-
-    public function viewsOfId($id, $episode=null)
-    {
+        /*
         $mediaRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
         $viewRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
         $media = $mediaRepo->findOneById($id);
@@ -75,7 +79,7 @@ class SlmnWovieExtension extends \Twig_Extension
         else
         {
             return false;
-        }
+        }*/
     }
 
     public function getMyMoviesFunction()
