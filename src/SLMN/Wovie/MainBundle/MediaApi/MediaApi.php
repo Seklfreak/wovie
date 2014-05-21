@@ -100,7 +100,6 @@ class MediaApi
         $output = array(
             'mid' => 'null',
             'name' => '[]',
-            '/common/topic/description' => 'null',
             '/tv/tv_program/air_date_of_first_episode' => '[]',
             '/tv/tv_program/air_date_of_final_episode' => '[]',
             '/tv/tv_program/country_of_origin' => '[]',
