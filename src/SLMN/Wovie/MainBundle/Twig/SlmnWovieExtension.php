@@ -53,33 +53,6 @@ class SlmnWovieExtension extends \Twig_Extension
             $views = $query->getResult();
             return count($views);
         }
-        /*
-        $mediaRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
-        $viewRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
-        $media = $mediaRepo->findOneById($id);
-        if ($media != null)
-        {
-            if ($media->getMediaType() == 1) {
-                $views = $viewRepo->findByMedia($media);
-                return count($views);
-            } else {
-                $query = $viewRepo->createQueryBuilder('view')
-                    ->where('view.media = :media')
-                    ->andWhere('view.episode = :episode')
-                    ->setParameters(array(
-                        'media' => $media,
-                        'episode' => $episode
-                    ))
-                    ->getQuery();
-
-                $views = $query->getResult();
-                return count($views);
-            }
-        }
-        else
-        {
-            return false;
-        }*/
     }
 
     public function getMyMoviesFunction()
