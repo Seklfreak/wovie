@@ -10,12 +10,7 @@
             <li style="width: 8%;">
                 <img
                         class="small-cover"
-                        {% if item["poster"] is not defined %}
-                            {# TODO: Fallback to imdb image? (Complete data with omdb data, download via paypal) #}
-                            src="{{ coverPlaceholder }}"
-                        {% else %}
-                            src="https://usercontent.googleapis.com/freebase/v1/image{{ item["poster"] }}?maxwidth=400&maxheight=600&mode=fit"
-                        {% endif %}
+                        src="{{ path('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}"
                         {# TODO: Lazy image loading #}
                         >
                     <span>

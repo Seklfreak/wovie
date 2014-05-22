@@ -65,12 +65,12 @@ slmn_wovie_action_frames_choose_episode:
     methods: [GET]
 
 # Image
-slmn_wovie_image_externalCover:
-    pattern: /image/cover/{id}.jpg
-    defaults: { _controller: SLMNWovieMainBundle:Image:externalCover }
+slmn_wovie_image_coverImage:
+    pattern: /imager/cover/{freebaseId}.jpg
+    defaults: { _controller: SLMNWovieMainBundle:Image:coverImage }
     methods: [GET]
     requirements:
-        id: "^(([A-Za-z0-9]{40,50}[@]{0,2}\._V1_SX[0-9]{3})([A-Z_]{4})?)|([0])$"
+        freebaseId: "^.+$" #TODO: Regex for freebase id ( /m/xxx 04csmqp eg )
 
 # System
 login:

@@ -115,11 +115,7 @@ class UserController extends Controller
                 }
                 $newMedia->setNumberOfSeasons(array_key_exists('number_of_seasons', $result) ? $result['number_of_seasons'] : null);
                 $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
-                if (array_key_exists('poster', $result))
-                {
-                    // TODO: Download image to disc
-                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
-                } // TODO: IMDB image fallback
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
                 if (array_key_exists('type', $result))
                 {
@@ -152,11 +148,7 @@ class UserController extends Controller
             if ($fbId != '')
             {
                 $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
-                if (array_key_exists('poster', $result))
-                {
-                    // TODO: Download image to disc
-                    $newMedia->setPosterImage('https://usercontent.googleapis.com/freebase/v1/image'.$result['poster'].'?maxwidth=400&maxheight=600&mode=fit');
-                } // TODO: IMDB image fallback
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
             }
             if ($newMedia->getMediaType() == 1) // if movie, reset series fields
