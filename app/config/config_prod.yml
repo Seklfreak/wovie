@@ -1,6 +1,11 @@
 imports:
     - { resource: config.yml }
 
+framework:
+    templating:
+      assets_base_urls:
+        http: ["%slmn_wovie_mainbundle.cdn%"]
+        ssl: ["%slmn_wovie_mainbundle.cdn%"]
 #framework:
 #    validation:
 #        cache: apc

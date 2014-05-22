@@ -22,3 +22,5 @@ parameters:
     slmn_main_userbundle.piwik.site_id: ~
     slmn_wovie_mainbundle.cache.type: ApcCache
     slmn_wovie_mainbundle.cover-placeholder: http://example.org/image.png
+    slmn_wovie_mainbundle.cdn: example.org
+    slmn_wovie_mainbundle.domain: example.org
