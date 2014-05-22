@@ -65,6 +65,8 @@ class ImageController extends Controller
             curl_close($curl_handle);
         }
 
+        $response->setPublic();
+        $response->setMaxAge(604800); # 7 Days
         $response->setContent($image);
         $response->headers->set('Content-Type', 'image/jpeg');
         return $response;
