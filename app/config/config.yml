@@ -15,7 +15,6 @@ framework:
     templating:
         engines:                ['twig']
         assets_version:         v1 # TODO: Update
-        assets_version_format:  "%%2$s/%%1$s"
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
