@@ -103,7 +103,6 @@
 .small-cover:hover {
   position: absolute;
   z-index: 99;
-  @include transition-duration(0.3s);
   @include transform(scale(3.0));
 }
 
