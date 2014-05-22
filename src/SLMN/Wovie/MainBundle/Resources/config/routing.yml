@@ -71,7 +71,7 @@ slmn_wovie_image_coverImage:
     defaults: { _controller: SLMNWovieMainBundle:Image:coverImage, cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
     requirements:
-        cdn: "%slmn_wovie_mainbundle.cdn%|slmn_wovie_mainbundle.domain"
+        cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         freebaseId: "^.+$" #TODO: Regex for freebase id ( /m/xxx 04csmqp eg )
 
 # System
