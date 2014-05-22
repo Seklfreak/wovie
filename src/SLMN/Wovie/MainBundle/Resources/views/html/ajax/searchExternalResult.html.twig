@@ -8,17 +8,12 @@
         {# dump(item)|raw #}
         <ul class="inline-list">
             <li style="width: 8%;">
-                <img
-                        class="small-cover"
-                        src="{{ path('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}"
-                        {# TODO: Lazy image loading #}
-                        >
-                    <span>
-                        <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}"
-                           style="margin-left: 10px;">
+                <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}">
+                    <img class="small-cover" src="{{ path('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
+                    <div class="image-label">
                             <i class="fa fa-plus"></i> Add
-                        </a>
-                    </span>
+                    </div>
+                </a>
             </li>
             <li style="width: 87%;">
                 <div class="row">

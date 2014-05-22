@@ -1,17 +1,12 @@
 {% macro itemForList(item) %}
     <ul class="inline-list">
         <li style="width: 8%;">
-            <img
-                    class="small-cover"
-                    src="{{ item.posterImage|default(coverPlaceholder) }}"
-                    {# TODO: Lazy image loading #}
-                    >
-                    <span>
-                        <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}"
-                           style="margin-left: 10px;">
-                            <i class="fa fa-info"></i> Details
-                        </a>
-                    </span>
+            <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}">
+                <img class="small-cover" src="{{ item.posterImage|default(coverPlaceholder) }}"> {# TODO: Lazy loading #}
+                <div class="image-label">
+                    <i class="fa fa-info-circle"></i> Details
+                </div>
+            </a>
         </li>
         <li style="width: 87%;">
             <div class="row">
