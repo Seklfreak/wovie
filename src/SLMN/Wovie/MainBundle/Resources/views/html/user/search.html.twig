@@ -10,7 +10,15 @@
     </div>
     <div class="row">
         <div class="large-12 columns">
-            {{ main.alertBox('Not implented yet', '', 0) }}
+            {% if result|length <= 0 %}
+                <div data-alert="" class="alert-box warning radius">
+                    No results found
+                </div>
+            {% else %}
+                {% for item in result %}
+                    {{ wovie.itemForList(item) }}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     <div class="row">

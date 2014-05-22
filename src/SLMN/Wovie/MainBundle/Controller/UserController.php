@@ -176,12 +176,20 @@ class UserController extends Controller
 
     public function searchAction(Request $request)
     {
-        $query = trim($request->query->get('q'));
+        $queryString = trim($request->query->get('q'));
+
+        $moviesRepo = $this->getDoctrine()->getManager()->getRepository('SLMNWovieMainBundle:Media');
+        $query = $moviesRepo->createQueryBuilder('media')
+            ->where('media.title LIKE :query')
+            ->setParameter('query', '%'.$queryString.'%')
+            ->getQuery();
+        $result = $query->getResult();
 
         return $this->render(
             'SLMNWovieMainBundle:html/user:search.html.twig',
             array(
-                'query' => $query
+                'result' => $result,
+                'query' => $queryString
             )
         );
     }

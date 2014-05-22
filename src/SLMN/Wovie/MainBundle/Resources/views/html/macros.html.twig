@@ -1,0 +1,100 @@
+{% macro itemForList(item) %}
+    <ul class="inline-list">
+        <li style="width: 8%;">
+            <img
+                    class="small-cover"
+                    src="{{ item.posterImage|default(coverPlaceholder) }}"
+                    {# TODO: Lazy image loading #}
+                    >
+                    <span>
+                        <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}"
+                           style="margin-left: 10px;">
+                            <i class="fa fa-info"></i> Details
+                        </a>
+                    </span>
+        </li>
+        <li style="width: 87%;">
+            <div class="row">
+                <ul class="result-inline-list">
+                    <li>
+                        <h5>{{ item.title }}
+                            {% if item.writtenBy != null %}
+                                <small>written by {{ item.writtenBy }}
+                                </small>
+                            {% endif %}
+                        </h5>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
+                    <li class="big-label-inlist">
+                        {% if item.mediaType == 1 %}
+                            <span class="label secondary">movie</span>
+                        {% else %}
+                            <span class="label secondary">series</span>
+                        {% endif %}
+                    </li>
+
+                    {% if item.countries != null %}
+                        <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    {{ item.countries }}
+                                </span>
+                        </li>
+                    {% endif %}
+                    {% if item.releaseYear != null %}
+                        <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    {{  item.releaseYear }}
+                                    {% if item.finalYear != null %}
+                                        - {{ item.finalYear }}
+                                    {% endif %}
+                                </span>
+                        </li>
+                    {% endif %}
+                    {% if item.runtime != null %}
+                        <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <i class="fa fa-clock-o"></i> {{ item.runtime }} min
+                                </span>
+                        </li>
+                    {% endif %}
+                    {% if item.imdbId != null %}
+                        <li class="big-label-inlist">
+                                <span class="label secondary">
+                                    <a href="http://www.imdb.com/title/{{ item.imdbId }}" target="_blank">
+                                        <i class="fa fa-external-link"></i> imdb
+                                    </a>
+                                </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="row">
+                <p class="result-plot">
+                    {% if item.description|length > 300 %}
+                        {{ item.description|slice(0, 300) }} …
+                    {% else %}
+                        {{ item.description }}
+                    {% endif %}
+                </p>
+            </div>
+            {% if item.genres != null %}
+                <div class="row">
+                    <ul class="result-inline-list only-labels">
+                        {% for genre in item.genres|split(',') %}
+                            <li class="big-label-inlist">
+                                        <span class="label secondary">
+                                            <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
+                                                <i class="fa fa-tag"></i> {{ genre|trim }}
+                                            </a>
+                                        </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </li>
+    </ul>
+{% endmacro %}
