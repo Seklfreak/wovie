@@ -25,7 +25,7 @@ slmn_wovie_user_movie_add:
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }
     methods:  [GET, POST]
 slmn_wovie_user_movie_details:
-    pattern:  /{id}/
+    pattern:  /details/{id}/
     defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
     methods:  [GET]
     requirements:

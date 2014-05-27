@@ -22,10 +22,9 @@
                     {% endif %}
                     <li>
                         <button class="button watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
-                            {# TODO: Show how often the user has watched the episode #}
-                            {{ i }}
                             {% if episodes != false %}
                                 {% set curEpisodeInSeason = curEpisodeInSeason+1 %}
+                                {{ curEpisodeInSeason-1 }}
                                 {% if episodes[curSeason] is defined and episodes[curSeason][curEpisodeInSeason-1] is defined %}
                                     {{ episodes[curSeason][curEpisodeInSeason-1] }}
                                     {% if media.numberOfEpisodes > i and episodes[curSeason][curEpisodeInSeason] is not defined %}
@@ -33,6 +32,8 @@
                                         {% set curSeason = curSeason+1 %}
                                     {% endif %}
                                 {% endif %}
+                            {% else %}
+                                {{ i }}
                             {% endif %}
                             {% set views = viewsOfId(media.id, i) %}
                             {% if views > 0 %}
