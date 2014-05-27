@@ -74,6 +74,11 @@ slmn_wovie_image_coverImage:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         freebaseId: "^.+$" #TODO: Regex for freebase id ( /m/xxx 04csmqp eg )
 
+# Sitemap
+slmn_wovie_sitemap_main:
+    pattern: /sitemap.{_format}
+    defaults: { _controller: SLMNWovieMainBundle:Sitemap:main, _format: "xml" }
+
 # System
 login:
     path:   /login
