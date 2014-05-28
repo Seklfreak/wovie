@@ -103,6 +103,11 @@
   z-index: 99;
   @include transform(scale(3.0));
 }
+.button.watched_it_cover {
+  padding: 5px 5px 5px 5px;
+  margin-top: 5px;
+  font-size: 0.7rem;
+}
 
 /* MODALS */
 .modal-loading {
@@ -112,5 +117,8 @@
 
 /* CHOOSE EPISODE */
 .choose-episode-checkbox {
+  padding-bottom: 9px !important;
+}
+.choose-episode-checkbox > input {
   margin: 0px !important;
 }

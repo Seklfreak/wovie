@@ -51,11 +51,11 @@
                         <div class="row">
                             <div class="large-6 columns">
                                 {% if movie.mediaType == 1 %}
-                                    <button class="button watched_it" data-media-id="{{ movie.id }}">I watched it!
+                                    <button class="button watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
                                     </button>
                                 {% else %}
                                     <button
-                                            class="button watched_it"
+                                            class="button watched_it_cover"
                                             data-reveal-id="modal-frame-choose-episode"
                                             onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
                                             >

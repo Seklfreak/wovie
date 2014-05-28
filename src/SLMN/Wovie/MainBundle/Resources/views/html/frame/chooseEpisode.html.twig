@@ -24,12 +24,12 @@
                     <li>
                         <ul class="button-group">
                             <li>
-                                <label class="button small" for="checkbox-{{ i }}">
-                                    <input class="choose-episode-checkbox" id="checkbox-{{ i }}" type="checkbox">
+                                <label class="button tiny choose-episode-checkbox" for="checkbox-{{ i }}">
+                                    <input id="checkbox-{{ i }}" type="checkbox">
                                 </label>
                             </li>
                             <li>
-                                <button class="button small watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
+                                <button class="button tiny watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
                                     {% if episodes != false %}
                                         {% set curEpisodeInSeason = curEpisodeInSeason+1 %}
                                         {{ curEpisodeInSeason-1 }}
@@ -47,12 +47,12 @@
                             </li>
                             {% if views > 0 %}
                             <li>
-                                <button class="button small alert watched_it_not" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
+                                <button class="button tiny alert watched_it_not" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </li>
                             <li>
-                                <button class="button small disabled">
+                                <button class="button tiny disabled">
                                     <i class="fa fa-check-square"></i> {% if views > 1 %} {{ views }}{% endif %}
                                 </button>
                             </li>
