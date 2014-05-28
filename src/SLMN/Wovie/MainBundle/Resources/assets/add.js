@@ -1,4 +1,5 @@
-function getUrlParameter(sParam) {
+function getUrlParameter(sParam)
+{
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) {
@@ -9,9 +10,14 @@ function getUrlParameter(sParam) {
     }
 }
 
-$(function() {
-    // Init foundation
+function init()
+{
     $(document).foundation({});
+}
+
+$(function() {
+    // Init
+    init();
     // Shelf titles all same high
     // TODO: Calculate max high PER LINE
     boxes = $('.shelf-media-titles');

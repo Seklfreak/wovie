@@ -46,7 +46,8 @@ assetic:
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
-        compass: ~ # ruby-compass
+        compass:
+            apply_to: "\.sass"
         uglifyjs2:
             bin: "%kernel.root_dir%/Resources/node_modules/.bin/uglifyjs"
         uglifycss:
