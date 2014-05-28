@@ -2,8 +2,13 @@
 
 {% block body %}
     <div class="row">
-        <div class="large-12 columns">
+        <div class="large-9 small-9 columns">
             <h4>Which episode did you watch?</h4>
+        </div>
+        <div class="large-3 small-3 columns">
+            <button class="button tiny secondary right" onclick="window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');">
+                <i class="fa fa-times fa-2x"></i>
+            </button>
         </div>
     </div>
     <div class="row">
