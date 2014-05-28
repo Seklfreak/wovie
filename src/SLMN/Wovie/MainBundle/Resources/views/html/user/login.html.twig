@@ -1,35 +1,37 @@
-{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+{% extends "SLMNWovieMainBundle::html/layout_nonav.html.twig" %}
 
 {% block pagetitle %}WOVIE - login{% endblock pagetitle %}
 
 {% block body %}
     <div class="row">
         <div class="large-6 large-centered columns">
-            <h1>Please login</h1>
+            <div class="panel animated fadeInDown" style="margin-top: 50px; padding-bottom: 50px;">
+                <h1>Please login</h1>
 
-            {% if error %}
-                <div data-alert class="alert-box warning radius">
-                    {{ error.message|trans }}
-                    <a href="#" class="close">&times;</a>
-                </div>
-            {% endif %}
-            <form action="{{ path('login_check') }}" method="post" data-abide>
-                <div class="username-field"> {# TODO: Login via email and password #}
-                    <label>Your email address <small>required</small></label>
-                    <input type="email" name="_username" placeholder="email@example.org" value="{{ last_username }}" required>
-                    <small class="error">Please type in your email address.</small>
-                </div>
-                <div class="password-field{% if error %} error{% endif %}">
-                    <label>Your password <small>required</small></label>
-                    <input type="password" name="_password" placeholder="Passwort" required>
-                    <small class="error">Please type in your password.</small>
-                </div>
-                <span data-tooltip class="has-tip" title="Stay logged in for 30 days">
-                    <input id="remember_me" name="_remember_me" type="checkbox" checked><label for="remember_me">Remember me</label>
-                </span>
-                <button name="submit" class="button expand" type="submit" style="margin-bottom: 4px;">Login</button>
-                <span class="label secondary radius right"><a href="{{ url('slmn_wovie_public_requestNewPassword') }}">Password forgotten?</a></span>
-            </form>
+                {% if error %}
+                    <div data-alert class="alert-box warning radius">
+                        {{ error.message|trans }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                {% endif %}
+                <form action="{{ path('login_check') }}" method="post" data-abide>
+                    <div class="username-field"> {# TODO: Login via email and password #}
+                        <label>Your email address <small>required</small></label>
+                        <input type="email" name="_username" placeholder="email@example.org" value="{{ last_username }}" required>
+                        <small class="error">Please type in your email address.</small>
+                    </div>
+                    <div class="password-field{% if error %} error{% endif %}">
+                        <label>Your password <small>required</small></label>
+                        <input type="password" name="_password" placeholder="Passwort" required>
+                        <small class="error">Please type in your password.</small>
+                    </div>
+                    <span data-tooltip class="has-tip" title="Stay logged in for 30 days">
+                        <input id="remember_me" name="_remember_me" type="checkbox" checked><label for="remember_me">Remember me</label>
+                    </span>
+                    <button name="submit" class="button expand" type="submit" style="margin-bottom: 4px;">Login</button>
+                    <div class="label secondary radius right"><a href="{{ url('slmn_wovie_public_requestNewPassword') }}">Password forgotten?</a></div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock body %}

@@ -5,6 +5,7 @@
     {# TODO: <link rel="icon" href="favicon.ico" type="image/x-icon"> #}
     {% stylesheets filter="?uglifycss"
     "@SLMNWovieMainBundle/Resources/assets/main.sass"
+    "@SLMNWovieMainBundle/Resources/assets/lib/animate.css"
     output='css/main.css' %}
         <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
@@ -56,11 +57,6 @@
             var _paq = _paq || [];
             _paq.push(['trackPageView']);
             _paq.push(['enableLinkTracking']);
-            {% if is_granted('ROLE_USER') %}
-            _paq.push(["setCustomVariable", 1, "User status", "LoggedIn", "visit"]);
-            {% else %}
-            _paq.push(["setCustomVariable", 1, "User status", "Anonymous", "visit"]);
-            {% endif %}
             (function() {
                 var u=(("https:" == document.location.protocol) ? "https" : "http") + "://{{ piwikUrl }}/";
                 _paq.push(['setTrackerUrl', u+'piwik.php']);
