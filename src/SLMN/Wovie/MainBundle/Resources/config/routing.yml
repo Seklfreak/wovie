@@ -57,6 +57,14 @@ slmn_wovie_actions_ajax_watchedit:
       expose: true
     requirements:
         id: \d+
+slmn_wovie_actions_ajax_watcheditnot:
+    pattern: /action/ajax/watcheditnot.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:watchedItNot }
+    methods: [POST]
+    options:
+      expose: true
+    requirements:
+        id: \d+
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

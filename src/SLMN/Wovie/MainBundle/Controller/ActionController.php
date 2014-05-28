@@ -122,4 +122,89 @@ class ActionController extends Controller
         }
         return $response;
     }
+
+    public function watchedItNotAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($mediaId=intval($request->get('media_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $viewsRepo = $em->getRepository('SLMNWovieMainBundle:View');
+            $media = $mediaRepo->findOneById($mediaId);
+            if ($media != null && $media->getCreatedBy() == $this->getUser())
+            {
+                if ($media->getMediaType() == 1)
+                {
+                    $newView = new View();
+                    $newView->setCreatedAt(new \DateTime());
+                    $newView->setMedia($media);
+                    $em->persist($newView);
+                    $em->flush();
+
+                    $response->setData(array(
+                        'status' => 'success'
+                    ));
+                }
+                else
+                {
+                    if (($episodeId=intval($request->get('episode_id'))) != null)
+                    {
+                        if ($episodeId <= $media->getNumberOfEpisodes())
+                        {
+                            $watches = $viewsRepo->findBy(
+                                array(
+                                    'media' => $media,
+                                    'episode' => $episodeId
+                                ),
+                                array(
+                                    'createdAt' => 'DESC'
+                                )
+                            );
+                            if (array_key_exists(0, $watches) && $watches[0] != null)
+                            {
+                                $em->remove($watches[0]);
+                                $em->flush();
+
+                                $response->setData(array(
+                                    'status' => 'success'
+                                ));
+                            }
+                            else
+                            {
+                                $response->setData(array(
+                                    'status' => 'error'
+                                ));
+                            }
+                        }
+                        else
+                        {
+                            $response->setData(array(
+                                'status' => 'error'
+                            ));
+                        }
+                    }
+                    else
+                    {
+                        $response->setData(array(
+                            'status' => 'error'
+                        ));
+                    }
+                }
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
 }
