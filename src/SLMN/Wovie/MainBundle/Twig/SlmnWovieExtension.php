@@ -66,7 +66,7 @@ class SlmnWovieExtension extends \Twig_Extension
         }
         else
         {
-            return $moviesRepo->findByCreatedBy($user);
+            return $moviesRepo->findByCreatedBy($user, array('title' => 'ASC'));
         }
     }
 
