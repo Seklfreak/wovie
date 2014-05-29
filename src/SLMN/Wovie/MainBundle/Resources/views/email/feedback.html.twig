@@ -1,0 +1,15 @@
+{% extends 'SLMNWovieMainBundle::email/layout.html.twig' %}
+
+{% block content %}
+    {{ email.tableRow('
+    <td>
+        <h4>Hello!</h4>
+        <p>Feedback message from ' ~ username|default('#username') ~ ' (' ~ myEmail|default('#myEmail') ~ ')</p>
+    </td>
+    ') }}
+    {{ email.tableRow('
+    <td class="panel">
+        ' ~ message|default('#message')|nl2br ~ '
+    </td>
+    ') }}
+{% endblock content %}

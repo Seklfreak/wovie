@@ -194,4 +194,35 @@ class UserController extends Controller
         );
     }
 
+    public function feedbackAction(Request $request)
+    {
+        $newFeedbackForm = $this->createForm('feedback');
+        $newFeedbackForm->remove('email');
+
+        $newFeedbackForm->handleRequest($request);
+
+        if ($newFeedbackForm->isValid()) {
+            $this->get('templateMailer')->send(
+                $this->container->getParameter('slmn_wovie_mainbundle.admin_email'),
+                'Feedback: '.$newFeedbackForm->get('subject')->getData(),
+                'SLMNWovieMainBundle:email:feedback.html.twig',
+                array(
+                    'username' => $this->getUser()->getUsername(),
+                    'myEmail' => $this->getUser()->getEmail(),
+                    'message' => $newFeedbackForm->get('message')->getData()
+                )
+            );
+
+            $this->get('session')->getFlashBag()->add('success', 'Feedback sent. Thank you!');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_dashboard'));
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:feedback.html.twig',
+            array(
+                'newFeedbackForm' => $newFeedbackForm->createView()
+            )
+        );
+    }
+
 } 

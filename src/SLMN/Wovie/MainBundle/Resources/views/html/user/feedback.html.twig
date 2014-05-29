@@ -1,0 +1,33 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - feedback{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-6 large-centered columns">
+            {# TODO: Validaton for this form #}
+            {{ form_start(newFeedbackForm) }}
+            <div class="row">
+                <div class="large-12 columns">
+                    <h3>Please send us your feedback!</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_row(newFeedbackForm.subject) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_row(newFeedbackForm.message) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    {{ form_row(newFeedbackForm.submit) }}
+                </div>
+            </div>
+            {{ form_end(newFeedbackForm) }}
+        </div>
+    </div>
+{% endblock body %}

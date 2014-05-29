@@ -34,6 +34,10 @@ slmn_wovie_user_search:
     pattern:  /search
     defaults: { _controller: SLMNWovieMainBundle:User:search }
     methods:  [GET]
+slmn_wovie_user_feedback:
+    pattern:  /feedback
+    defaults: { _controller: SLMNWovieMainBundle:User:feedback }
+    methods:  [GET, POST]
 
 # Actions
 slmn_wovie_action_ajax_search_external:

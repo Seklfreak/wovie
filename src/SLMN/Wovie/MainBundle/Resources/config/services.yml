@@ -1,7 +1,8 @@
 parameters:
     slmn_wovie_main.service.media_api.class: SLMN\Wovie\MainBundle\MediaApi\MediaApi
-    slmn_wovie_main.form.type.media.class: SLMN\Wovie\MainBundle\Form\Type\MediaType
     slmn_wovie_main.twig.slmn_wovie_extension.class: SLMN\Wovie\MainBundle\Twig\SlmnWovieExtension
+    slmn_wovie_main.form.type.media.class: SLMN\Wovie\MainBundle\Form\Type\MediaType
+    slmn_wovie_main.form.type.feedback.class: SLMN\Wovie\MainBundle\Form\Type\FeedbackType
 
 services:
     slmn_wovie_cache:
@@ -18,3 +19,7 @@ services:
         class: %slmn_wovie_main.form.type.media.class%
         tags:
             - { name: form.type, alias: media }
+    slmn_wovie_main.form.type.feedback:
+        class: %slmn_wovie_main.form.type.feedback.class%
+        tags:
+            - { name: form.type, alias: feedback }
