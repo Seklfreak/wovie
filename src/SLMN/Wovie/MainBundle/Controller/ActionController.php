@@ -77,27 +77,20 @@ class ActionController extends Controller
                 }
                 else
                 {
-                    if (($episodeId=intval($request->get('episode_id'))) != null)
+                    if (($episodeIds=$request->get('episode_ids')) != null)
                     {
-                        if ($episodeId <= $media->getNumberOfEpisodes())
+                        foreach ($episodeIds as $episodeId)
                         {
                             $newView = new View();
                             $newView->setCreatedAt(new \DateTime());
                             $newView->setMedia($media);
-                            $newView->setEpisode($episodeId);
+                            $newView->setEpisode(intval($episodeId));
                             $em->persist($newView);
-                            $em->flush();
-
-                            $response->setData(array(
-                                'status' => 'success'
-                            ));
                         }
-                        else
-                        {
-                            $response->setData(array(
-                                'status' => 'error'
-                            ));
-                        }
+                        $em->flush();
+                        $response->setData(array(
+                            'status' => 'success'
+                        ));
                     }
                     else
                     {
@@ -148,14 +141,14 @@ class ActionController extends Controller
                 }
                 else
                 {
-                    if (($episodeId=intval($request->get('episode_id'))) != null)
+                    if (($episodeIds=$request->get('episode_ids')) != null)
                     {
-                        if ($episodeId <= $media->getNumberOfEpisodes())
+                        foreach ($episodeIds as $episodeId)
                         {
                             $watches = $viewsRepo->findBy(
                                 array(
                                     'media' => $media,
-                                    'episode' => $episodeId
+                                    'episode' => intval($episodeId)
                                 ),
                                 array(
                                     'createdAt' => 'DESC'
@@ -164,25 +157,12 @@ class ActionController extends Controller
                             if (array_key_exists(0, $watches) && $watches[0] != null)
                             {
                                 $em->remove($watches[0]);
-                                $em->flush();
-
-                                $response->setData(array(
-                                    'status' => 'success'
-                                ));
-                            }
-                            else
-                            {
-                                $response->setData(array(
-                                    'status' => 'error'
-                                ));
                             }
                         }
-                        else
-                        {
-                            $response->setData(array(
-                                'status' => 'error'
-                            ));
-                        }
+                        $em->flush();
+                        $response->setData(array(
+                            'status' => 'success'
+                        ));
                     }
                     else
                     {

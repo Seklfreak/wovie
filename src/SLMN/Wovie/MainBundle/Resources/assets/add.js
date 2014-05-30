@@ -10,6 +10,12 @@ function getUrlParameter(sParam)
     }
 }
 
+function chooseEpisodeSelectCount()
+{
+    var len = $('.choose-episode-checkbox-input:checkbox:checked').length;
+    $('#choose-episode-count').text(len);
+}
+
 function init()
 {
     $(document).foundation({});
@@ -47,7 +53,7 @@ $(function() {
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
                 type: "POST",
-                data: { media_id: $(button).data('media-id'), episode_id: $(button).data('episode-id') }
+                data: { media_id: $(button).data('media-id'), episode_ids: [$(button).data('episode-id')] }
             })
                 // TODO: Error handling
                 .success(function(data) {
@@ -77,13 +83,13 @@ $(function() {
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watcheditnot'),
                 type: "POST",
-                data: { media_id: $(button).data('media-id'), episode_id: $(button).data('episode-id') }
+                data: { media_id: $(button).data('media-id'), episode_ids: [$(button).data('episode-id')] }
             })
                 // TODO: Error handling
                 .success(function(data) {
                     if (data.status == 'success')
                     {
-                        $(button).html('Removed!');
+                        $(button).html('Removed');
                         if ($(button).data('episode-id') != null)
                         {
                             window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
@@ -132,4 +138,93 @@ $(function() {
                 });
             });
     }
+    // Choose episode
+    $('.choose-episode-checkbox-input:checkbox').click(function() {
+        chooseEpisodeSelectCount();
+    });
+    $('#choose-episode-select-all').click(function() {
+        $('.choose-episode-checkbox-input:checkbox').prop('checked', true);
+        chooseEpisodeSelectCount();
+    });
+    $('#choose-episode-select-none').click(function() {
+        $('.choose-episode-checkbox-input:checkbox').prop('checked', false);
+        chooseEpisodeSelectCount();
+    });
+    $('#choose-episode-select-invert').click(function() {
+        $('.choose-episode-checkbox-input:checkbox').each(function() {
+            if ($(this).prop('checked'))
+            {
+                $(this).prop('checked', false);
+            }
+            else
+            {
+                $(this).prop('checked', true);
+            }
+        });
+        chooseEpisodeSelectCount();
+    });
+    $('#choose-episode-select-submit-watched').click(function() {
+        var button = $(this);
+        var mediaId = $(this).data('media-id');
+        var selected = [];
+        $('.choose-episode-checkbox-input:checkbox:checked').each(function() {
+            selected.push($(this).data('episode-id'));
+        });
+        if (mediaId != null && selected.length > 0)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
+                type: "POST",
+                data: { media_id: mediaId, episode_ids: selected }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('success');
+                        $(button).html('Watched!');
+                        window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
+    $('#choose-episode-select-submit-notwatched').click(function() {
+        var button = $(this);
+        var mediaId = $(this).data('media-id');
+        var selected = [];
+        $('.choose-episode-checkbox-input:checkbox:checked').each(function() {
+            selected.push($(this).data('episode-id'));
+        });
+        if (mediaId != null && selected.length > 0)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_watcheditnot'),
+                type: "POST",
+                data: { media_id: mediaId, episode_ids: selected }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('success');
+                        $(button).html('Removed');
+                        window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
 });

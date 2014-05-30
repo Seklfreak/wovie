@@ -13,6 +13,39 @@
     </div>
     <div class="row">
         <div class="large-12 columns">
+            <ul class="inline-list">
+                <li>
+                    <p>
+                        <span id="choose-episode-count">0</span> Selected
+                    </p>
+                </li>
+                <li>
+                    <ul class="button-group">
+                        <li><button id="choose-episode-select-all" class="tiny">All</button></li>
+                        <li><button id="choose-episode-select-none" class="tiny">None</button></li>
+                        <li>
+                            <button data-dropdown="choose-episode-select-more" class="tiny">
+                                <i class="fa fa-caret-down fa-lg"></i>
+                            </button><br>
+                            <ul id="choose-episode-select-more" data-dropdown-content class="f-dropdown">
+                                <li><a id="choose-episode-select-invert" href="#">Invert</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <ul class="button-group">
+                        <li><button class="tiny" id="choose-episode-select-submit-watched" data-media-id="{{ media.id }}">Watched</button></li>
+                        <li><button class="tiny alert" id="choose-episode-select-submit-notwatched" data-media-id="{{ media.id }}">
+                                <i class="fa fa-minus fa-lg"></i>
+                            </button></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
             <ul class="no-bullet">
                 {# TODO: Automatically scroll to the episode, he could watch next. #}
                 {% if episodes != false %}
@@ -27,10 +60,14 @@
                         {% endif %}
                     {% endif %}
                     <li>
-                        <ul class="button-group">
+                        <ul class="button-group" id="choose-episode-ul">
                             <li>
                                 <label class="button tiny choose-episode-checkbox" for="checkbox-{{ i }}">
-                                    <input id="checkbox-{{ i }}" type="checkbox">
+                                    <input
+                                            class="choose-episode-checkbox-input"
+                                            id="checkbox-{{ i }}"
+                                            data-episode-id="{{ i }}" type="checkbox"
+                                            >
                                 </label>
                             </li>
                             <li>
