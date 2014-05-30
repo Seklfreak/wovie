@@ -181,7 +181,11 @@ class UserController extends Controller
         $moviesRepo = $this->getDoctrine()->getManager()->getRepository('SLMNWovieMainBundle:Media');
         $query = $moviesRepo->createQueryBuilder('media')
             ->where('media.title LIKE :query')
-            ->setParameter('query', '%'.$queryString.'%')
+            ->andWhere('media.createdBy = :user')
+            ->setParameters(array(
+                'query' => '%'.$queryString.'%',
+                'user' => $this->getUser()
+            ))
             ->getQuery();
         $result = $query->getResult();
 
