@@ -44,7 +44,7 @@ $(function() {
         $('#media_numberOfEpisodes').prop('disabled', false);
     });
     // Watched it button action
-    $('.watched_it').click(function() {
+    $('.watched_it, .watched_it_cover').click(function() {
         var button = $(this);
         if ($(button).data('media-id') != null)
         {
