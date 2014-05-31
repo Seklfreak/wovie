@@ -25,3 +25,4 @@ parameters:
     slmn_wovie_mainbundle.cdn: example.org
     slmn_wovie_mainbundle.domain: example.org
     slmn_wovie_mainbundle.admin_email: email@example.org
+    slmn_wovie_mainbundle.google_api_key: yourkey

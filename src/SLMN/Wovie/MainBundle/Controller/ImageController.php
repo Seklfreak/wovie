@@ -30,7 +30,7 @@ class ImageController extends Controller
         {
             $mediaApi = $this->get('media_api');
             $result = $mediaApi->search('(all (all id:"'.$freebaseId.'") (any type:/film/film type:/tv/tv_program))');
-            if (array_key_exists(0, $result))
+            if ($result != null && array_key_exists(0, $result))
             {
                 $result = $result[0];
                 # TODO: Check for imdb image

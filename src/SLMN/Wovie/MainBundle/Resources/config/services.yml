@@ -9,7 +9,7 @@ services:
         class: Doctrine\Common\Cache\%slmn_wovie_mainbundle.cache.type%
     media_api:
         class: %slmn_wovie_main.service.media_api.class%
-        arguments: [@kernel, "AIzaSyABuSl1j33k6vHSKnNZtk6Jhwxf9sJ0S4k", @slmn_wovie_cache]
+        arguments: [@kernel, "%slmn_wovie_mainbundle.google_api_key%", @slmn_wovie_cache]
     slmn_wovie_main.twig.slmn_wovie_extension:
         class: %slmn_wovie_main.twig.slmn_wovie_extension.class%
         arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache]
