@@ -163,6 +163,26 @@ $(function() {
         });
         chooseEpisodeSelectCount();
     });
+    $('.choose-episode-select-season').click(function() {
+        var season = $(this).data('season');
+        $('.choose-episode-checkbox-input:checkbox').each(function() {
+            if ($(this).data('season') == season)
+            {
+                $(this).prop('checked', true);
+            }
+        });
+        chooseEpisodeSelectCount();
+    });
+    $('.choose-episode-unselect-season').click(function() {
+        var season = $(this).data('season');
+        $('.choose-episode-checkbox-input:checkbox').each(function() {
+            if ($(this).data('season') == season)
+            {
+                $(this).prop('checked', false);
+            }
+        });
+        chooseEpisodeSelectCount();
+    });
     $('#choose-episode-select-submit-watched').click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');

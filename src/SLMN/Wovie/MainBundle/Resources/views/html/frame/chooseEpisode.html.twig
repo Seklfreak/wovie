@@ -56,7 +56,19 @@
                     {% set views = viewsOfId(media.id, i) %}
                     {% if episodes != false %}
                         {% if curEpisodeInSeason == 1 %}
-                            <h6>Season {{ curSeason }}</h6>
+                            <ul class="inline-list">
+                                <li>
+                                    <h6>Season {{ curSeason }}</h6>
+                                </li>
+                                <li style="margin-left: 0;">
+                                    <ul class="button-group">
+                                        <li><button data-season="{{ curSeason }}" class="choose-episode-select-season really-tiny">Select season</button></li>
+                                        <li><button data-season="{{ curSeason }}" class="choose-episode-unselect-season really-tiny alert">
+                                                <i class="fa fa-minus fa-lg"></i>
+                                            </button></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         {% endif %}
                     {% endif %}
                     <li>
@@ -66,7 +78,7 @@
                                     <input
                                             class="choose-episode-checkbox-input"
                                             id="checkbox-{{ i }}"
-                                            data-episode-id="{{ i }}" type="checkbox"
+                                            data-episode-id="{{ i }}" data-season="{{ curSeason }}" type="checkbox"
                                             >
                                 </label>
                             </li>
