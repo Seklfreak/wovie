@@ -64,27 +64,15 @@
                                             <i class="fa fa-search"></i>
                                         </button>
                                     </div>
-                                    {#
-                                    <div class="large-10 sm all-11 columns">
-                                        <input type="text" name="q" placeholder="search…" {% if query is defined %}value="{{ query }}"{% endif %}>
-                                    </div>
-                                    <div class="large-2 small-1 columns">
-                                        <button class="secondary button expand">A</button>
-                                        {#
-                                        <button type="submit" class="secondary button expand">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </div>
-                                    #}
                              </div>
                             </form>
                         </li>
-                        <li>
+                        <li{% if app.request.get('_route') == 'slmn_wovie_user_movie_add' %} class="active"{% endif %}>
                             <a href="{{ path('slmn_wovie_user_movie_add') }}">
-                                <ai class="fa fa-plus"></ai> Add
+                                <i class="fa fa-plus"></i> Add
                             </a>
                         </li>
-                        <li>
+                        <li{% if app.request.get('_route') == 'slmn_wovie_user_movie_shelf' %} class="active"{% endif %}>
                             <a href="{{ path('slmn_wovie_user_movie_shelf') }}">
                                 <i class="fa fa-list"></i> Shelf
                             </a>
