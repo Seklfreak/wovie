@@ -29,9 +29,9 @@
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
+        "friendsofsymfony/jsrouting-bundle": "1.5.x",
         "sekl/main/foundationbundle": "dev-master",
-        "sekl/main/userbundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "1.5.x"
+        "sekl/main/userbundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
