@@ -34,6 +34,9 @@
                                               style="width: {{ views / (movie.numberOfEpisodes / 100) }}%">
                                             <p>
                                                 <b>
+                                                    {% if views >= movie.numberOfEpisodes %}
+                                                        <i class="fa fa-check-square"></i>
+                                                    {% endif %}
                                                     {{ views }}/{{ movie.numberOfEpisodes }}
                                                 </b>
                                             </p>
@@ -41,9 +44,15 @@
                                 </div>
                             {% else %}
                                 {% if views > 0 %}
-                                    <div class="cover-complete">
-                                        <i class="fa fa-check-square"></i>
-                                        {% if views > 1 %} {{ views }}{% endif %}
+                                    <div class="cover-progress large-12">
+                                        <span class="meter" style="width: 100%">
+                                            <p>
+                                                <b>
+                                                    <i class="fa fa-check-square"></i>
+                                                    {% if views > 1 %} {{ views }}{% endif %}
+                                                </b>
+                                            </p>
+                                        </span>
                                     </div>
                                 {% endif %}
                             {% endif %}
