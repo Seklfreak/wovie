@@ -115,3 +115,33 @@
 .choose-episode-checkbox > input {
   margin: 0px !important;
 }
+
+/* FOOTER */
+.footer {
+  background: $topbar-bg-color;
+  padding: 24px 0 10px;
+}
+.footer .logo, .footer .logo-nolink {
+  color: #D1D1D1;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 28px;
+  overflow: hidden;
+}
+.footer .logo:hover {
+  color: #EBEBEB;
+}
+.footer-first-list {
+  display: inline-block;
+  margin: 0;
+}
+.footer-first-list > li > a {
+  color: #D1D1D1;
+}
+.footer-first-list > li > a:hover {
+  color: #EBEBEB;
+}
+.footer .copyright {
+  color: #D1D1D1;
+  font-size: 13px;
+}
