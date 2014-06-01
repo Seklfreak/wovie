@@ -229,4 +229,59 @@ class UserController extends Controller
         );
     }
 
-} 
+    public function settingsGeneralAction()
+    {
+        // TODO: Set language
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/settings:tab-general.html.twig',
+            array(
+            )
+        );
+    }
+
+    public function settingsProfileAction(Request $request)
+    {
+        $usersRepo = $this->getDoctrine()
+            ->getRepository('SeklMainUserBundle:User');
+        $myUser = $usersRepo->findOneByEmail($this->getUser()->getEmail());
+
+        $profileForm = $this->createForm('editUser', $myUser)
+            ->remove('username')
+            ->remove('roles');
+
+        $oldPassword = $myUser->getPassword();
+        
+        $profileForm->handleRequest($request);
+
+        if ($profileForm->isValid()) {
+            if ($myUser->getPassword() != '')
+            {
+                $myUser->setSalt(md5(uniqid(null, true)));
+
+                $factory = $this->get('security.encoder_factory');
+
+                $encoder = $factory->getEncoder($myUser);
+                $password = $encoder->encodePassword($myUser->getPassword(), $myUser->getSalt());
+                $myUser->setPassword($password);
+            }
+            else
+            {
+                $myUser->setPassword($oldPassword);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($myUser);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Successfully changed your profile.');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/settings:tab-profile.html.twig',
+            array(
+                'profileForm' => $profileForm->createView()
+            )
+        );
+    }
+}

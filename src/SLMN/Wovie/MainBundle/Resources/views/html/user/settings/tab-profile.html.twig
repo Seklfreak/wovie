@@ -1,0 +1,33 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - settings - general{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-2 columns">
+            {% include 'SLMNWovieMainBundle:html/user/settings:menu.html.twig' %}
+        </div>
+        <div class="large-10 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h4>Profile settings</h4>
+                </div>
+            </div>
+            {# TODO: ONE big form to change email and (optional) password. How? I DONT KNOW LEL #}
+            <div class="row">
+                <div class="large-6 columns">
+                    {{ form_start(profileForm, { 'attr': {'autocomplete': 'off'} }) }}
+                    <input type="text" name="prevent_autofill" value="" style="display:none;">
+                    <input type="password" name="prevent_autofill" value="" style="display:none;">
+                    {{ form_errors(profileForm) }}
+                    {{ form_row(profileForm.email) }}
+                    {{ form_row(profileForm.password) }}
+                    {{ form_row(profileForm.Submit, { 'label': 'Update profile' }) }}
+                    {{ form_end(profileForm) }}
+                </div>
+                <div class="large-6 columns">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
