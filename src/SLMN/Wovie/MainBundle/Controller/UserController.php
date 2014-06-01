@@ -229,12 +229,24 @@ class UserController extends Controller
         );
     }
 
-    public function settingsGeneralAction()
+    public function settingsGeneralAction(Request $request)
     {
-        // TODO: Set language
+        $generalSettingsForm = $this->createForm('generalSettings');
+        $userOptions = $this->get('userOption');
+
+        $generalSettingsForm->handleRequest($request);
+
+        if ($generalSettingsForm->isValid()) {
+            foreach($generalSettingsForm->getData() as $key=>$value)
+            {
+                $userOptions->set($key, $value);
+            }
+        }
+
         return $this->render(
             'SLMNWovieMainBundle:html/user/settings:tab-general.html.twig',
             array(
+                'generalSettingsForm' => $generalSettingsForm->createView()
             )
         );
     }

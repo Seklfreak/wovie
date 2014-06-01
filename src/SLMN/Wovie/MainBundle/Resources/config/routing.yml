@@ -41,7 +41,7 @@ slmn_wovie_user_feedback:
 slmn_wovie_user_settings_general:
     pattern:  /settings/general
     defaults: { _controller: SLMNWovieMainBundle:User:settingsGeneral }
-    methods:  [GET]
+    methods:  [GET, POST]
 slmn_wovie_user_settings_profile:
     pattern:  /settings/profile
     defaults: { _controller: SLMNWovieMainBundle:User:settingsProfile }

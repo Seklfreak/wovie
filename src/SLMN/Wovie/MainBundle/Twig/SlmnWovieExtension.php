@@ -7,13 +7,20 @@ class SlmnWovieExtension extends \Twig_Extension
     protected $em;
     protected $context;
     protected $cacheHandler;
+    protected $userOptions;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, \Symfony\Component\Security\Core\SecurityContext $context, $cacheHandler)
+    public function __construct(
+        \Doctrine\ORM\EntityManager $em,
+        \Symfony\Component\Security\Core\SecurityContext $context,
+        $cacheHandler,
+        $userOptions
+    )
     {
         $this->em = $em;
         $this->context = $context;
         $this->cacheHandler = $cacheHandler;
         $this->cacheHandler->setNamespace('slmn_wovie_main_twig_slmnwovieextension');
+        $this->userOptions = $userOptions;
     }
 
     public function getFunctions()
@@ -23,7 +30,13 @@ class SlmnWovieExtension extends \Twig_Extension
             'viewsOfId' => new \Twig_Function_Method($this, 'viewsOfId'),
             'viewsOfSeries' => new \Twig_Function_Method($this, 'viewsOfSeries'),
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
+            'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction')
         );
+    }
+
+    public function getUserOptionFunction($key, $default=null)
+    {
+        return $this->userOptions->get($key, $default);
     }
 
     public function viewsOfId($id, $episode=null)

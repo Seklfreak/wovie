@@ -4,18 +4,25 @@ parameters:
     slmn_wovie_main.form.type.media.class: SLMN\Wovie\MainBundle\Form\Type\MediaType
     slmn_wovie_main.form.type.feedback.class: SLMN\Wovie\MainBundle\Form\Type\FeedbackType
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
+    slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
+    slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
 
 services:
     slmn_wovie_cache:
         class: Doctrine\Common\Cache\%slmn_wovie_mainbundle.cache.type%
     media_api:
         class: %slmn_wovie_main.service.media_api.class%
-        arguments: [@kernel, "%slmn_wovie_mainbundle.google_api_key%", @slmn_wovie_cache]
+        arguments: [@kernel, "%slmn_wovie_mainbundle.google_api_key%", @slmn_wovie_cache, @userOption]
     slmn_wovie_main.twig.slmn_wovie_extension:
         class: %slmn_wovie_main.twig.slmn_wovie_extension.class%
-        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache]
+        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption]
         tags:
             - { name: twig.extension }
+    userOption:
+        class:  %slmn_wovie_main.userOption.class%
+        arguments:
+            em: @doctrine.orm.entity_manager
+            context: @security.context
     slmn_wovie_main.form.type.media:
         class: %slmn_wovie_main.form.type.media.class%
         tags:
@@ -28,3 +35,7 @@ services:
         class: %slmn_wovie_main.form.type.editUser.class%
         tags:
             - { name: form.type, alias: editUser }
+    slmn_wovie_main.form.type.generalSettings:
+        class: %slmn_wovie_main.form.type.generalSettings.class%
+        tags:
+            - { name: form.type, alias: generalSettings }

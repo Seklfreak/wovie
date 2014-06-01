@@ -8,16 +8,18 @@ class MediaApi
 {
     protected $apiKey;
     protected $kernel;
-    protected $lang = 'en'; // TODO: $this->setLang()
     protected $limit = 50; // TODO: Option
     protected $cacheHandler;
+    protected $userOptions;
 
-    public function __construct(Kernel $kernel, $apiKey, $cacheHandler)
+    public function __construct(Kernel $kernel, $apiKey, $cacheHandler, $userOptions)
     {
         $this->apiKey = $apiKey;
         $this->kernel = $kernel;
         $this->cacheHandler = $cacheHandler;
         $this->cacheHandler->setNamespace('slmn_wovie_main_mediaapi_mediaapi');
+        $this->userOptions = $userOptions;
+        $this->lang = $userOptions->get('language', 'en');
     }
 
     public function fetchDescription($id)
@@ -79,7 +81,6 @@ class MediaApi
                 $episodesArray[$episode['season_number']][$episode['episode_number']] = $episode['name'];
             }
             return $episodesArray;
-            //return $result['result']['/tv/tv_program/episodes'];
         }
         else
         {
@@ -248,7 +249,6 @@ class MediaApi
                         case 'relevance:score':
                             break;
                         default:
-                            //echo $key.' => '.print_r($value, true)."\n";
                             break;
                     }
                 }

@@ -48,10 +48,8 @@
         <div class="large-12 columns">
             <ul class="no-bullet">
                 {# TODO: Automatically scroll to the episode, he could watch next. #}
-                {% if episodes != false %}
-                    {% set curSeason = 1 %}
-                    {% set curEpisodeInSeason = 1 %}
-                {% endif %}
+                {% set curSeason = 1 %}
+                {% set curEpisodeInSeason = 1 %}
                 {% for i in 1..media.numberOfEpisodes %}
                     {% set views = viewsOfId(media.id, i) %}
                     {% if episodes != false %}

@@ -8,6 +8,20 @@
             {% include 'SLMNWovieMainBundle:html/user/settings:menu.html.twig' %}
         </div>
         <div class="large-10 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h4>General settings</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    {{ form_start(generalSettingsForm) }}
+                    {{ form_errors(generalSettingsForm) }}
+                    {{ form_row(generalSettingsForm.language, { 'value': getUserOption('language', 'en') }) }}
+                    {{ form_row(generalSettingsForm.submit) }}
+                    {{ form_end(generalSettingsForm) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock body %}
