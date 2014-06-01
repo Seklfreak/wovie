@@ -89,8 +89,7 @@
                         <li class="has-form">
                             <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">Alpha feedback</a>
                         </li>
-                        {# TODO: Only check first string #}
-                        <li{% if app.request.get('_route') == 'slmn_wovie_user_settings' %} class="active"{% endif %}>
+                        <li{% if app.request.get('_route')|slice(0, 24) == 'slmn_wovie_user_settings' %} class="active"{% endif %}>
                             <a href="{{ path('slmn_wovie_user_settings_general') }}">
                                 <i class="fa fa-gear"></i> Settings
                             </a>
