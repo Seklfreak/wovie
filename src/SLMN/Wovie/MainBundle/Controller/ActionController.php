@@ -17,7 +17,25 @@ class ActionController extends Controller
         $mediaApi = $this->get('media_api');
         $result = $mediaApi->search('(all (any name:"'.$query.'" alias:"'.$query.'") (any type:/film/film type:/tv/tv_program))');
 
-        // TODO: Check if movie already in DB
+        if (is_array($result))
+        {
+            foreach ($result as $key=>$item)
+            {
+                if (array_key_exists('imdbId', $item))
+                {
+                    $em = $this->getDoctrine()->getManager();
+                    $moviesRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+
+                    if ($moviesRepo->findBy(array(
+                        'createdBy' => $this->getUser(),
+                        'imdbId' => $item['imdbId']
+                    )))
+                    {
+                        unset($result[$key]);
+                    }
+                }
+            }
+        }
 
         return $this->render(
             'SLMNWovieMainBundle:html/ajax:searchExternalResult.html.twig',
