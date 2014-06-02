@@ -10,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class UserOption
 {
     /**
+     * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\Column(name="o_key", type="string", length=128, unique=true, nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(name="o_key", type="string", length=128, nullable=false)
      */
     protected $key;
 
