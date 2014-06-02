@@ -62,7 +62,7 @@ class ImageController extends Controller
                         $result = curl_exec($curl_handle);
                         curl_close($curl_handle);
                         $result = json_decode($result, true);
-                        if ($result && array_key_exists('Poster', $result))
+                        if ($result && array_key_exists('Poster', $result) && $result['Poster'] != 'N/A' )
                         {
                             $curl_handle = curl_init();
                             curl_setopt($curl_handle, CURLOPT_URL, $result['Poster']);
