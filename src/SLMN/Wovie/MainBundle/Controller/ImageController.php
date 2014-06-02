@@ -102,30 +102,14 @@ class ImageController extends Controller
         }
 
         # Fallback to placeholder
-        if ($image == null)
+        if (empty($image))
         {
-            // TODO: Read placeholder
-            $curl_handle = curl_init();
-            curl_setopt($curl_handle, CURLOPT_URL, 'http://placehold.it/400x600&text=No+cover!'); // TODO: From parameter
-            curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
-            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
-            $image = curl_exec($curl_handle);
-            curl_close($curl_handle);
+            $image = file_get_contents($this->get('kernel')->locateResource('@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'));
         }
 
         $response->setPublic();
         $response->setContent($image);
         $response->headers->set('Content-Type', 'image/jpeg');
         return $response;
-
-        /*
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, 'http://ia.media-imdb.com/images/M/'.$id.'.jpg');
-        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/'.$this->container->get('kernel')->getEnvironment());
-        $image = curl_exec($curl_handle);
-        curl_close($curl_handle);*/
     }
 } 
