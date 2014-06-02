@@ -241,6 +241,7 @@ class UserController extends Controller
             {
                 $userOptions->set($key, $value);
             }
+            $this->get('session')->getFlashBag()->add('success', 'Successfully saved your settings.');
         }
 
         return $this->render(
