@@ -49,6 +49,32 @@ class ImageController extends Controller
                     }
                 }
 
+                // Wired omdb api… not everything in the download database?
+                if ($image == null)
+                {
+                    if (array_key_exists('imdbId', $result))
+                    {
+                        $curl_handle = curl_init();
+                        curl_setopt($curl_handle, CURLOPT_URL, 'http://www.omdbapi.com/?i='.$result['imdbId']);
+                        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+                        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
+                        $result = curl_exec($curl_handle);
+                        curl_close($curl_handle);
+                        $result = json_decode($result, true);
+                        if ($result && array_key_exists('Poster', $result))
+                        {
+                            $curl_handle = curl_init();
+                            curl_setopt($curl_handle, CURLOPT_URL, $result['Poster']);
+                            curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+                            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+                            curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
+                            $image = curl_exec($curl_handle);
+                            curl_close($curl_handle);
+                        }
+                    }
+                }
+
                 if ($image == null)
                 {
                     if (array_key_exists('poster', $result))
