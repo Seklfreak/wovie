@@ -33,21 +33,44 @@ class ImageController extends Controller
             if ($result != null && array_key_exists(0, $result))
             {
                 $result = $result[0];
-                # TODO: Check for imdb image
-                if (array_key_exists('poster', $result))
+                if (array_key_exists('imdbId', $result))
                 {
-                    $curl_handle = curl_init();
-                    curl_setopt($curl_handle, CURLOPT_URL, 'https://usercontent.googleapis.com/freebase/v1/image'.$freebaseId.'?maxwidth=400&maxheight=600&mode=fit');
-                    curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
-                    curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
-                    $image = curl_exec($curl_handle);
-                    curl_close($curl_handle);
+                    $omdbRepo = $this->getDoctrine()->getManager()->getRepository('SLMNWovieMainBundle:Omdb');
+                    $omdbItem = $omdbRepo->findOneByImdbId($result['imdbId']);
+                    if ($omdbItem && $omdbItem->getPosterImage() != null)
+                    {
+                        $curl_handle = curl_init();
+                        curl_setopt($curl_handle, CURLOPT_URL, $omdbItem->getPosterImage());
+                        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+                        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
+                        $image = curl_exec($curl_handle);
+                        curl_close($curl_handle);
+                    }
+                }
+
+                if ($image == null)
+                {
+                    if (array_key_exists('poster', $result))
+                    {
+                        $curl_handle = curl_init();
+                        curl_setopt($curl_handle, CURLOPT_URL, 'https://usercontent.googleapis.com/freebase/v1/image'.$freebaseId.'?maxwidth=400&maxheight=600&mode=fit');
+                        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+                        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
+                        $image = curl_exec($curl_handle);
+                        curl_close($curl_handle);
+                    }
                 }
 
                 if ($image != null)
                 {
                     file_put_contents($path.$filename, $image);
+                    $response->setMaxAge(2592000); # 1 Month
+                }
+                else
+                {
+                    $response->setMaxAge(86400); # 1 Day
                 }
             }
         }
@@ -66,7 +89,6 @@ class ImageController extends Controller
         }
 
         $response->setPublic();
-        $response->setMaxAge(604800); # 7 Days
         $response->setContent($image);
         $response->headers->set('Content-Type', 'image/jpeg');
         return $response;
