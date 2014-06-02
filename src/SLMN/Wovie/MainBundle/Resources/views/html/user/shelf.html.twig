@@ -31,7 +31,7 @@
                             {% if movie.mediaType == 2 %}
                                 <div class="cover-progress large-12">
                                         <span class="meter"
-                                              style="width: {{ views / (movie.numberOfEpisodes / 100) }}%">
+                                              style="width: {% if views > 0 %}{{ views / (movie.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
                                             <p>
                                                 <b>
                                                     {% if views >= movie.numberOfEpisodes %}
