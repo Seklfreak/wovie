@@ -126,6 +126,7 @@ $(function() {
             // TODO: Error handling
             .success(function(data) {
                 $('#ajax-externalSearchContainer').html(data);
+                init();
                 $('.ajax-fetchTopic').each(function() { // Lazy?
                     var field = $(this);
                     $.ajax({

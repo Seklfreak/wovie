@@ -38,11 +38,11 @@
                 </div>
                 <div class="row">
                     <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
-                        {#{% if item.imdbRating != "N/A" %}
+                        {% if item.imdbRating is defined %}
                             <li class="big-label-inlist">
                                 <span
                                         data-tooltip
-                                        title="{{ item.imdbVotes }} imdb votes"
+                                        title="imdb user rating"
                                         class="
                                         has-tip
                                         label
@@ -58,7 +58,7 @@
                                     {{ item.imdbRating }}
                                 </span>
                             </li>
-                        {% endif %}#}
+                        {% endif %}
 
                         {% if item.type is defined %}
                             <li class="big-label-inlist">

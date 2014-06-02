@@ -286,6 +286,16 @@ class MediaApi
                 }
                 if (array_key_exists('name', $myObject))
                 {
+                    if (array_key_exists('imdbId', $myObject))
+                    {
+                        $omdbRepo = $this->em->getRepository('SLMNWovieMainBundle:Omdb');
+                        $omdbItem = $omdbRepo->findOneByImdbId($myObject['imdbId']);
+                        if ($omdbItem && $omdbItem->getRating() != null)
+                        {
+                            $myObject['imdbRating'] = $omdbItem->getRating();
+                        }
+                    }
+
                     $toReturn[] = $myObject;
                 }
                 $i++;
@@ -311,7 +321,10 @@ class MediaApi
             curl_close($curl_handle);
             $result = json_decode($rawResult, true);
 
-            $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
+            if (!array_key_exists('error', $result)) // Dont cache error results
+            {
+                $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
+            }
         }
         return $result;
     }
