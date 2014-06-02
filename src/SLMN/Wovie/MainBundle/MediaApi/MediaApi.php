@@ -11,11 +11,13 @@ class MediaApi
     protected $limit = 50; // TODO: Option
     protected $cacheHandler;
     protected $userOptions;
+    protected $em;
 
-    public function __construct(Kernel $kernel, $apiKey, $cacheHandler, $userOptions)
+    public function __construct(Kernel $kernel, $em, $apiKey, $cacheHandler, $userOptions)
     {
         $this->apiKey = $apiKey;
         $this->kernel = $kernel;
+        $this->em = $em;
         $this->cacheHandler = $cacheHandler;
         $this->cacheHandler->setNamespace('slmn_wovie_main_mediaapi_mediaapi');
         $this->userOptions = $userOptions;
@@ -24,6 +26,36 @@ class MediaApi
 
     public function fetchDescription($id)
     {
+        if ($this->lang == 'en')
+        {
+            $result = $this->search('(all (all id:"'.$id.'") (any type:/film/film type:/tv/tv_program))');
+            if ($result != null && array_key_exists(0, $result))
+            {
+                $result = $result[0];
+                if (array_key_exists('imdbId', $result))
+                {
+                    $omdbRepo = $this->em->getRepository('SLMNWovieMainBundle:Omdb');
+                    $omdbItem = $omdbRepo->findOneByImdbId($result['imdbId']);
+                    if ($omdbItem && $omdbItem->getPlot() != null)
+                    {
+                        return $omdbItem->getPlot();
+                    }
+
+                    $curl_handle = curl_init();
+                    curl_setopt($curl_handle, CURLOPT_URL, 'http://www.omdbapi.com/?i='.$result['imdbId']);
+                    curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+                    curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->kernel->getEnvironment());
+                    $result = curl_exec($curl_handle);
+                    curl_close($curl_handle);
+                    $result = json_decode($result, true);
+                    if ($result && array_key_exists('Plot', $result) && $result['Plot'] != 'N/A' )
+                    {
+                        return $result['Plot'];
+                    }
+                }
+            }
+        }
         $url = 'https://www.googleapis.com/freebase/v1/topic'.$id.'?';
         $parameter = array(
             'key' => $this->apiKey,
