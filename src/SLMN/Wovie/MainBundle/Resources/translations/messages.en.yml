@@ -13,8 +13,8 @@ password:
   invalid: Please enter an valid password.
   new:
     input:
-      first: New password
-      second: Retype new
+      first: Change password
+      second: Retype new password
 username:
   placeholder: Your username
   invalid: Please enter an valid username.
