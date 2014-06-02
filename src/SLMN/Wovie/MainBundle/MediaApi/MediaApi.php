@@ -252,7 +252,10 @@ class MediaApi
                             break;
                     }
                 }
-                $toReturn[] = $myObject;
+                if (array_key_exists('name', $myObject))
+                {
+                    $toReturn[] = $myObject;
+                }
                 $i++;
             }
             return $toReturn;
