@@ -16,27 +16,27 @@
             <ul class="inline-list">
                 <li>
                     <p>
-                        <span id="choose-episode-count">0</span> Selected
+                        <span class="choose-episode-count">0</span> Selected
                     </p>
                 </li>
                 <li>
                     <ul class="button-group">
-                        <li><button id="choose-episode-select-all" class="tiny">All</button></li>
-                        <li><button id="choose-episode-select-none" class="tiny">None</button></li>
+                        <li><button class="choose-episode-select-all tiny">All</button></li>
+                        <li><button class="choose-episode-select-none tiny">None</button></li>
                         <li>
-                            <button data-dropdown="choose-episode-select-more" class="tiny">
+                            <button data-dropdown="choose-episode-select-more-1" class="tiny">
                                 <i class="fa fa-caret-down fa-lg"></i>
                             </button><br>
-                            <ul id="choose-episode-select-more" data-dropdown-content class="f-dropdown">
-                                <li><a id="choose-episode-select-invert">Invert</a></li>
+                            <ul class="choose-episode-select-more f-dropdown" id="choose-episode-select-more-1" data-dropdown-content>
+                                <li><a class="choose-episode-select-invert">Invert</a></li>
                             </ul>
                         </li>
                     </ul>
                 </li>
                 <li>
                     <ul class="button-group">
-                        <li><button class="tiny" id="choose-episode-select-submit-watched" data-media-id="{{ media.id }}">Watched</button></li>
-                        <li><button class="tiny alert" id="choose-episode-select-submit-notwatched" data-media-id="{{ media.id }}">
+                        <li><button class="tiny choose-episode-select-submit-watched" data-media-id="{{ media.id }}">Watched</button></li>
+                        <li><button class="tiny alert choose-episode-select-submit-notwatched" data-media-id="{{ media.id }}">
                                 <i class="fa fa-minus fa-lg"></i>
                             </button></li>
                     </ul>
@@ -112,6 +112,39 @@
                         </ul>
                     </li>
                 {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="inline-list">
+                <li>
+                    <p>
+                        <span class="choose-episode-count">0</span> Selected
+                    </p>
+                </li>
+                <li>
+                    <ul class="button-group">
+                        <li><button class="choose-episode-select-all tiny">All</button></li>
+                        <li><button class="choose-episode-select-none tiny">None</button></li>
+                        <li>
+                            <button data-dropdown="choose-episode-select-more-2" class="tiny">
+                                <i class="fa fa-caret-down fa-lg"></i>
+                            </button><br>
+                            <ul class="choose-episode-select-more f-dropdown" id="choose-episode-select-more-2" data-dropdown-content>
+                                <li><a class="choose-episode-select-invert">Invert</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <ul class="button-group">
+                        <li><button class="tiny choose-episode-select-submit-watched" data-media-id="{{ media.id }}">Watched</button></li>
+                        <li><button class="tiny alert choose-episode-select-submit-notwatched" data-media-id="{{ media.id }}">
+                                <i class="fa fa-minus fa-lg"></i>
+                            </button></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

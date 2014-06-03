@@ -13,7 +13,7 @@ function getUrlParameter(sParam)
 function chooseEpisodeSelectCount()
 {
     var len = $('.choose-episode-checkbox-input:checkbox:checked').length;
-    $('#choose-episode-count').text(len);
+    $('.choose-episode-count').text(len);
 }
 
 function init()
@@ -143,15 +143,15 @@ $(function() {
     $('.choose-episode-checkbox-input:checkbox').click(function() {
         chooseEpisodeSelectCount();
     });
-    $('#choose-episode-select-all').click(function() {
+    $('.choose-episode-select-all').click(function() {
         $('.choose-episode-checkbox-input:checkbox').prop('checked', true);
         chooseEpisodeSelectCount();
     });
-    $('#choose-episode-select-none').click(function() {
+    $('.choose-episode-select-none').click(function() {
         $('.choose-episode-checkbox-input:checkbox').prop('checked', false);
         chooseEpisodeSelectCount();
     });
-    $('#choose-episode-select-invert').click(function() {
+    $('.choose-episode-select-invert').click(function() {
         $('.choose-episode-checkbox-input:checkbox').each(function() {
             if ($(this).prop('checked'))
             {
@@ -184,7 +184,7 @@ $(function() {
         });
         chooseEpisodeSelectCount();
     });
-    $('#choose-episode-select-submit-watched').click(function() {
+    $('.choose-episode-select-submit-watched').click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');
         var selected = [];
@@ -216,7 +216,7 @@ $(function() {
                 });
         }
     });
-    $('#choose-episode-select-submit-notwatched').click(function() {
+    $('.choose-episode-select-submit-notwatched').click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');
         var selected = [];
