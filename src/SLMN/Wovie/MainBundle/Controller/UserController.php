@@ -133,13 +133,14 @@ class UserController extends Controller
         }
 
         $newMediaForm = $this->createForm('media', $newMedia);
-        $newMediaForm->handleRequest($request);
 
         if ($fbId == '')
         {
             $newMediaForm->remove('imdbId');
             $newMediaForm->remove('freebaseId');
         }
+
+        $newMediaForm->handleRequest($request);
 
         if ($newMediaForm->isValid()) {
             $newMedia->setCreatedBy($this->getUser());
