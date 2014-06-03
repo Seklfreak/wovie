@@ -111,10 +111,8 @@ class MediaApi
             $result = $result['result']['/tv/tv_program/episodes'];
             foreach ($result as $episode)
             {
-                echo $episode['season_number'].'x'.$episode['episode_number'].' - '.$episode['name']."\n";
                 $episodesArray[$episode['season_number']][$episode['episode_number']] = $episode['name'];
             }
-            var_dump($episodesArray);
             return $episodesArray;
         }
         else
