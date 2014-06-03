@@ -91,11 +91,6 @@ class Media
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    protected $numberOfSeasons;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
     protected $numberOfEpisodes;
 
     /**
@@ -149,22 +144,6 @@ class Media
     public function setNumberOfEpisodes($numberOfEpisodes)
     {
         $this->numberOfEpisodes = $numberOfEpisodes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNumberOfSeasons()
-    {
-        return $this->numberOfSeasons;
-    }
-
-    /**
-     * @param mixed $numberOfSeasons
-     */
-    public function setNumberOfSeasons($numberOfSeasons)
-    {
-        $this->numberOfSeasons = $numberOfSeasons;
     }
 
     /**

@@ -42,14 +42,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="large-6 columns">
-                    {% if newMediaForm.vars.value.mediaType|default(0) == 1 %}
-                        {{ form_row(newMediaForm.numberOfSeasons, {'disabled': true}) }}
-                    {% else %}
-                        {{ form_row(newMediaForm.numberOfSeasons) }}
-                    {% endif %}
-                </div>
-                <div class="large-6 columns">
+                <div class="large-12 columns">
                     {% if newMediaForm.vars.value.mediaType|default(0) == 1 %}
                         {{ form_row(newMediaForm.numberOfEpisodes, {'disabled': true}) }}
                     {% else %}

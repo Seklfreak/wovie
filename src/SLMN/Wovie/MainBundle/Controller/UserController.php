@@ -113,7 +113,6 @@ class UserController extends Controller
                     }
                     $newMedia->setGenres($genresString);
                 }
-                $newMedia->setNumberOfSeasons(array_key_exists('number_of_seasons', $result) ? $result['number_of_seasons'] : null);
                 $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
                 $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
@@ -156,7 +155,6 @@ class UserController extends Controller
             {
                 $newMedia->setFinalYear(null);
                 $newMedia->setNumberOfEpisodes(null);
-                $newMedia->setNumberOfSeasons(null);
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -472,7 +470,6 @@ class UserController extends Controller
             {
                 $media->setFinalYear(null);
                 $media->setNumberOfEpisodes(null);
-                $media->setNumberOfSeasons(null);
             }
 
             $em = $this->getDoctrine()->getManager();

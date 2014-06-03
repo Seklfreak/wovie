@@ -58,12 +58,6 @@ class MediaType extends AbstractType
                     'invalid_message' => 'integer.invalid'
                 )
             ))
-            ->add('numberOfSeasons', 'integer', array(
-                'required' => false,
-                'attr' => array(
-                    'invalid_message' => 'year.invalid'
-                )
-            ))
             ->add('numberOfEpisodes', 'integer', array(
                 'label' => 'Number of total episodes',
                 'required' => false,

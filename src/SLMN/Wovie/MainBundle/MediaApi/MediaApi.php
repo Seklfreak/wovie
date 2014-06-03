@@ -264,10 +264,6 @@ class MediaApi
                                 $myObject['genres'][] = $genre;
                             }
                             break;
-                        case '/tv/tv_program/number_of_seasons':
-                            $myObject['type'] = 'series';
-                            $myObject['number_of_seasons'] = end($value);
-                            break;
                         case '/tv/tv_program/number_of_episodes':
                             $myObject['type'] = 'series';
                             $myObject['number_of_episodes'] = end($value);
