@@ -302,7 +302,7 @@ class UserController extends Controller
         $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
         $media = $mediasRepo->findOneById($id);
 
-        if (!$media)
+        if (!$media || $media->getCreatedBy() != $this->getUser())
         {
             throw $this->createNotFoundException('Item not found!');
         }
