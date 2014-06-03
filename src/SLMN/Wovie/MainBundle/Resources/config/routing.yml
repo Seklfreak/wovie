@@ -20,6 +20,8 @@ slmn_wovie_user_movie_shelf:
     pattern:  /shelf/
     defaults: { _controller: SLMNWovieMainBundle:User:shelf }
     methods:  [GET]
+    options:
+      expose: true
 slmn_wovie_user_movie_add:
     pattern:  /add/
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }
@@ -83,6 +85,12 @@ slmn_wovie_actions_ajax_watcheditnot:
       expose: true
     requirements:
         id: \d+
+slmn_wovie_actions_ajax_media_delete:
+    pattern: /action/ajax/media/delete/
+    defaults: { _controller: SLMNWovieMainBundle:Action:mediaDelete }
+    methods: [POST]
+    options:
+      expose: true
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

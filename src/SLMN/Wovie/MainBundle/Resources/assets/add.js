@@ -257,4 +257,32 @@ $(function() {
             $('#' + input).val(value);
         }
     });
+    $('.action-media-delete').click(function() {
+        var button = $(this);
+        var mediaId = $(this).data('media-id');
+        if (mediaId != null)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_media_delete'),
+                type: "POST",
+                data: { media_id: mediaId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Deleted');
+                        window.location.replace(Routing.generate('slmn_wovie_user_movie_shelf'));
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
 });
