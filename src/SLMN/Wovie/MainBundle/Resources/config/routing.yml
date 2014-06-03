@@ -24,6 +24,12 @@ slmn_wovie_user_movie_add:
     pattern:  /add/
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }
     methods:  [GET, POST]
+slmn_wovie_user_movie_edit:
+    pattern:  /edit/{id}/
+    defaults: { _controller: SLMNWovieMainBundle:User:editMovie }
+    methods:  [GET, POST]
+    requirements:
+        id: \d+
 slmn_wovie_user_movie_details:
     pattern:  /details/{id}/
     defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
@@ -83,6 +89,8 @@ slmn_wovie_action_frames_choose_episode:
     pattern: /frame/choose-episode/{id}/
     defaults: { _controller: SLMNWovieMainBundle:Frame:chooseEpisode }
     methods: [GET]
+    requirements:
+        id: \d+
 
 # Image
 slmn_wovie_image_coverImage:

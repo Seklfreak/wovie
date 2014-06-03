@@ -248,4 +248,13 @@ $(function() {
                 });
         }
     });
+    // Edit Media form
+    $('.reset-freebase-data').click(function() {
+        var input = $(this).attr('for');
+        var value = $(this).data('value');
+        if (input != null && value != null)
+        {
+            $('#' + input).val(value);
+        }
+    });
 });

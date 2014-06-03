@@ -1,3 +1,15 @@
+{% macro resetFreebaseButton(value, for) %}
+    <a
+            for="{{ for }}"
+            data-value="{{ value }}"
+            {% if value != '' %}title="Revert data to {{ '"'|escape }}{{ value }}{{ '"'|escape }}"{% endif %}
+            class="button postfix{% if value != '' %} reset-freebase-data has-tip{% else %} disabled{% endif %}"
+            {% if value != '' %}data-tooltip{% endif %}
+            >
+        <i class="fa fa-reply fa-fw"></i>
+    </a>
+{% endmacro %}
+
 {% macro itemForList(item) %}
     <ul class="inline-list">
         <li style="width: 8%;">

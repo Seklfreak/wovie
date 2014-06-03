@@ -298,4 +298,197 @@ class UserController extends Controller
             )
         );
     }
+
+    public function editMovieAction(Request $request, $id)
+    {
+        $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById($id);
+
+        if (!$media)
+        {
+            throw $this->createNotFoundException('Item not found!');
+        }
+
+        /*
+        $fbId = trim($request->query->get('prefill'));
+        if ($fbId != '')
+        {
+            $mediaApi = $this->get('media_api');
+            $result = $mediaApi->search('(all (all id:"'.$fbId.'") (any type:/film/film type:/tv/tv_program))');
+            if (array_key_exists(0, $result))
+            {
+                // Preset data
+                $result = $result[0];
+                $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
+                $newMedia->setTitle(array_key_exists('name', $result) ? $result['name'] : null);
+                $newMedia->setDescription(($description=$mediaApi->fetchDescription($fbId)) ? $description : null);
+                $newMedia->setReleaseYear(array_key_exists('release_date', $result) ? $result['release_date'] : null);
+                $newMedia->setFinalYear(array_key_exists('final_episode', $result) ? $result['final_episode'] : null);
+                if (array_key_exists('countries', $result))
+                {
+                    $countriesString = '';
+                    $i = 0;
+                    foreach ($result['countries'] as $country)
+                    {
+                        if ($i > 0)
+                        {
+                            $countriesString .= ', ';
+                        }
+                        $countriesString .= $country;
+                        $i++;
+                    }
+                    $newMedia->setCountries($countriesString);
+                }
+                $newMedia->setRuntime(array_key_exists('runtime', $result) ? $result['runtime'] : null);
+                if (array_key_exists('written_by', $result))
+                {
+                    $writersString = '';
+                    $i = 0;
+                    foreach ($result['written_by'] as $writer)
+                    {
+                        if ($i > 0)
+                        {
+                            $writersString .= ', ';
+                        }
+                        $writersString .= $writer;
+                        $i++;
+                    }
+                    $newMedia->setWrittenBy($writersString);
+                }
+                if (array_key_exists('genres', $result))
+                {
+                    $genresString = '';
+                    $i = 0;
+                    foreach ($result['genres'] as $genre)
+                    {
+                        if ($i > 0)
+                        {
+                            $genresString .= ', ';
+                        }
+                        $genresString .= $genre;
+                        $i++;
+                    }
+                    $newMedia->setGenres($genresString);
+                }
+                $newMedia->setNumberOfSeasons(array_key_exists('number_of_seasons', $result) ? $result['number_of_seasons'] : null);
+                $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
+                $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
+                if (array_key_exists('type', $result))
+                {
+                    switch ($result['type'])
+                    {
+                        case 'movie':
+                            $newMedia->setMediaType(1);
+                            break;
+                        case 'series':
+                            $newMedia->setMediaType(2);
+                            break;
+                    }
+                }
+            }
+        }
+        */
+
+        $mediaForm = $this->createForm('media', $media);
+
+        $result = array();
+        if ($media->getFreebaseId() == null)
+        {
+            $mediaForm->remove('imdbId');
+            $mediaForm->remove('freebaseId');
+        }
+        else
+        {
+
+            $mediaApi = $this->get('media_api');
+            $result = $mediaApi->search('(all (all id:"'.$media->getFreebaseId().'") (any type:/film/film type:/tv/tv_program))');
+            if (array_key_exists(0, $result))
+            {
+                $result = $result[0];
+                $result['description'] = $mediaApi->fetchDescription($media->getFreebaseId());
+                if (array_key_exists('countries', $result))
+                {
+                    $countriesString = '';
+                    $i = 0;
+                    foreach ($result['countries'] as $country)
+                    {
+                        if ($i > 0)
+                        {
+                            $countriesString .= ', ';
+                        }
+                        $countriesString .= $country;
+                        $i++;
+                    }
+                    $result['countries'] = $countriesString;
+                }
+                if (array_key_exists('written_by', $result))
+                {
+                    $writersString = '';
+                    $i = 0;
+                    foreach ($result['written_by'] as $writer)
+                    {
+                        if ($i > 0)
+                        {
+                            $writersString .= ', ';
+                        }
+                        $writersString .= $writer;
+                        $i++;
+                    }
+                    $result['written_by'] = $writersString;
+                }
+                if (array_key_exists('genres', $result))
+                {
+                    $genresString = '';
+                    $i = 0;
+                    foreach ($result['genres'] as $genre)
+                    {
+                        if ($i > 0)
+                        {
+                            $genresString .= ', ';
+                        }
+                        $genresString .= $genre;
+                        $i++;
+                    }
+                    $result['genres'] = $genresString;
+                }
+            }
+        }
+
+        $oldFreebaseId = $media->getFreebaseId();
+        $oldPosterImage = $media->getPosterImage();
+        $oldImdbId = $media->getImdbId();
+
+        $mediaForm->handleRequest($request);
+
+        if ($mediaForm->isValid()) {
+            $media->setLastUpdatedAt(new \DateTime());
+
+            // Reset disabled fields
+            $media->setFreebaseId($oldFreebaseId);
+            $media->setPosterImage($oldPosterImage);
+            $media->setImdbId($oldImdbId);
+            if ($media->getMediaType() == 1) // if movie, reset series fields
+            {
+                $media->setFinalYear(null);
+                $media->setNumberOfEpisodes(null);
+                $media->setNumberOfSeasons(null);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($media);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Successfully edited the title '.$media->getTitle().'!');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf'));
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:editMovie.html.twig',
+            array(
+                'mediaForm' => $mediaForm->createView(),
+                'freebaseData' => $result
+            )
+        );
+    }
 }

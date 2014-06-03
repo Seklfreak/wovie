@@ -58,21 +58,32 @@
                             {% endif %}
                         </div>
                         <div class="row">
-                            <div class="large-6 columns">
-                                {% if movie.mediaType == 1 %}
-                                    <button class="button watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
-                                    </button>
-                                {% else %}
-                                    <button
-                                            class="button watched_it_cover"
-                                            data-reveal-id="modal-frame-choose-episode"
-                                            onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
-                                            >
-                                        I watched an episode!
-                                    </button>
-                                {% endif %}
+                            <div class="large-8 columns">
+                                <ul class="button-group">
+                                    <li>
+                                        {% if movie.mediaType == 1 %}
+                                            <button class="button watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
+                                            </button>
+                                        {% else %}
+                                            <button
+                                                    class="button watched_it_cover"
+                                                    data-reveal-id="modal-frame-choose-episode"
+                                                    onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
+                                                    >
+                                                I watched an episode!
+                                            </button>
+                                        {% endif %}
+                                    </li>
+                                    <li>
+                                        <a
+                                                href="{{ path('slmn_wovie_user_movie_edit', {'id': movie.id}) }}"
+                                                class="button watched_it_cover">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="large-6 columns">
+                            <div class="large-4 columns">
                                 <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="right">more
                                     <i class="fa fa-angle-double-right"></i></a>
                             </div>

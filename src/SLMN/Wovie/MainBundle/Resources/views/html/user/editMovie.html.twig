@@ -1,0 +1,116 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - add{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        {{ form_start(mediaForm) }}
+        <div class="large-4 columns">
+            <h3>Cover</h3>
+            <img src="{{ mediaForm.vars.value.posterImage|default(coverPlaceholder) }}">
+            {{ form_row(mediaForm.posterImage, {'label': false}) }}
+            {# TODO: Upload field: HTML5 uploader, changes url, reload image preview #}
+        </div>
+        <div class="large-6 columns left">
+            <h3>Add new media</h3>
+            <div class="row collapse"><div class="small-12 columns">{{ form_errors(mediaForm) }}</div></div>
+            <div class="row collapse"><div class="small-12 columns">{{ form_row(mediaForm.mediaType) }}</div></div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.title) }}
+                <div class="small-10 columns">{{ form_widget(mediaForm.title) }}</div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.name|default(''), 'media_title') }}
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.description) }}
+                <div class="small-10 columns">{{ form_widget(mediaForm.description) }}</div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.description|default(''), 'media_description') }}
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.countries) }}
+                <div class="small-10 columns">{{ form_widget(mediaForm.countries) }}</div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.countries|default(''), 'media_countries') }}
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.writtenBy) }}
+                <div class="small-10 columns">{{ form_widget(mediaForm.writtenBy) }}</div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.written_by|default(''), 'media_writtenBy') }}
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.genres) }}
+                <div class="small-10 columns">{{ form_widget(mediaForm.genres) }}</div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.genres|default(''), 'media_genres') }}
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.runtime) }}
+                <div class="small-9 columns">{{ form_widget(mediaForm.runtime) }}</div>
+                <div class="small-1 columns">
+                    <span class="postfix">min</span>
+                </div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.runtime|default(''), 'media_runtime') }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    <div class="row collapse">
+                        {{ form_label(mediaForm.releaseYear) }}
+                        <div class="small-10 columns">{{ form_widget(mediaForm.releaseYear) }}</div>
+                        <div class="small-2 columns">
+                            {{ wovie.resetFreebaseButton(freebaseData.release_date|default(''), 'media_releaseYear') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="large-6 columns">
+                    <div class="row collapse">
+                        {{ form_label(mediaForm.finalYear) }}
+                        <div class="small-10 columns">
+                            {% if mediaForm.vars.value.mediaType|default(0) == 1 %}
+                                {{ form_widget(mediaForm.finalYear, {'disabled': true}) }}
+                            {% else %}
+                                {{ form_widget(mediaForm.finalYear) }}
+                            {% endif %}
+                        </div>
+                        <div class="small-2 columns">
+                            {{ wovie.resetFreebaseButton(freebaseData.final_episode|default(''), 'media_finalYear') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row collapse">
+                {{ form_label(mediaForm.numberOfEpisodes) }}
+                <div class="small-10 columns">
+                    {% if mediaForm.vars.value.mediaType|default(0) == 1 %}
+                        {{ form_widget(mediaForm.numberOfEpisodes, {'disabled': true}) }}
+                    {% else %}
+                        {{ form_widget(mediaForm.numberOfEpisodes) }}
+                    {% endif %}
+                </div>
+                <div class="small-2 columns">
+                    {{ wovie.resetFreebaseButton(freebaseData.number_of_episodes|default(''), 'media_numberOfEpisodes') }}
+                </div>
+            </div>
+            {{ form_row(mediaForm.submit) }}
+            {% if mediaForm.freebaseId is defined and mediaForm.imdbId is defined %}
+                <div class="row">
+                    <div class="large-6 columns">
+                        {{ form_row(mediaForm.freebaseId) }}
+                    </div>
+                    <div class="large-6 columns">
+                        {{ form_row(mediaForm.imdbId) }}
+                    </div>
+                </div>
+            {% endif %}
+            {{ form_end(mediaForm) }}
+        </div>
+    </div>
+{% endblock body %}
