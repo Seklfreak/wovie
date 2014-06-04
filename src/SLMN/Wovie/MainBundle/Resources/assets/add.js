@@ -19,7 +19,7 @@ function chooseEpisodeSelectCount()
 function init()
 {
     $(document).foundation({});
-    ZeroClipboard.config( { swfPath: './../../bundles/slmnwoviemain/swf/ZeroClipboard.swf' } );
+    ZeroClipboard.config( { swfPath: Routing.generate('slmn_wovie_js_zeroClipboardSwf').replace('app_dev.php/', '') } );
     var client = new ZeroClipboard($('.clipboard'));
 }
 

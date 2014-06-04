@@ -115,6 +115,17 @@ slmn_wovie_image_coverImage:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         freebaseId: "^.+$" #TODO: Regex for freebase id ( /m/xxx 04csmqp eg )
 
+# JS ASSETS
+slmn_wovie_js_zeroClipboardSwf:
+    pattern: /bundles/slmnwoviemain/swf/ZeroClipboard.swf
+    host: "{cdn}"
+    defaults: { cdn: "%slmn_wovie_mainbundle.cdn%" }
+    methods: [GET]
+    options:
+      expose: true
+    requirements:
+        cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
+
 # Sitemap
 slmn_wovie_sitemap_main:
     pattern: /sitemap.{_format}
