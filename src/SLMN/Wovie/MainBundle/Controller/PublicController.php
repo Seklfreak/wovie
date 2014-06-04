@@ -44,7 +44,7 @@ class PublicController extends Controller
                 $this->get('session')->getFlashBag()->add('success', 'Please follow the instructions in the email, we sent you.');
                 return $this->redirect($this->generateUrl('login'));
             } else {
-                $this->get('session')->getFlashBag()->add('error', 'We did not fount the user '.$newPendingPasswordChangeForm->get('email')->getData().'!');
+                $this->get('session')->getFlashBag()->add('error', 'We did not found the user '.$newPendingPasswordChangeForm->get('email')->getData().'!');
                 return $this->redirect($this->generateUrl('slmn_wovie_public_requestNewPassword'));
             }
         }
