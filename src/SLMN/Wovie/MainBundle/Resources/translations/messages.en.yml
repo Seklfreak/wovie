@@ -2,7 +2,7 @@ not_blank: This field must not be blank.
 url:
   invalid: Please enter an valid url.
 email:
-  placeholder: your@email.com
+  placeholder: email@example.org
   invalid: Please enter an valid email.
 password:
   placeholder: Your password
