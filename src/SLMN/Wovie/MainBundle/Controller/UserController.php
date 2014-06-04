@@ -242,6 +242,7 @@ class UserController extends Controller
             }
             $this->get('session')->getFlashBag()->add('success', 'Successfully saved your settings.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_general'));
+            // TODO: If profile set to public, add an flashbag: you can now view your profile here blablabla
         }
 
         return $this->render(

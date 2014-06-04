@@ -20,6 +20,7 @@ class GeneralSettingsType extends AbstractType
                         'en' => 'English',
                         'de' => 'Deutsch'
                     ),
+                'empty_value' => false,
                 'required' => false,
                 'attr' => array(
                     'invalid_message' => 'not_blank'
@@ -38,6 +39,22 @@ class GeneralSettingsType extends AbstractType
                     'class' => 'expand'
                 )
             ));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        // TODO: Better validation
+        $collectionConstraint = new Collection(array(
+            'language' => array(
+                new NotBlank(array('message' => 'not_blank'))
+            ),
+            'publicProfile' => array(
+            )
+        ));
+
+        $resolver->setDefaults(array(
+            'constraints' => $collectionConstraint
+        ));
     }
 
     public function getName()
