@@ -162,3 +162,8 @@ button.really-tiny, .button.really-tiny {
   padding-right: 0.5rem;
   font-size: 0.8rem;
 }
+
+/* SIDE NAV */
+.side-nav > li.active {
+  background: rgba(0, 0, 0, 0.025);
+}
