@@ -14,10 +14,40 @@
                 </div>
             </div>
             <div class="row">
-                <div class="large-6 columns">
+                <div class="large-6 large-push-6 columns last">
+                    {% if getUserOption('publicProfile', false) == true %}
+                        {% set profileUrl = url('slmn_wovie_public_profile', { 'username': app.security.getToken().getUser().getUsername() }) %}
+                        <label for="public-profile-url">
+                            <b>Public profile url</b>
+                            You can open your <a href="{{ profileUrl }}" target="_blank">public profile</a> here
+                        </label>
+                        <div class="row collapse">
+                            <div class="small-11 columns">
+                                <input
+                                        id="public-profile-url"
+                                        type="text"
+                                        disabled
+                                        value="{{ profileUrl }}"
+                                        >
+                            </div>
+                            <div class="small-1 columns">
+                                <a
+                                        class="button postfix clipboard"
+                                        title="Click to copy"
+                                        data-clipboard-text="{{ profileUrl }}"
+                                        >
+                                    <i class="fa fa-clipboard fa-fw"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {# TODO: Share buttons (twitter, fb, g+) #}
+                    {% endif %}
+                </div>
+                <div class="large-6 large-pull-6 columns">
                     {{ form_start(generalSettingsForm) }}
                     {{ form_errors(generalSettingsForm) }}
                     {{ form_row(generalSettingsForm.language, { 'value': getUserOption('language', 'en') }) }}
+                    {{ form_row(generalSettingsForm.publicProfile, { 'checked': getUserOption('publicProfile', false) }) }}
                     {{ form_row(generalSettingsForm.submit) }}
                     {{ form_end(generalSettingsForm) }}
                 </div>

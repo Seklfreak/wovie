@@ -241,6 +241,7 @@ class UserController extends Controller
                 $userOptions->set($key, $value);
             }
             $this->get('session')->getFlashBag()->add('success', 'Successfully saved your settings.');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_general'));
         }
 
         return $this->render(

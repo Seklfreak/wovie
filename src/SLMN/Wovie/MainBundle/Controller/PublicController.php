@@ -109,4 +109,26 @@ class PublicController extends Controller
         }
         return $this->redirect($this->generateUrl('login'));
     }
+
+    public function profileAction($username)
+    {
+        $usersRepo = $this->getDoctrine()
+            ->getRepository('SeklMainUserBundle:User');
+        $userOptionsRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:UserOption');
+        $myUser = $usersRepo->findOneByUsername($username);
+
+        if (!$myUser)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/public:profile.html.twig', array(
+        ));
+    }
 } 

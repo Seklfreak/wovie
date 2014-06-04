@@ -3,13 +3,18 @@ slmn_wovie_public_requestNewPassword:
     path:   /recover
     defaults: { _controller: SLMNWovieMainBundle:Public:requestNewPassword }
     methods:  [GET, POST]
-
 slmn_wovie_public_redeemNewPassword:
     path:   /recover/{token}
     defaults: { _controller: SLMNWovieMainBundle:Public:redeemNewPassword }
     methods:  [GET, POST]
     requirements:
         token: "^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890]{50}+$"
+slmn_wovie_public_profile:
+    path:   /u/{username}/
+    defaults: { _controller: SLMNWovieMainBundle:Public:profile }
+    methods:  [GET]
+    requirements:
+        username: "^[a-zA-Z0-9]+$"
 
 # User
 slmn_wovie_user_dashboard:

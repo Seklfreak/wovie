@@ -38,6 +38,7 @@ security:
         - { path: ^/js, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/css, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/bundles, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/u/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/image/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/sitemap.xml$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }

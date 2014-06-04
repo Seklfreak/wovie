@@ -20,6 +20,14 @@ class GeneralSettingsType extends AbstractType
                         'en' => 'English',
                         'de' => 'Deutsch'
                     ),
+                'required' => false,
+                'attr' => array(
+                    'invalid_message' => 'not_blank'
+                )
+            ))
+            ->add('publicProfile', 'checkbox', array(
+                'label' => 'Enable public profile page?',
+                'required' => false,
                 'attr' => array(
                     'invalid_message' => 'not_blank'
                 )
