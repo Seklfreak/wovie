@@ -103,7 +103,7 @@
             </div>
         </div>
     {% endif %}
-    {% if getUserOption('didJoyrideShelf', false) == false %}
+    {% if getUserOption('didJoyrideShelf', false) == false and myMovies|length > 0%}
         {% include "SLMNWovieMainBundle:html/joyride:shelf.html.twig" %}
         {% set done = setUserOption('didJoyrideShelf', true) %}
     {% endif %}
