@@ -24,6 +24,7 @@ function init()
 $(function() {
     // Init
     init();
+    $(document).foundation('joyride', 'start');
     // Shelf titles all same high
     // TODO: Calculate max high PER LINE
     boxes = $('.shelf-media-titles');

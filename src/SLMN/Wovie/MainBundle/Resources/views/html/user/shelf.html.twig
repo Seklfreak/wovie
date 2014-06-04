@@ -4,6 +4,7 @@
 
 {% block body %}
     {% set myMovies = getMyMovies() %}
+    {% if myMovies|length > 0 %}
     <div class="row">
         <div class="large-12 columns">
             <div class="row collapse">
@@ -15,7 +16,7 @@
     </div>
     <div class="row">
         <div class="large-12 columns">
-            <ul class="small-block-grid-4 medium-block-grid-5 large-block-grid-4">
+            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
                 {% for movie in myMovies %}
                     {% set i = 0 %}
                     {% set series = random(0..1) %}
@@ -62,10 +63,11 @@
                                 <ul class="button-group">
                                     <li>
                                         {% if movie.mediaType == 1 %}
-                                            <button class="button watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
+                                            <button id="watched-it-button" class="button watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
                                             </button>
                                         {% else %}
                                             <button
+                                                    id="watched-it-button"
                                                     class="button watched_it_cover"
                                                     data-reveal-id="modal-frame-choose-episode"
                                                     onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
@@ -76,6 +78,7 @@
                                     </li>
                                     <li>
                                         <a
+                                                id="edit-button"
                                                 href="{{ path('slmn_wovie_user_movie_edit', {'id': movie.id}) }}"
                                                 class="button watched_it_cover">
                                             <i class="fa fa-edit"></i>
@@ -84,7 +87,7 @@
                                 </ul>
                             </div>
                             <div class="large-4 columns">
-                                <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="right">more
+                                <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="right">more
                                     <i class="fa fa-angle-double-right"></i></a>
                             </div>
                         </div>
@@ -93,4 +96,15 @@
             </ul>
         </div>
     </div>
+    {% else %}
+        <div class="row">
+            <div class="large-12 columns" style="margin-bottom: 0; margin-top: 10px;">
+                {{ main.alertBox('Try the search above to add movies and series.', 'secondary') }}
+            </div>
+        </div>
+    {% endif %}
+    {% if getUserOption('didJoyrideShelf', false) == false %}
+        {% include "SLMNWovieMainBundle:html/joyride:shelf.html.twig" %}
+        {% set done = setUserOption('didJoyrideShelf', true) %}
+    {% endif %}
 {% endblock body %}

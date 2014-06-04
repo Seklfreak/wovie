@@ -56,6 +56,7 @@
                                                 type="text"
                                                 placeholder="search…"
                                                 required=""
+                                                id="search"
                                                 {% if query is defined %}value="{{ query }}"{% endif %}
                                                 >
                                     </div>
@@ -73,8 +74,8 @@
                             </a>
                         </li>
                         <li{% if app.request.get('_route') == 'slmn_wovie_user_movie_shelf' %} class="active"{% endif %}>
-                            <a href="{{ path('slmn_wovie_user_movie_shelf') }}">
-                                <i class="fa fa-list"></i> Shelf
+                            <a id="shelf" href="{{ path('slmn_wovie_user_movie_shelf') }}">
+                                <i class="fa fa-list"></i> Library
                             </a>
                         </li>
                         <li>

@@ -30,13 +30,19 @@ class SlmnWovieExtension extends \Twig_Extension
             'viewsOfId' => new \Twig_Function_Method($this, 'viewsOfId'),
             'viewsOfSeries' => new \Twig_Function_Method($this, 'viewsOfSeries'),
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
-            'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction')
+            'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction'),
+            'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction')
         );
     }
 
     public function getUserOptionFunction($key, $default=null)
     {
         return $this->userOptions->get($key, $default);
+    }
+
+    public function setUserOptionFunction($key, $value)
+    {
+        return $this->userOptions->set($key, $value);
     }
 
     public function viewsOfId($id, $episode=null)

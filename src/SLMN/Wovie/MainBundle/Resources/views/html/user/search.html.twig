@@ -23,7 +23,7 @@
     </div>
     <div class="row">
         <div class="large-12 columns">
-            <h4>Results for "{{ query }}" to add <small>data from the <a target="_blank" href="https://www.freebase.com/">freebase API</a></small></h4>
+            <h4 id="search-result">Results for "{{ query }}" to add <small>data from the <a target="_blank" href="https://www.freebase.com/">freebase API</a></small></h4>
         </div>
     </div>
     <div class="row">
@@ -31,4 +31,8 @@
             <i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>
         </div>
     </div>
+    {% if getUserOption('didJoyrideSearch', false) == false %}
+        {% include "SLMNWovieMainBundle:html/joyride:search.html.twig" %}
+        {% set done = setUserOption('didJoyrideSearch', true) %}
+    {% endif %}
 {% endblock body %}

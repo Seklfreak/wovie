@@ -62,6 +62,10 @@
                 </div>
             {% endif %}
             {{ form_end(newMediaForm) }}
+            {% if getUserOption('didJoyrideAddMovie', false) == false %}
+                {% include "SLMNWovieMainBundle:html/joyride:addMovie.html.twig" %}
+                {% set done = setUserOption('didJoyrideAddMovie', true) %}
+            {% endif %}
         </div>
     </div>
 {% endblock body %}

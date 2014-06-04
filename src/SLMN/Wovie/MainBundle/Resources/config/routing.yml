@@ -17,7 +17,7 @@ slmn_wovie_user_dashboard:
     defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
     methods:  [GET]
 slmn_wovie_user_movie_shelf:
-    pattern:  /shelf/
+    pattern:  /library/
     defaults: { _controller: SLMNWovieMainBundle:User:shelf }
     methods:  [GET]
     options:
