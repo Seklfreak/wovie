@@ -30,7 +30,10 @@
                                 filter='?jpegoptim' output='images/placeholder.jpg' %}
                                     {% set placeholderImg = asset_url %}
                                 {% endimage %}
-                                <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
+                                <img class="cover lazy" data-original="{{ movie.posterImage|default(placeholderImg) }}">
+                                <noscript>
+                                    <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
+                                </noscript>
                             </a>
                             {% set views = viewsOfId(movie.id) %}
                             {% if movie.mediaType == 2 %}

@@ -18,17 +18,24 @@ function chooseEpisodeSelectCount()
 
 function init()
 {
+    // Foundation
     $(document).foundation({});
+    // Zero Clipboard
     ZeroClipboard.config( {
         cacheBust: false,
         swfPath: Routing.generate('slmn_wovie_js_zeroClipboardSwf').replace('app_dev.php/', '')
     } );
     var client = new ZeroClipboard($('.clipboard'));
+    // Scroll to
     if ($('#scroll-to').length > 0) {
         $('html, body').animate({
             scrollTop: $('#scroll-to').offset().top
         }, 2000);
     }
+    // Lazy load
+    $('img.lazy').show().lazyload({
+        effect : "fadeIn"
+    });
 }
 
 $(function() {
