@@ -114,7 +114,7 @@ class UserController extends Controller
                     $newMedia->setGenres($genresString);
                 }
                 $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
-                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
                 if (array_key_exists('type', $result))
                 {
@@ -148,7 +148,7 @@ class UserController extends Controller
             if ($fbId != '')
             {
                 $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
-                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid'])) : null);
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
             }
             if ($newMedia->getMediaType() == 1) // if movie, reset series fields

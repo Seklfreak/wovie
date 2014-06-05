@@ -26,7 +26,10 @@
                         </div>
                         <div style="position: relative;">
                             <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
-                                <img class="cover" src="{{ movie.posterImage|default(coverPlaceholder) }}">
+                                {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg' %}
+                                    {% set placeholderImg = asset_url %}
+                                {% endimage %}
+                                <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
                             </a>
                             {% set views = viewsOfId(movie.id) %}
                             {% if movie.mediaType == 2 %}

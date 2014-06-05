@@ -14,7 +14,10 @@
     <ul class="inline-list">
         <li style="width: 8%;">
             <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}">
-                <img class="small-cover" src="{{ item.posterImage|default(coverPlaceholder) }}"> {# TODO: Lazy loading #}
+                {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg' %}
+                    {% set placeholderImg = asset_url %}
+                {% endimage %}
+                <img class="small-cover" src="{{ item.posterImage|default(placeholderImg) }}"> {# TODO: Lazy loading #}
                 <div class="image-label">
                     <i class="fa fa-info-circle"></i> Details
                 </div>

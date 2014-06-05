@@ -36,7 +36,6 @@ twig:
         mailHeader: %slmn_main_userbundle.mail.subject%
         piwikUrl: %slmn_main_userbundle.piwik.url%
         piwikSiteId: %slmn_main_userbundle.piwik.site_id%
-        coverPlaceholder: %slmn_wovie_mainbundle.cover-placeholder%
 
 # Assetic Configuration
 assetic:
