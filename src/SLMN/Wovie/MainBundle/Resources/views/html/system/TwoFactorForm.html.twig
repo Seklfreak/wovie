@@ -1,0 +1,31 @@
+{% extends "SLMNWovieMainBundle::html/layout_nonav.html.twig" %}
+
+{% block pagetitle %}WOVIE - login{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-6 large-centered columns">
+            <div class="panel" style="margin-top: 50px; padding-bottom: 50px;">
+                <form class="form" action="" method="post" data-abide>
+                    <div class="code-field">
+                        <label for="_auth_code">Your auth code <small>required</small></label>
+                        <input type="text" name="_auth_code" id="_auth_code" autocomplete="off" required>
+                        <small class="error">Please type in your auth code.</small>
+                    </div>
+                    <div class="row collapse">
+                        <div class="small-10 columns">
+                            <button name="submit" class="button expand" type="submit" style="margin-bottom: 4px;">
+                                Login
+                            </button>
+                        </div>
+                        <div class="small-2 columns">
+                            <a class="button expand alert" href="{{ path('logout') }}" style="margin-bottom: 4px;">
+                                <i class="fa fa-power-off fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

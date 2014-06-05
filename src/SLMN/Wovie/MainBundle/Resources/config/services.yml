@@ -6,8 +6,14 @@ parameters:
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
     slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
+    slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
 
 services:
+    # System
+    slmn_wovie_main.session_fix:
+        class: %slmn_wovie_main.session_fix.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
     slmn_wovie_cache:
         class: Doctrine\Common\Cache\%slmn_wovie_mainbundle.cache.type%
     media_api:
@@ -23,6 +29,7 @@ services:
         arguments:
             em: @doctrine.orm.entity_manager
             context: @security.context
+    # Forms
     slmn_wovie_main.form.type.media:
         class: %slmn_wovie_main.form.type.media.class%
         tags:
