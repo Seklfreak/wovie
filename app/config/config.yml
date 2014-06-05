@@ -45,6 +45,8 @@ assetic:
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
+        jpegoptim:
+            bin: /usr/bin/jpegoptim
         compass:
             apply_to: "\.sass"
         uglifyjs2:
