@@ -20,8 +20,7 @@ framework:
     trusted_proxies: ~
     session:
         name: "WOVIE_SESSID"
-        # handler_id set to null will use default session handler from php.ini
-        handler_id:  ~
+        handler_id:  session.handler.pdo
     fragments:       ~
     http_method_override: true
 
@@ -85,3 +84,24 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# pdo save handler things
+parameters:
+    pdo.db_options:
+        db_table:    session
+        db_id_col:   sessionId
+        db_data_col: sessionValue
+        db_time_col: sessionTime
+services:
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+            - "%database_user%"
+            - "%database_password%"
+        calls:
+            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", "%pdo.db_options%"]
