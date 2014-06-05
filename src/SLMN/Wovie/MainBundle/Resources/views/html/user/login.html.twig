@@ -30,6 +30,7 @@
                     </span>
                     <button name="submit" class="button expand" type="submit" style="margin-bottom: 4px;">Login</button>
                     <div class="label secondary radius right"><a href="{{ url('slmn_wovie_public_requestNewPassword') }}">Password forgotten?</a></div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 </form>
             </div>
         </div>

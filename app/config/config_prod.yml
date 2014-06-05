@@ -22,6 +22,8 @@ monolog:
             type:               fingers_crossed
             action_level:       error
             handler:            grouped
+            excluded_404s:
+                - ^/phpmyadmin
         grouped:
             type:               group
             members:            [streamed, buffered_swift]

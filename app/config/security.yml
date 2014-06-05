@@ -27,6 +27,8 @@ security:
             form_login:
                 default_target_path: /
                 use_referer: true
+                csrf_provider: form.csrf_provider
+                intention: form_login
             logout:
                 path:   /logout
                 target: /
