@@ -170,7 +170,7 @@ class MediaApi
 
         $result = $this->request($url);
 
-        if (array_key_exists('result', $result))
+        if (is_array($result) && array_key_exists('result', $result))
         {
             $toReturn = array();
             $i = 0;

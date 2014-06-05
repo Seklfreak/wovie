@@ -105,6 +105,19 @@
                                 </span>
                         </li>
                         {% endif %}
+                        <li class="big-label-inlist">
+                            <span class="label secondary">
+                                <a
+                                    {% if getUserOption('language', 'en') == 'de' %}
+                                        href="http://www.amazon.de/s/?url=search-alias%3Ddvd&field-keywords={{ item.name|escape }}{% if amazonAffiliateDe != null %}&tag={{ amazonAffiliateDe }}{% endif %}"
+                                    {% else %}
+                                        href="http://www.amazon.com/gp/search?index=dvd&keywords={{ item.name|escape }}{% if amazonAffiliateUs != null %}&tag={{ amazonAffiliateUs }}{% endif %}"
+                                    {% endif %}
+                                        >
+                                    <i class="fa fa-external-link"></i> amazon
+                                </a>
+                            </span>
+                        </li>
                         {# TODO: Amazon buy link? #}
                     </ul>
                 </div>

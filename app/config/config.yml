@@ -36,6 +36,8 @@ twig:
         mailHeader: %slmn_main_userbundle.mail.subject%
         piwikUrl: %slmn_main_userbundle.piwik.url%
         piwikSiteId: %slmn_main_userbundle.piwik.site_id%
+        amazonAffiliateUs: %slmn_wovie_mainbundle.amazon_affiliate_trackingid.us%
+        amazonAffiliateDe: %slmn_wovie_mainbundle.amazon_affiliate_trackingid.de%
 
 # Assetic Configuration
 assetic:
