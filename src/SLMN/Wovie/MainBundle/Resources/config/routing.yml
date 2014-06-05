@@ -67,7 +67,6 @@ slmn_wovie_action_ajax_search_external:
     methods: [GET]
     options:
         expose: true
-    # TODO: requirements: …
 slmn_wovie_actions_ajax_fetch_description:
     pattern: /action/ajax/fetch-description.html
     defaults: { _controller: SLMNWovieMainBundle:Action:fetchDescription }
@@ -113,7 +112,7 @@ slmn_wovie_image_coverImage:
     methods: [GET]
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
-        freebaseId: "^.+$" #TODO: Regex for freebase id ( /m/xxx 04csmqp eg )
+        freebaseId: "^\/m\/[0-9a-z_]{2,10}$"
 
 # JS ASSETS
 slmn_wovie_js_zeroClipboardSwf:

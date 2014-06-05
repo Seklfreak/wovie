@@ -47,9 +47,9 @@
     <div class="row">
         <div class="large-12 columns">
             <ul class="no-bullet">
-                {# TODO: Automatically scroll to the episode, he could watch next. #}
                 {% set curSeason = 1 %}
                 {% set curEpisodeInSeason = 1 %}
+                {% set scrollToEpisodeSet = false %}
                 {% for i in 1..media.numberOfEpisodes %}
                     {% set views = viewsOfId(media.id, i) %}
                     {% if episodes != false %}
@@ -69,7 +69,12 @@
                             </ul>
                         {% endif %}
                     {% endif %}
-                    <li>
+                    <li
+                            {% if scrollToEpisodeSet == false and views < 1 %}
+                                {% set scrollToEpisodeSet = true %}
+                                id="scroll-to"
+                            {% endif %}
+                            >
                         <ul class="button-group" id="choose-episode-ul">
                             <li>
                                 <label class="button tiny choose-episode-checkbox" for="checkbox-{{ i }}">

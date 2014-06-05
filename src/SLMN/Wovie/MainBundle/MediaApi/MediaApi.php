@@ -8,7 +8,7 @@ class MediaApi
 {
     protected $apiKey;
     protected $kernel;
-    protected $limit = 50; // TODO: Option
+    protected $limit = 50;
     protected $cacheHandler;
     protected $userOptions;
     protected $em;
@@ -318,7 +318,7 @@ class MediaApi
             curl_close($curl_handle);
             $result = json_decode($rawResult, true);
 
-            if (!array_key_exists('error', $result)) // Dont cache error results
+            if (is_array($result) && !array_key_exists('error', $result)) // Dont cache error results
             {
                 $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
             }

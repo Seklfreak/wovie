@@ -24,6 +24,11 @@ function init()
         swfPath: Routing.generate('slmn_wovie_js_zeroClipboardSwf').replace('app_dev.php/', '')
     } );
     var client = new ZeroClipboard($('.clipboard'));
+    if ($('#scroll-to').length > 0) {
+        $('html, body').animate({
+            scrollTop: $('#scroll-to').offset().top
+        }, 2000);
+    }
 }
 
 $(function() {
