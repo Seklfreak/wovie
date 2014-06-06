@@ -53,7 +53,6 @@
 }
 
 /* COVER STYLES */
-
 .cover {
   z-index: 96;
   box-shadow: 0 0 6px #888;
@@ -176,4 +175,11 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 /* Lazy fix! */
 .lazy {
   display: none;
+}
+
+/* PUBLIC PAGE */
+.avatar {
+  width: 200px;
+  height: 200px;
+  @include border-radius(10px); // TODO: Shadow?
 }

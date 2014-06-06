@@ -116,6 +116,8 @@ class PublicController extends Controller
             ->getRepository('SeklMainUserBundle:User');
         $userOptionsRepo = $this->getDoctrine()
             ->getRepository('SLMNWovieMainBundle:UserOption');
+        $mediasRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:Media');
         $myUser = $usersRepo->findOneByUsername($username);
 
         if (!$myUser)
@@ -127,8 +129,11 @@ class PublicController extends Controller
         {
             throw $this->createNotFoundException('Profile not found!');
         }
+        $myMedia = $mediasRepo->findBy(array('createdBy' => $myUser), array('title' => 'ASC'));
 
         return $this->render('SLMNWovieMainBundle:html/public:profile.html.twig', array(
+            'user' => $myUser,
+            'media' => $myMedia
         ));
     }
 } 

@@ -31,8 +31,31 @@ class SlmnWovieExtension extends \Twig_Extension
             'viewsOfSeries' => new \Twig_Function_Method($this, 'viewsOfSeries'),
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
             'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction'),
-            'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction')
+            'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction'),
+            'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction'),
+            'countMedia' => new \Twig_Function_Method($this, 'countMediaFunction')
         );
+    }
+
+    public function countMediaFunction($user, $type=null)
+    {
+        $moviesRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+        $query = array('createdBy' => $user);
+        if ($type != null)
+        {
+            $query['mediaType'] = intval($type);
+        }
+        return count($moviesRepo->findBy($query));
+    }
+
+    public function getGravatarUrlFunction($user, $size=200)
+    {
+        $hash = md5(strtolower(trim($user->getEmail())));
+        $url = 'https://secure.gravatar.com/avatar/'.$hash;
+        $url .= '?size='.intval($size);
+        $url .= '&default=retro';
+        return $url;
+        // TODO: Placeholder avatar ( default=<url> )
     }
 
     public function getUserOptionFunction($key, $default=null)

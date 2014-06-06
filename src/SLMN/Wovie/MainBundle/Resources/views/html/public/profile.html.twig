@@ -1,13 +1,43 @@
 {% extends "SLMNWovieMainBundle::html/layout_nonav.html.twig" %}
 
-{% block pagetitle %}WOVIE - {# TODO: Username #}{% endblock pagetitle %}
+{% block pagetitle %}WOVIE - {{ user.username }}{% endblock pagetitle %}
 
 {% block body %}
-    <div class="animated fadeInDown">
-        <div class="row">
-            <div class="large-12 columns" style="margin-bottom: 0; margin-top: 10px;">
-                {{ main.alertBox('Coming soon…', 'warning', 0) }}
+    <div class="row">
+        <div class="large-3 columns">
+            <img class="avatar" src="{{ getGravatarUrl(user) }}">
+        </div>
+        <div class="large-9 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h4>{{ user.username }}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <p>Lorem Ipsum… bio?</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <p>I have <b>{{ countMedia(user, 1) }} movies</b> and <b>{{ countMedia(user, 2) }} series</b> in my library</p>
+                </div>
             </div>
         </div>
     </div>
+    {% if media|length > 0 %}
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+                    {% for item in media %}
+                        <li>
+                            {{ wovie.mediaItem(item) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        {# TODO: No videos #}
+    {% endif %}
 {% endblock body %}
