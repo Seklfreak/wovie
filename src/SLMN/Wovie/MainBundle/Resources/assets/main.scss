@@ -96,11 +96,6 @@
   z-index: 99;
   @include transform(scale(3.0));
 }
-.button.watched_it_cover {
-  padding: 5px 5px 5px 5px;
-  margin-top: 5px;
-  font-size: 0.7rem;
-}
 
 /* MODALS */
 .modal-loading {
