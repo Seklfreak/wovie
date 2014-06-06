@@ -87,6 +87,53 @@
     </div>
 {% endmacro %}
 
+{% macro mediaItemPublic(movie) %}
+    <div class="clearfix shelf-media-titles">
+        <h6 class="left">{{ movie.title }}</h6>
+    </div>
+    <div style="position: relative;">
+        <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
+            {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
+            filter='?jpegoptim' output='images/placeholder.jpg' %}
+            {% set placeholderImg = asset_url %}
+            {% endimage %}
+            <img class="cover lazy" data-original="{{ movie.posterImage|default(placeholderImg) }}">
+            <noscript>
+                <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
+            </noscript>
+        </a>
+        {% set views = viewsOfId(movie.id) %}
+        {% if movie.mediaType == 2 %}
+            <div class="cover-progress large-12">
+                                        <span class="meter"
+                                              style="width: {% if views > 0 %}{{ views / (movie.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
+                                            <p>
+                                                <b>
+                                                    {% if views >= movie.numberOfEpisodes %}
+                                                        <i class="fa fa-check-square"></i>
+                                                    {% endif %}
+                                                    {{ views }}/{{ movie.numberOfEpisodes }}
+                                                </b>
+                                            </p>
+                                        </span>
+            </div>
+        {% else %}
+            {% if views > 0 %}
+                <div class="cover-progress large-12">
+                                        <span class="meter" style="width: 100%">
+                                            <p>
+                                                <b>
+                                                    <i class="fa fa-check-square"></i>
+                                                    {% if views > 1 %} {{ views }}{% endif %}
+                                                </b>
+                                            </p>
+                                        </span>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endmacro %}
+
 {% macro itemForList(item) %}
     <ul class="inline-list">
         <li style="width: 8%;">
