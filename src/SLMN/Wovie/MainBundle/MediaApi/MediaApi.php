@@ -144,9 +144,10 @@ class MediaApi
             '/tv/tv_program/number_of_episodes' => '[]',
             '/film/film/initial_release_date' => '[]',
             '/film/film/country' => '[]',
-            '/film/film_cut/runtime' => '[]',
             '/film/film/written_by' => '[]',
             '/film/film/genre' => '[]',
+            '/film/film/runtime' => '[]',
+            '/film/film/runtime' => '[{ "/film/film_cut/runtime": null, "optional": true }]',
             '/common/topic/image' => '[{ "id": null, "optional": true }]',
             '/imdb/topic/title_id' => '[]'
         );
@@ -223,9 +224,13 @@ class MediaApi
                                 $myObject['countries'][] = $country;
                             }
                             break;
-                        case '/film/film_cut/runtime':
+                        case '/film/film/runtime':
                             $myObject['type'] = 'movie';
                             $myObject['runtime'] = end($value);
+                            if (is_array($myObject['runtime']) && array_key_exists('/film/film_cut/runtime', $myObject['runtime']))
+                            {
+                                $myObject['runtime'] = $myObject['runtime']['/film/film_cut/runtime'];
+                            }
                             $myObject['runtime'] = preg_replace('/^([0-9]+)(\.)?([0-9]+)?([\ A-Za-z]+)?$/', '$1', $myObject['runtime']);
                             break;
                         case '/tv/tv_program/episode_running_time':
@@ -318,7 +323,7 @@ class MediaApi
             curl_close($curl_handle);
             $result = json_decode($rawResult, true);
 
-            if (is_array($result) && !array_key_exists('error', $result)) // Dont cache error results
+            if (is_array($result) && !array_key_exists('error', $result)) // Do not cache error results
             {
                 $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
             }
