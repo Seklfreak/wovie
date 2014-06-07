@@ -90,15 +90,28 @@
                         <li class="has-form">
                             <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">Alpha feedback</a>
                         </li>
-                        <li{% if app.request.get('_route')|slice(0, 24) == 'slmn_wovie_user_settings' %} class="active"{% endif %}>
-                            <a href="{{ path('slmn_wovie_user_settings_general') }}">
-                                <i class="fa fa-gear"></i> Settings
+                        <li class="has-dropdown">
+                            <a href="#">
+                                <img style="width: 30px; height: 30px; margin-bottom: 3px;" src="{{ getGravatarUrl(app.security.getToken().getUser(), 30) }}"> {{ app.security.getToken().getUser().username }}
                             </a>
-                        </li>
-                        <li>
-                            <a href="{{ path('logout') }}">
-                                <i class="fa fa-power-off"></i> Logout
-                            </a>
+                            <ul class="dropdown">
+                                <li>
+                                    <a href="{{ path('slmn_wovie_user_settings_general') }}">
+                                        <i class="fa fa-gear"></i> Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('slmn_wovie_user_settings_profile') }}">
+                                        <i class="fa fa-user"></i> Account
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('slmn_wovie_user_settings_billing') }}">
+                                        <i class="fa fa-money"></i> Billing
+                                    </a>
+                                </li>
+                                <li><a href="{{ path('logout') }}"><i class="fa fa-power-off"></i> Logout</a></li>
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>

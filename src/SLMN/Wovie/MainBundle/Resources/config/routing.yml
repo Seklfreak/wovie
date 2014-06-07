@@ -56,9 +56,13 @@ slmn_wovie_user_settings_general:
     defaults: { _controller: SLMNWovieMainBundle:User:settingsGeneral }
     methods:  [GET, POST]
 slmn_wovie_user_settings_profile:
-    pattern:  /settings/profile
+    pattern:  /settings/account
     defaults: { _controller: SLMNWovieMainBundle:User:settingsProfile }
     methods:  [GET, POST]
+slmn_wovie_user_settings_billing:
+    pattern:  /settings/billing
+    defaults: { _controller: SLMNWovieMainBundle:User:settingsBilling }
+    methods:  [GET]
 
 # Actions
 slmn_wovie_action_ajax_search_external:

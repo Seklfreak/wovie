@@ -3,7 +3,7 @@
 {% block pagetitle %}WOVIE - {{ user.username }}{% endblock pagetitle %}
 
 {% block body %}
-    <div class="row">
+    <div class="row panel" style="margin-top: 15px;">
         <div class="large-3 columns">
             <img class="avatar" src="{{ getGravatarUrl(user) }}">
         </div>
@@ -20,18 +20,21 @@
             </div>
             <div class="row">
                 <div class="large-12 columns">
-                    <p>I have <b>{{ countMedia(user, 1) }} movies</b> and <b>{{ countMedia(user, 2) }} series</b> in my library</p>
+                    <p>I have <b>{{ countMedia(user, 1) }} movies</b> and <b>{{ countMedia(user, 2) }} series</b> in my library.</p>
+                    {# TODO: Last i watched blablabla #}
                 </div>
             </div>
         </div>
     </div>
     {% if media|length > 0 %}
-        <div class="row">
+        <div class="row panel">
             <div class="large-12 columns">
                 <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
                     {% for item in media %}
                         <li>
-                            {{ wovie.mediaItemPublic(item) }}
+                            <div>
+                                {{ wovie.mediaItemPublic(item) }}
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>

@@ -4,6 +4,9 @@
         <a href="{{ path('slmn_wovie_user_settings_general') }}">General</a>
     </li>
     <li{% if app.request.get('_route') == 'slmn_wovie_user_settings_profile' %} class="active"{% endif %}>
-        <a href="{{ path('slmn_wovie_user_settings_profile') }}">Profile</a>
+        <a href="{{ path('slmn_wovie_user_settings_profile') }}">Account</a>
+    </li>
+    <li{% if app.request.get('_route') == 'slmn_wovie_user_settings_payment' %} class="active"{% endif %}>
+        <a href="{{ path('slmn_wovie_user_settings_billing') }}">Billing</a>
     </li>
 </ul>
