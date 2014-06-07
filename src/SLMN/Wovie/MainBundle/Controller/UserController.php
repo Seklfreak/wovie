@@ -71,7 +71,10 @@ class UserController extends Controller
                 ));
                 if ($publicProfileBool && $publicProfileBool->getValue() == true)
                 {
-                    $newMedia->setFreebaseId($copyMedia->getFreebaseId());
+                    if ($copyMedia->getFreebaseId() != null)
+                    {
+                        $fbId = $copyMedia->getFreebaseId();
+                    }
                     $newMedia->setTitle($copyMedia->getTitle());
                     $newMedia->setDescription($copyMedia->getDescription());
                     $newMedia->setReleaseYear($copyMedia->getReleaseYear());
