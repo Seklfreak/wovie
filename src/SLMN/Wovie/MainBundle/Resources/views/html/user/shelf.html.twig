@@ -9,17 +9,27 @@
     <div class="row">
         <div class="large-12 columns">
             <div class="row collapse">
-                <div class="large-12 small-12 columns">
-                    <h4>Your movies <small>{{ myMovies|length }} total</small></h4> {# TODO: Split up (movies/series) with new countMedia(user, type) id #}
+                <div class="large-6 small-12 columns">
+                    <h4>Your library <small><b>{{ countMedia(null, 1) }} movies</b> and <b>{{ countMedia(null, 2) }} series</b></small></h4> {# TODO: Split up (movies/series) with new countMedia(user, type) id #}
+                </div>
+                <div class="large-6 small-12 columns">
+                    <dl class="sub-nav filter-nav right" style="margin-top: 10px;">
+                        <dt>Filter</dt>
+                        <dd class="active"><a id="filter-reset" href="#">All</a></dd>
+                        <dd><a id="filter-movies" href="#">Movies</a></dd>
+                        <dd><a id="filter-series" href="#">Series</a></dd>
+                        <dd><a id="filter-unseen" href="#">Unseen</a></dd>
+                        {# TODO: Favorites #}
+                    </dl>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="large-12 columns">
-            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" id="media-entries">
                 {% for movie in myMovies %}
-                    <li>
+                    <li class="media-entry" data-media-type="{{ movie.mediaType }}" data-views="{{ viewsOfId(movie.id) }}">
                         {{ wovie.mediaItem(movie) }}
                     </li>
                 {% endfor %}

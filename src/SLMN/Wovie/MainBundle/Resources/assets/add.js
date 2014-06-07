@@ -38,6 +38,13 @@ function init()
     });
 }
 
+function resetFilter()
+{
+    $('#media-entries').html($('#media-entries').data('html'));
+    //$('.media-entry').css('display', 'none');
+    $('.filter-nav > dd').removeClass('active');
+}
+
 $(function() {
     // Init
     init();
@@ -60,6 +67,39 @@ $(function() {
         $('#media_finalYear').prop('disabled', false);
         $('#media_numberOfSeasons').prop('disabled', false);
         $('#media_numberOfEpisodes').prop('disabled', false);
+    });
+    // Filter
+    $('#media-entries').data('html', $('#media-entries').html());
+    $('a[id=filter-reset]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        init();
+
+    });
+    $('a[id=filter-movies]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        $('.media-entry').filter('[data-media-type=2]').remove();
+        init();
+
+    });
+    $('a[id=filter-series]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        $('.media-entry').filter('[data-media-type=1]').remove();
+        init();
+
+    });
+    $('a[id=filter-unseen]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        $('.media-entry').filter('[data-views!=0]').remove();
+        init();
+
     });
     // Watched it button action
     $('.watched_it, .watched_it_cover').click(function() {

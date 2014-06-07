@@ -48,8 +48,12 @@ class SlmnWovieExtension extends \Twig_Extension
         return $profilesRepo->findOneByUser($user);
     }
 
-    public function countMediaFunction($user, $type=null)
+    public function countMediaFunction($user=null, $type=null)
     {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
         $moviesRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
         $query = array('createdBy' => $user);
         if ($type != null)
