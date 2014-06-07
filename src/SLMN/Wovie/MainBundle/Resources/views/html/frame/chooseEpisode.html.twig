@@ -72,7 +72,9 @@
                     <li
                             {% if scrollToEpisodeSet == false and views < 1 %}
                                 {% set scrollToEpisodeSet = true %}
-                                id="scroll-to"
+                                {% if i > 1 %}
+                                    id="scroll-to"
+                                {% endif %}
                             {% endif %}
                             >
                         <ul class="button-group" id="choose-episode-ul">
