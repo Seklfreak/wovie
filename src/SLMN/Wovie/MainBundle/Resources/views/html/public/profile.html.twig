@@ -4,6 +4,7 @@
 
 {% block body %}
     <div class="row panel" style="margin-top: 15px;">
+        {% set profile = getProfile(user) %}
         <div class="large-3 columns">
             <img class="avatar" src="{{ getGravatarUrl(user) }}">
         </div>
@@ -13,11 +14,13 @@
                     <h4>{{ user.username }}</h4>
                 </div>
             </div>
+            {% if profile is not null and profile.getBio() %}
             <div class="row">
                 <div class="large-12 columns">
-                    <p>Lorem Ipsum… bio?</p>
+                    <p>{{ profile.getBio()|autolink|nl2br }}</p>
                 </div>
             </div>
+            {% endif %}
             <div class="row">
                 <div class="large-12 columns">
                     <p>I have <b>{{ countMedia(user, 1) }} movies</b> and <b>{{ countMedia(user, 2) }} series</b> in my library.</p>

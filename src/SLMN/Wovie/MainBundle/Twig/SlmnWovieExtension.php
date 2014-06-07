@@ -33,8 +33,19 @@ class SlmnWovieExtension extends \Twig_Extension
             'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction'),
             'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction'),
             'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction'),
-            'countMedia' => new \Twig_Function_Method($this, 'countMediaFunction')
+            'countMedia' => new \Twig_Function_Method($this, 'countMediaFunction'),
+            'getProfile' => new \Twig_Function_Method($this, 'getProfileFunction')
         );
+    }
+
+    public function getProfileFunction($user=null)
+    {
+        $profilesRepo = $this->em->getRepository('SLMNWovieMainBundle:Profile');
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+        return $profilesRepo->findOneByUser($user);
     }
 
     public function countMediaFunction($user, $type=null)
@@ -120,6 +131,29 @@ class SlmnWovieExtension extends \Twig_Extension
         }
 
         return $revision;
+    }
+
+    public function getFilters()
+    {
+        return array(
+            'autolink' => new \Twig_Filter_Method($this, 'autolinkFilter', array('is_safe' => array('html'))),
+        );
+    }
+
+    public function autolinkFilter($string)
+    {
+        $string = htmlspecialchars($string);
+
+        $string = ' ' . $string;
+        $string = preg_replace(
+            '`([^"=\'>])(((http|https)://|www.)[^\s<]+[^\s<\.)])`i',
+            '$1<a target="_blank" rel="nofollow" href="$2">$2</a>',
+            $string
+        );
+        $string = substr($string, 1);
+        $string = preg_replace('`href=\"www`','href="http://www',$string);
+
+        return $string;
     }
 
     public function getName()

@@ -3,6 +3,7 @@
 namespace SLMN\Wovie\MainBundle\Controller;
 
 use SLMN\Wovie\MainBundle\Entity\Media;
+use SLMN\Wovie\MainBundle\Entity\Profile;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -257,17 +258,24 @@ class UserController extends Controller
     {
         $usersRepo = $this->getDoctrine()
             ->getRepository('SeklMainUserBundle:User');
+        $profilesRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:Profile');
         $myUser = $usersRepo->findOneByEmail($this->getUser()->getEmail());
+        $myProfile = $profilesRepo->findOneByUser($myUser);
+        if (!$myProfile)
+        {
+            $myProfile = new Profile();
+        }
 
-        $profileForm = $this->createForm('editUser', $myUser)
+        $accountForm = $this->createForm('editUser', $myUser)
             ->remove('username')
             ->remove('roles');
 
         $oldPassword = $myUser->getPassword();
         
-        $profileForm->handleRequest($request);
+        $accountForm->handleRequest($request);
 
-        if ($profileForm->isValid()) {
+        if ($accountForm->isValid()) {
             if ($myUser->getPassword() != '')
             {
                 $myUser->setSalt(md5(uniqid(null, true)));
@@ -287,13 +295,28 @@ class UserController extends Controller
             $em->persist($myUser);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Successfully changed your profile.');
+            $this->get('session')->getFlashBag()->add('success', 'Successfully changed your account.');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
+        }
+
+        $profileForm = $this->createForm('profile', $myProfile);
+        $profileForm->handleRequest($request);
+        if ($profileForm->isValid())
+        {
+            $myProfile->setUser($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($myProfile);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Successfully updated your profile.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
         }
 
         return $this->render(
             'SLMNWovieMainBundle:html/user/settings:tab-profile.html.twig',
             array(
+                'accountForm' => $accountForm->createView(),
                 'profileForm' => $profileForm->createView()
             )
         );

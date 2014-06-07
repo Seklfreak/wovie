@@ -5,6 +5,7 @@ parameters:
     slmn_wovie_main.form.type.feedback.class: SLMN\Wovie\MainBundle\Form\Type\FeedbackType
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
     slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
+    slmn_wovie_main.form.type.profile.class: SLMN\Wovie\MainBundle\Form\Type\ProfileType
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
 
@@ -46,3 +47,8 @@ services:
         class: %slmn_wovie_main.form.type.generalSettings.class%
         tags:
             - { name: form.type, alias: generalSettings }
+    slmn_wovie_main.form.type.profile:
+        class: %slmn_wovie_main.form.type.profile.class%
+        tags:
+            - { name: form.type, alias: profile }
+

@@ -1,6 +1,6 @@
 {% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
 
-{% block pagetitle %}WOVIE - settings - general{% endblock pagetitle %}
+{% block pagetitle %}WOVIE - settings - account{% endblock pagetitle %}
 
 {% block body %}
     <div class="row">
@@ -9,22 +9,56 @@
         </div>
         <div class="large-10 columns">
             <div class="row">
-                <div class="large-12 columns">
-                    <h4>Profile settings</h4>
-                </div>
-            </div>
-            <div class="row">
                 <div class="large-6 columns">
-                    {{ form_start(profileForm, { 'attr': {'autocomplete': 'off'} }) }}
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h4>Account settings</h4>
+                        </div>
+                    </div>
+                    {{ form_start(accountForm, { 'attr': {'autocomplete': 'off'} }) }}
                     <input type="text" name="prevent_autofill" value="" style="display:none;">
                     <input type="password" name="prevent_autofill" value="" style="display:none;">
-                    {{ form_errors(profileForm) }}
-                    {{ form_row(profileForm.email) }}
-                    {{ form_row(profileForm.password) }}
-                    {{ form_row(profileForm.Submit, { 'label': 'Update profile' }) }}
-                    {{ form_end(profileForm) }}
+                    {{ form_errors(accountForm) }}
+                    {{ form_row(accountForm.email) }}
+                    {{ form_row(accountForm.password) }}
+                    {{ form_row(accountForm.Submit, { 'label': 'Update account' }) }}
+                    {{ form_end(accountForm) }}
+                    {# TODO: Delete account #}
                 </div>
                 <div class="large-6 columns">
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h4>Profile</h4>
+                        </div>
+                    </div>
+                    <div class="row collapse panel">
+                        <div class="small-4 columns">
+                            <img class="avatar-100" src="{{ getGravatarUrl(app.security.getToken().getUser(), 100) }}">
+                        </div>
+                        <div class="small-8 columns">
+                            <h5>
+                                You can change your profile image at
+                                <b><a href="https://gravatar.com" target="_blank">gravatar.com</a></b>.
+                            </h5>
+                        </div>
+                    </div>
+                    {{ form_start(profileForm) }}
+                    <div class="row collapse panel" style="margin-top: 5px; margin-bottom: 10px;">
+                        <div class="small-12 columns">
+                            <h5>Your public profile</h5>
+                            <label for="profile_bio"><b>Bio</b> write something about you</label>
+                            {{ form_row(profileForm.bio, { 'label': false, 'attr': { 'placeholder': 'I like trains…' } }) }}
+                            {{ form_row(profileForm.submit, { 'label': 'Save profile' }) }}
+                            {% if getUserOption('publicProfile', false) == false %}
+                                <div data-alert class="alert-box warning radius" style="margin-bottom: 0;">
+                                    Go to the
+                                    <b><a href="{{ path('slmn_wovie_user_settings_general') }}">general settings</a></b>
+                                    to enable your public profile.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {{ form_end(profileForm) }}
                 </div>
             </div>
         </div>
