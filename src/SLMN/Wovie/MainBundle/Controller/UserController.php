@@ -209,7 +209,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');
-            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf'));
+            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf').'#media-'.$newMedia->getId());
         }
 
         return $this->render(

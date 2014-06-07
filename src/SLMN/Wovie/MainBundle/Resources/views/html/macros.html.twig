@@ -11,7 +11,7 @@
 {% endmacro %}
 
 {% macro mediaItem(movie) %}
-    <div class="clearfix shelf-media-titles">
+    <div class="clearfix shelf-media-titles" id="media-{{ movie.id }}">
         <h6 class="left">{{ movie.title }}</h6>
     </div>
     <div style="position: relative;">
