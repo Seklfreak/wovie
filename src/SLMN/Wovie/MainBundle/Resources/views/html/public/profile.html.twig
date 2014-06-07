@@ -2,6 +2,10 @@
 
 {% block pagetitle %}WOVIE - {{ user.username }}{% endblock pagetitle %}
 
+{% block favicon %}
+    <link rel="icon" href="{{ getGravatarUrl(user, 32) }}" type="image/jpeg">
+{% endblock %}
+
 {% block body %}
     <div class="row panel" style="margin-top: 15px;">
         {% set profile = getProfile(user) %}

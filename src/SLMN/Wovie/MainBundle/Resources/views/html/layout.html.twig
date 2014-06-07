@@ -2,7 +2,7 @@
 {% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
 
 {% block header %}
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    {% block favicon %}<link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">{% endblock %}
     {% stylesheets filter="?uglifycss"
     "@SLMNWovieMainBundle/Resources/assets/main.sass"
     "@SLMNWovieMainBundle/Resources/assets/lib/animate.css"
