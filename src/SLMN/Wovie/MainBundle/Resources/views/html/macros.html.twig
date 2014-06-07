@@ -132,6 +132,11 @@
             {% endif %}
         {% endif %}
     </div>
+    <div class="row collapse">
+        <div class="small-12 columns">
+            <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': movie.id }) }}" class="button expand tiny"><i class="fa fa-plus fa-lg"></i> Add to my library</a>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro itemForList(item) %}

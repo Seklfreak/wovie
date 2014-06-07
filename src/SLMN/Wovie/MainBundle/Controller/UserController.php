@@ -53,8 +53,45 @@ class UserController extends Controller
     public function addMovieAction(Request $request)
     {
         $newMedia = new Media();
+        $mediaCopiedFromId = false;
+        $fbId = null;
 
-        $fbId = trim($request->query->get('prefill'));
+        if (ctype_digit(trim($request->query->get('prefill'))))
+        {
+            $copyMediaId = intval(trim($request->query->get('prefill')));
+            $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+            $copyMedia = $mediasRepo->findOneById($copyMediaId);
+            if ($copyMedia)
+            {
+                $userOptionsRepo = $this->getDoctrine()
+                    ->getRepository('SLMNWovieMainBundle:UserOption');
+                $publicProfileBool = $userOptionsRepo->findOneBy(array(
+                    'createdBy' => $copyMedia->getCreatedBy(),
+                    'key' => 'publicProfile'
+                ));
+                if ($publicProfileBool && $publicProfileBool->getValue() == true)
+                {
+                    $newMedia->setFreebaseId($copyMedia->getFreebaseId());
+                    $newMedia->setTitle($copyMedia->getTitle());
+                    $newMedia->setDescription($copyMedia->getDescription());
+                    $newMedia->setReleaseYear($copyMedia->getReleaseYear());
+                    $newMedia->setFinalYear($copyMedia->getFinalYear());
+                    $newMedia->setCountries($copyMedia->getCountries());
+                    $newMedia->setRuntime($copyMedia->getRuntime());
+                    $newMedia->setWrittenBy($copyMedia->getWrittenBy());
+                    $newMedia->setGenres($copyMedia->getGenres());
+                    $newMedia->setNumberOfEpisodes($copyMedia->getNumberofEpisodes());
+                    $newMedia->setPosterImage($copyMedia->getPosterImage());
+                    $newMedia->setImdbId($copyMedia->getImdbId());
+                    $newMedia->setMediaType($copyMedia->getMediaType());
+                    $mediaCopiedFromId = true;
+                }
+            }
+        }
+        else
+        {
+            $fbId = trim($request->query->get('prefill'));
+        }
         if ($fbId != '')
         {
             $mediaApi = $this->get('media_api');
@@ -151,6 +188,12 @@ class UserController extends Controller
                 $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
                 $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : null);
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
+            }
+            if ($mediaCopiedFromId == true)
+            {
+                $newMedia->setFreebaseId($copyMedia->getFreebaseId());
+                $newMedia->setPosterImage($copyMedia->getPosterImage());
+                $newMedia->setImdbId($copyMedia->getImdbId());
             }
             if ($newMedia->getMediaType() == 1) // if movie, reset series fields
             {
