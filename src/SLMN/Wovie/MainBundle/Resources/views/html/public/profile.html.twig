@@ -36,12 +36,20 @@
     {% if media|length > 0 %}
         <div class="row panel">
             <div class="large-12 columns">
-                <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+                <dl class="sub-nav filter-nav right" style="margin-top: 10px;">
+                    <dt>Filter</dt>
+                    <dd class="active"><a id="filter-reset">All</a></dd>
+                    <dd><a id="filter-movies">Movies</a></dd>
+                    <dd><a id="filter-series">Series</a></dd>
+                    <dd><a id="filter-unseen">Unseen</a></dd>
+                    {# TODO: Favorites #}
+                </dl>
+            </div>
+            <div class="large-12 columns">
+                <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" id="media-entries">
                     {% for item in media %}
-                        <li>
-                            <div>
-                                {{ wovie.mediaItemPublic(item) }}
-                            </div>
+                        <li class="media-entry" data-media-type="{{ item.mediaType }}" data-views="{{ viewsOfId(item.id) }}">
+                            {{ wovie.mediaItemPublic(item) }}
                         </li>
                     {% endfor %}
                 </ul>
