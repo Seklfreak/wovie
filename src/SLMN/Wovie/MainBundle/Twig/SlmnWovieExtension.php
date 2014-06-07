@@ -32,7 +32,7 @@ class SlmnWovieExtension extends \Twig_Extension
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
             'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction'),
             'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction'),
-            'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction'),
+            'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction', array('is_safe' => array('html'))),
             'countMedia' => new \Twig_Function_Method($this, 'countMediaFunction'),
             'getProfile' => new \Twig_Function_Method($this, 'getProfileFunction')
         );
