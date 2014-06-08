@@ -143,7 +143,7 @@ class PublicController extends Controller
         $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
         $media = $mediasRepo->findOneById($id);
 
-        if (!$media || $media->getCreatedBy() != $this->getUser())
+        if (!$media)
         {
             throw $this->createNotFoundException('Media not found!');
         }
