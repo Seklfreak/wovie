@@ -63,32 +63,23 @@ class UserController extends Controller
             $copyMedia = $mediasRepo->findOneById($copyMediaId);
             if ($copyMedia)
             {
-                $userOptionsRepo = $this->getDoctrine()
-                    ->getRepository('SLMNWovieMainBundle:UserOption');
-                $publicProfileBool = $userOptionsRepo->findOneBy(array(
-                    'createdBy' => $copyMedia->getCreatedBy(),
-                    'key' => 'publicProfile'
-                ));
-                if ($publicProfileBool && $publicProfileBool->getValue() == true)
+                if ($copyMedia->getFreebaseId() != null)
                 {
-                    if ($copyMedia->getFreebaseId() != null)
-                    {
-                        $fbId = $copyMedia->getFreebaseId();
-                    }
-                    $newMedia->setTitle($copyMedia->getTitle());
-                    $newMedia->setDescription($copyMedia->getDescription());
-                    $newMedia->setReleaseYear($copyMedia->getReleaseYear());
-                    $newMedia->setFinalYear($copyMedia->getFinalYear());
-                    $newMedia->setCountries($copyMedia->getCountries());
-                    $newMedia->setRuntime($copyMedia->getRuntime());
-                    $newMedia->setWrittenBy($copyMedia->getWrittenBy());
-                    $newMedia->setGenres($copyMedia->getGenres());
-                    $newMedia->setNumberOfEpisodes($copyMedia->getNumberofEpisodes());
-                    $newMedia->setPosterImage($copyMedia->getPosterImage());
-                    $newMedia->setImdbId($copyMedia->getImdbId());
-                    $newMedia->setMediaType($copyMedia->getMediaType());
-                    $mediaCopiedFromId = true;
+                    $fbId = $copyMedia->getFreebaseId();
                 }
+                $newMedia->setTitle($copyMedia->getTitle());
+                $newMedia->setDescription($copyMedia->getDescription());
+                $newMedia->setReleaseYear($copyMedia->getReleaseYear());
+                $newMedia->setFinalYear($copyMedia->getFinalYear());
+                $newMedia->setCountries($copyMedia->getCountries());
+                $newMedia->setRuntime($copyMedia->getRuntime());
+                $newMedia->setWrittenBy($copyMedia->getWrittenBy());
+                $newMedia->setGenres($copyMedia->getGenres());
+                $newMedia->setNumberOfEpisodes($copyMedia->getNumberofEpisodes());
+                $newMedia->setPosterImage($copyMedia->getPosterImage());
+                $newMedia->setImdbId($copyMedia->getImdbId());
+                $newMedia->setMediaType($copyMedia->getMediaType());
+                $mediaCopiedFromId = true;
             }
         }
         else
@@ -103,11 +94,11 @@ class UserController extends Controller
             {
                 // Preset data
                 $result = $result[0];
-                $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : null);
-                $newMedia->setTitle(array_key_exists('name', $result) ? $result['name'] : null);
-                $newMedia->setDescription(($description=$mediaApi->fetchDescription($fbId)) ? $description : null);
-                $newMedia->setReleaseYear(array_key_exists('release_date', $result) ? $result['release_date'] : null);
-                $newMedia->setFinalYear(array_key_exists('final_episode', $result) ? $result['final_episode'] : null);
+                $newMedia->setFreebaseId(array_key_exists('mid', $result) ? $result['mid'] : $newMedia->getFreebaseId());
+                $newMedia->setTitle(array_key_exists('name', $result) ? $result['name'] : $newMedia->getTitle());
+                $newMedia->setDescription(($description=$mediaApi->fetchDescription($fbId)) ? $description : $newMedia->getDescription());
+                $newMedia->setReleaseYear(array_key_exists('release_date', $result) ? $result['release_date'] : $newMedia->getReleaseYear());
+                $newMedia->setFinalYear(array_key_exists('final_episode', $result) ? $result['final_episode'] : $newMedia->getFinalYear());
                 if (array_key_exists('countries', $result))
                 {
                     $countriesString = '';
@@ -123,7 +114,7 @@ class UserController extends Controller
                     }
                     $newMedia->setCountries($countriesString);
                 }
-                $newMedia->setRuntime(array_key_exists('runtime', $result) ? $result['runtime'] : null);
+                $newMedia->setRuntime(array_key_exists('runtime', $result) ? $result['runtime'] : $newMedia->getRuntime());
                 if (array_key_exists('written_by', $result))
                 {
                     $writersString = '';
@@ -154,9 +145,9 @@ class UserController extends Controller
                     }
                     $newMedia->setGenres($genresString);
                 }
-                $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : null);
-                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : null);
-                $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : null);
+                $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : $newMedia->getNumberOfEpisodes());
+                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : $newMedia->getPosterImage());
+                $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : $newMedia->getImdbId());
                 if (array_key_exists('type', $result))
                 {
                     switch ($result['type'])

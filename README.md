@@ -15,3 +15,9 @@ An website to manage your movie shelf.
       - [ ] Calendar View?
 - [ ] Advanced search (Actor, Length, …)
 - [ ] Rating
+- [ ] Chrome Extension
+    - [ ] Uses oAuth2 to login
+        -> https://github.com/FriendsOfSymfony/FOSOAuthServerBundle
+    - [ ] API oAuth2:
+        -> https://github.com/FriendsOfSymfony/FOSRestBundle
+    -> http://smus.com/oauth2-chrome-extensions/
