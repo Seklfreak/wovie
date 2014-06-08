@@ -22,7 +22,7 @@ services:
         arguments: [@kernel, @doctrine.orm.entity_manager, "%slmn_wovie_mainbundle.google_api_key%", @slmn_wovie_cache, @userOption]
     slmn_wovie_main.twig.slmn_wovie_extension:
         class: %slmn_wovie_main.twig.slmn_wovie_extension.class%
-        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption]
+        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption, @router]
         tags:
             - { name: twig.extension }
     userOption:

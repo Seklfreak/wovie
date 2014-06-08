@@ -140,7 +140,7 @@
 {% endmacro %}
 
 {% macro itemForList(item) %}
-    <ul class="inline-list">
+    <ul class="inline-list" style="margin-bottom: 0;"> {# TODO: Move to grid #}
         <li style="width: 8%;">
             <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}">
                 {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
@@ -170,7 +170,7 @@
                 </ul>
             </div>
             <div class="row">
-                <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
+                <ul class="result-inline-list" style="margin-bottom: 0px;">
                     <li class="big-label-inlist">
                         {% if item.mediaType == 1 %}
                             <span class="label secondary">movie</span>
@@ -225,7 +225,7 @@
             </div>
             {% if item.genres != null %}
                 <div class="row">
-                    <ul class="result-inline-list only-labels">
+                    <ul class="result-inline-list">
                         {% for genre in item.genres|split(',') %}
                             <li class="big-label-inlist">
                                         <span class="label secondary">

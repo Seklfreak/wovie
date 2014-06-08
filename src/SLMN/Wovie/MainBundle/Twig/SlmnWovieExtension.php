@@ -2,18 +2,22 @@
 
 namespace SLMN\Wovie\MainBundle\Twig;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 class SlmnWovieExtension extends \Twig_Extension
 {
     protected $em;
     protected $context;
     protected $cacheHandler;
     protected $userOptions;
+    protected $router;
 
     public function __construct(
         \Doctrine\ORM\EntityManager $em,
         \Symfony\Component\Security\Core\SecurityContext $context,
         $cacheHandler,
-        $userOptions
+        $userOptions,
+        UrlGeneratorInterface $router
     )
     {
         $this->em = $em;
@@ -21,6 +25,7 @@ class SlmnWovieExtension extends \Twig_Extension
         $this->cacheHandler = $cacheHandler;
         $this->cacheHandler->setNamespace('slmn_wovie_main_twig_slmnwovieextension');
         $this->userOptions = $userOptions;
+        $this->router = $router;
     }
 
     public function getFunctions()
@@ -141,7 +146,25 @@ class SlmnWovieExtension extends \Twig_Extension
     {
         return array(
             'autolink' => new \Twig_Filter_Method($this, 'autolinkFilter', array('is_safe' => array('html'))),
+            'linkList2search' => new \Twig_Filter_Method($this, 'linkList2searchFilter', array('is_safe' => array('html')))
         );
+    }
+
+    public function linkList2searchFilter($list, $prefix)
+    {
+        $list = htmlspecialchars($list);
+        $string = null;
+        $i = 0;
+        foreach (explode(',', $list) as $item)
+        {
+            if ($i > 0)
+            {
+                $string .= ', ';
+            }
+            $string .= '<a href="'.$this->router->generate('slmn_wovie_user_search', array('q' => $prefix.':'.trim($item))).'">'.$item.'</a>';
+            $i++;
+        }
+        return $string;
     }
 
     public function autolinkFilter($string)

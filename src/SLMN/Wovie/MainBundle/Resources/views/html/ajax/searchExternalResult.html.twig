@@ -6,7 +6,7 @@
     {# TODO: Suggest type mistakes (via search api) #}
     {% for item in media %}
         {# dump(item)|raw #}
-        <ul class="inline-list">
+        <ul class="inline-list" style="margin-bottom: 0;"> {# TODO: Move to grid #}
             <li style="width: 8%;">
                 <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}">
                     <img class="small-cover lazy" data-original="{{ url('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
@@ -40,7 +40,7 @@
                     </ul>
                 </div>
                 <div class="row">
-                    <ul class="result-inline-list only-labels" style="margin-bottom: 0px;">
+                    <ul class="result-inline-list" style="margin-bottom: 0px;">
                         {% if item.imdbRating is defined %}
                             <li class="big-label-inlist">
                                 <span
@@ -134,7 +134,7 @@
                 {% endif %} #}
                 {% if item.genres is defined %}
                     <div class="row">
-                        <ul class="result-inline-list only-labels">
+                        <ul class="result-inline-list">
                             {% for genre in item.genres %}
                                 <li class="big-label-inlist">
                                         <span class="label secondary">
@@ -149,7 +149,7 @@
                 {% endif %}
                 {#
                 <div class="row">
-                    <ul class="result-inline-list only-labels">
+                    <ul class="result-inline-list">
                         {% for actor in item.Actors|split(',') %}
                             <li class="big-label-inlist">
                                     <span class="label secondary">

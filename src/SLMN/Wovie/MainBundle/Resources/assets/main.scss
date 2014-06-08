@@ -27,21 +27,29 @@
 }
 .result-inline-list {
   @include inline-list();
-  margin-bottom: 0px;
+  margin-bottom: 0;
   h5 {
     margin-bottom: 3px;
     white-space: nowrap;
   }
+  margin-left: -8px;
+}
+.details-inline-list {
+  @include inline-list();
+  padding: 0 15px 0 15px;
+  margin-bottom: 0;
+  margin-left: -8px;
+}
+.details-inline-list > li, .result-inline-list > li {
+  margin-bottom: 3px;
+}
+.result-inline-list > li {
+  margin-left: 9px;
 }
 .result-plot {
   margin-bottom: 4px;
   width: 99%;
-}
-.only-labels {
-  margin-bottom: 5px;
-  li:first-child {
-    margin-left: 22px !important;
-  }
+  text-align: justify;
 }
 .big-label-inlist {
   margin-left: 8px !important;
@@ -56,6 +64,10 @@
   span {
     padding-bottom: 4px;
   }
+}
+.description {
+  margin-bottom: 3px;
+  text-align: justify;
 }
 
 /* COVER STYLES */
@@ -211,6 +223,12 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 }
 
 /* GENERAL */
+.meta-header-small {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 1px;
+}
 .avatar-100 {
   @include border-radius(5px);
 }
