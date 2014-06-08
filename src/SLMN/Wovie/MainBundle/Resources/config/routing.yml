@@ -15,6 +15,12 @@ slmn_wovie_public_profile:
     methods:  [GET]
     requirements:
         username: "^[a-zA-Z0-9]+$"
+slmn_wovie_public_media_details:
+    pattern:  /m/{id}/
+    defaults: { _controller: SLMNWovieMainBundle:Public:detailsMedia }
+    methods:  [GET]
+    requirements:
+        id: \d+
 
 # User
 slmn_wovie_user_dashboard:

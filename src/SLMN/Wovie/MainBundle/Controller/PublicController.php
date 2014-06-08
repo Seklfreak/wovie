@@ -136,4 +136,33 @@ class PublicController extends Controller
             'media' => $myMedia
         ));
     }
+
+    public function detailsMediaAction($id)
+    {
+        $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+        $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById($id);
+
+        if (!$media || $media->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('Media not found!');
+        }
+
+        $publicProfileBool = $userOptionsRepo->findOneBy(array(
+            'createdBy' => $media->getCreatedBy(),
+            'key' => 'publicProfile'
+        ));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Media not found!');
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/public:details.html.twig',
+            array(
+                'media' => $media,
+                'user' => $media->getCreatedBy()
+            )
+        );
+    }
 } 

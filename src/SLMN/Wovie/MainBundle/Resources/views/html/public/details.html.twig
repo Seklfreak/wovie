@@ -1,0 +1,14 @@
+{% extends "SLMNWovieMainBundle::html/layout_nonav.html.twig" %}
+
+{% block pagetitle %}WOVIE - {{ media.title }}{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row panel" style="margin-top: 15px; padding: 10px;">
+        <a style="line-height: 25px;" href="{{ path('slmn_wovie_public_profile', { 'username': user.username }) }}">
+            <i class="fa fa-chevron-left fa-lg"></i> Back to {{ user.username }}
+        </a>
+        <div class="large-12 columns">
+            {{ wovie.mediaDetails(media, true) }}
+        </div>
+    </div>
+{% endblock body %}
