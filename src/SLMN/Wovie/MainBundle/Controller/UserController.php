@@ -366,7 +366,7 @@ class UserController extends Controller
 
         if (!$media || $media->getCreatedBy() != $this->getUser())
         {
-            throw $this->createNotFoundException('Item not found!');
+            throw $this->createNotFoundException('Media not found!');
         }
 
         $mediaForm = $this->createForm('media', $media);
@@ -467,6 +467,25 @@ class UserController extends Controller
                 'mediaForm' => $mediaForm->createView(),
                 'freebaseData' => $result,
                 'mediaId' => $media->getId()
+            )
+        );
+    }
+
+    public function detailsMediaAction($id)
+    {
+
+        $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById($id);
+
+        if (!$media || $media->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('Media not found!');
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:detailsMedia.html.twig',
+            array(
+                'media' => $media
             )
         );
     }

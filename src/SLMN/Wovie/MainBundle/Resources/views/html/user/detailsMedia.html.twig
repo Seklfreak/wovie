@@ -1,0 +1,50 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE -  {{ media.title }}{% endblock pagetitle %}
+
+{% block body %}
+    {% set views = viewsOfId(media.id) %}
+    <div class="row">
+        <div class="large-4 columns">
+            <h3>{{ media.title }}</h3>
+            {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
+               filter='?jpegoptim' output='images/placeholder.jpg' %}
+               {% set placeholderImg = asset_url %}
+            {% endimage %}
+            <div class="row">
+                <div class="small-12 columns">
+                    <div class="cover-progress-big">
+                        {% if media.mediaType == 2 %}
+                            <span class="meter"
+                                  style="width: {% if views > 0 %}{{ views / (media.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
+                          <p><b>
+                                  {% if views >= media.numberOfEpisodes %}
+                                      <i class="fa fa-check-square"></i>
+                                  {% endif %}
+                                  {{ views }}/{{ media.numberOfEpisodes }}
+                              </b></p>
+                    </span>
+                        {% else %}
+                            {% if views > 0 %}
+                                <span class="meter" style="width: 100%">
+                            <p><b>
+                                    <i class="fa fa-check-square"></i>
+                                    {% if views > 1 %} {{ views }}{% endif %}
+                                </b></p>
+                        </span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <img class="cover-big lazy" data-original="{{ media.posterImage|default(placeholderImg) }}">
+                    <noscript>
+                        <img class="cover-big" src="{{ media.posterImage|default(placeholderImg) }}">
+                    </noscript>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

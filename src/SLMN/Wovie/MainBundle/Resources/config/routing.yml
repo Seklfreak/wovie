@@ -39,7 +39,7 @@ slmn_wovie_user_movie_edit:
         id: \d+
 slmn_wovie_user_movie_details:
     pattern:  /details/{id}/
-    defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
+    defaults: { _controller: SLMNWovieMainBundle:User:detailsMedia }
     methods:  [GET]
     requirements:
         id: \d+
