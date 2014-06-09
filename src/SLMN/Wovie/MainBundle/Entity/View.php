@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class View
 {
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
