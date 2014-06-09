@@ -170,7 +170,7 @@ $(function() {
         $('.media-entry').each(function()
         {
             var views = $(this).data('views');
-            var numberOfEpisodes = $(this).data('numberOfEpisodes');
+            var numberOfEpisodes = $(this).data('numberofepisodes');
             if (views && numberOfEpisodes)
             {
                 if (views >= numberOfEpisodes)
