@@ -56,7 +56,7 @@
         {% endif %}
     </div>
     <div class="row collapse">
-        <div class="small-8 columns">
+        <div class="{% if views > 0 and movie.mediaType == 1 %}small-6{% else %}small-8{% endif %} columns">
             {% if movie.mediaType == 1 %}
                 <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
                 </button>
@@ -71,6 +71,13 @@
                 </button>
             {% endif %}
         </div>
+        {% if views > 0 and movie.mediaType == 1 %}
+            <div class="small-2 columns">
+                <button class="button expand tiny alert watched_it_not" data-media-id="{{ movie.id }}">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        {% endif %}
         <div class="small-2 columns">
             <a
                     id="edit-button"
@@ -291,7 +298,7 @@
             </div>
             {% if public == false %}
                 <div class="row collapse">
-                    <div class="small-10 columns">
+                    <div class="{% if views > 0 and media.mediaType == 1 %}small-8{% else %}small-10{% endif %} columns">
                         {% if media.mediaType == 1 %}
                             <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ media.id }}">I watched it!
                             </button>
@@ -306,6 +313,13 @@
                             </button>
                         {% endif %}
                     </div>
+                    {% if views > 0 and media.mediaType == 1 %}
+                        <div class="small-2 columns">
+                            <button class="button expand tiny alert watched_it_not" data-media-id="{{ media.id }}">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    {% endif %}
                     <div class="small-2 columns">
                         <a
                                 id="edit-button"

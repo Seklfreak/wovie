@@ -147,12 +147,19 @@ class ActionController extends Controller
             {
                 if ($media->getMediaType() == 1)
                 {
-                    $newView = new View();
-                    $newView->setCreatedAt(new \DateTime());
-                    $newView->setMedia($media);
-                    $em->persist($newView);
-                    $em->flush();
+                    $watches = $viewsRepo->findBy(
+                        array(
+                            'media' => $media
+                        ),
+                        array(
+                            'createdAt' => 'DESC'
+                        )
+                    );
+                    if (array_key_exists(0, $watches) && $watches[0] != null) {
+                        $em->remove($watches[0]);
+                    }
 
+                    $em->flush();
                     $response->setData(array(
                         'status' => 'success'
                     ));

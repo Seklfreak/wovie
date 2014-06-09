@@ -42,7 +42,7 @@ function init()
         if ($(button).data('media-id') != null)
         {
             $(button).prop('disabled', true);
-            $(button).html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $(button).html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
                 type: "POST",
@@ -72,7 +72,7 @@ function init()
         if ($(button).data('media-id') != null)
         {
             $(button).prop('disabled', true);
-            $(button).html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            $(button).html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watcheditnot'),
                 type: "POST",
@@ -252,7 +252,7 @@ $(function() {
         if (mediaId != null && selected.length > 0)
         {
             button.prop('disabled', true);
-            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watchedit'),
                 type: "POST",
@@ -284,7 +284,7 @@ $(function() {
         if (mediaId != null && selected.length > 0)
         {
             button.prop('disabled', true);
-            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_watcheditnot'),
                 type: "POST",
@@ -321,7 +321,7 @@ $(function() {
         if (mediaId != null)
         {
             button.prop('disabled', true);
-            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i><span style="margin-left: 5px;">Loading…</span>');
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
             $.ajax({
                 url: Routing.generate('slmn_wovie_actions_ajax_media_delete'),
                 type: "POST",
