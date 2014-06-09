@@ -161,6 +161,26 @@ $(function() {
         init();
 
     });
+    $('a[id=filter-in-progress]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        $('.media-entry').filter('[data-media-type=1]').remove();
+        $('.media-entry').filter('[data-views=0]').remove();
+        $('.media-entry').each(function()
+        {
+            var views = $(this).data('views');
+            var numberOfEpisodes = $(this).data('numberOfEpisodes');
+            if (views && numberOfEpisodes)
+            {
+                if (views >= numberOfEpisodes)
+                {
+                    $(this).remove();
+                }
+            }
+        });
+        init();
+    });
     // Modal actions
     /* TODO: Load modal only with loading indicator -> when iframe is loaded
                 Show modal with iframe. No loading screen glitches anymore!
