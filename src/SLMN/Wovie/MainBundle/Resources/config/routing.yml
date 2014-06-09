@@ -126,7 +126,7 @@ slmn_wovie_actions_ajax_user_follow:
     requirements:
         userId: \d+
 slmn_wovie_actions_ajax_user_defollow:
-    pattern: /action/ajax/user/defollow.json
+    pattern: /action/ajax/user/unfollow.json
     defaults: { _controller: SLMNWovieMainBundle:Action:userDefollow }
     methods: [POST]
     options:
