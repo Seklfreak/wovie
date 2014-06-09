@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\Follow;
 use SLMN\Wovie\MainBundle\Entity\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -234,6 +235,112 @@ class ActionController extends Controller
                 $response->setData(array(
                     'status' => 'success'
                 ));
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
+
+    public function userFollowAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($userId=intval($request->get('userId'))) != null)
+        {
+            if ($this->getUser())
+            {
+                $em = $this->getDoctrine()->getManager();
+                $followsRepo = $em->getRepository('SLMNWovieMainBundle:Follow');
+                $usersRepo = $em->getRepository('SeklMainUserBundle:User');
+                if (($doFollow=$usersRepo->findOneById(intval($userId))))
+                {
+                    if (!$followsRepo->findOneBy(array('user' => $this->getUser(), 'follow' => $doFollow)))
+                    {
+                        $follow = new Follow();
+                        $follow->setUser($this->getUser());
+                        $follow->setFollow($doFollow);
+                        $follow->setCreatedAt(new \DateTime());
+                        $em->persist($follow);
+                        $em->flush();
+
+                        $response->setData(array(
+                            'status' => 'success'
+                        ));
+                    }
+                    else
+                    {
+                        $response->setData(array(
+                            'status' => 'error'
+                        ));
+                    }
+                }
+                else
+                {
+                    $response->setData(array(
+                        'status' => 'error'
+                    ));
+                }
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
+
+    public function userDefollowAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($userId=intval($request->get('userId'))) != null)
+        {
+            if ($this->getUser())
+            {
+                $em = $this->getDoctrine()->getManager();
+                $followsRepo = $em->getRepository('SLMNWovieMainBundle:Follow');
+                $usersRepo = $em->getRepository('SeklMainUserBundle:User');
+                if (($doFollow=$usersRepo->findOneById(intval($userId))))
+                {
+                    if (($follow=$followsRepo->findOneBy(array('user' => $this->getUser(), 'follow' => $doFollow))))
+                    {
+                        $em->remove($follow);
+                        $em->flush();
+
+                        $response->setData(array(
+                            'status' => 'success'
+                        ));
+                    }
+                    else
+                    {
+                        $response->setData(array(
+                            'status' => 'error'
+                        ));
+                    }
+                }
+                else
+                {
+                    $response->setData(array(
+                        'status' => 'error'
+                    ));
+                }
             }
             else
             {

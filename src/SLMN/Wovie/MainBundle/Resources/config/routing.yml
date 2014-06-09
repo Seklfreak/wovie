@@ -15,6 +15,18 @@ slmn_wovie_public_profile:
     methods:  [GET]
     requirements:
         username: "^[a-zA-Z0-9]+$"
+slmn_wovie_public_profile_followers:
+    path:   /u/{username}/followers
+    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowers } # TODO: Create action
+    methods:  [GET]
+    requirements:
+        username: "^[a-zA-Z0-9]+$"
+slmn_wovie_public_profile_followings:
+    path:   /u/{username}/follows
+    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowings } # TODO: Create action
+    methods:  [GET]
+    requirements:
+        username: "^[a-zA-Z0-9]+$"
 slmn_wovie_public_media_details:
     pattern:  /m/{id}/
     defaults: { _controller: SLMNWovieMainBundle:Public:detailsMedia }
@@ -105,6 +117,22 @@ slmn_wovie_actions_ajax_media_delete:
     methods: [POST]
     options:
       expose: true
+slmn_wovie_actions_ajax_user_follow:
+    pattern: /action/ajax/user/follow.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:userFollow }
+    methods: [POST]
+    options:
+      expose: true
+    requirements:
+        userId: \d+
+slmn_wovie_actions_ajax_user_defollow:
+    pattern: /action/ajax/user/defollow.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:userDefollow }
+    methods: [POST]
+    options:
+      expose: true
+    requirements:
+        userId: \d+
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

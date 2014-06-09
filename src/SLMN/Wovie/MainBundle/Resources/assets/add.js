@@ -363,4 +363,59 @@ $(function() {
                 });
         }
     });
+    /* FOLLOW AND DEFOLLOW */
+    $('.follow-button').click(function() {
+        var button = $(this);
+        var userId = $(this).data('user-id');
+        if (userId)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_user_follow'),
+                type: "POST",
+                data: { userId: userId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('success');
+                        $(button).html('Followed');
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
+    $('.defollow-button').click(function() {
+        var button = $(this);
+        var userId = $(this).data('user-id');
+        if (userId)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_user_defollow'),
+                type: "POST",
+                data: { userId: userId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Defollowed');
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
 });

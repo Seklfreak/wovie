@@ -39,8 +39,50 @@ class SlmnWovieExtension extends \Twig_Extension
             'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction'),
             'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction', array('is_safe' => array('html'))),
             'countMedia' => new \Twig_Function_Method($this, 'countMediaFunction'),
-            'getProfile' => new \Twig_Function_Method($this, 'getProfileFunction')
+            'getProfile' => new \Twig_Function_Method($this, 'getProfileFunction'),
+            'getFollowers' => new \Twig_Function_Method($this, 'getFollowersFunction'),
+            'getFollowings' => new \Twig_Function_Method($this, 'getFollowingsFunction'),
+            'isFollowing' => new \Twig_Function_Method($this, 'isFollowingFunction')
         );
+    }
+
+    public function getFollowersFunction($user=null)
+    {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+        $followsRepo = $this->em->getRepository('SLMNWovieMainBundle:Follow');
+        $followers = $followsRepo->findBy(array('follow' => $user), array('createdAt' => 'DESC'));
+        return $followers;
+    }
+
+    public function getFollowingsFunction($user=null)
+    {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+        $followsRepo = $this->em->getRepository('SLMNWovieMainBundle:Follow');
+        $followings = $followsRepo->findBy(array('user' => $user), array('createdAt' => 'DESC'));
+        return $followings;
+    }
+
+    public function isFollowingFunction($search, $user=null)
+    {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+        $followsRepo = $this->em->getRepository('SLMNWovieMainBundle:Follow');
+        if (!$followsRepo->findOneBy(array('user' => $user, 'follow' => $search)))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public function getProfileFunction($user=null)
