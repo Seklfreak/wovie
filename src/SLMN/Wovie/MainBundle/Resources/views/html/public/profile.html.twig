@@ -15,7 +15,7 @@
             <div class="row collapse">
                 <img class="avatar" src="{{ getGravatarUrl(user) }}">
             </div>
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_USER') and user != app.security.getToken().getUser() %}
                 {% if isFollowing(user) %}
                     <div class="row collapse">
                         <button
@@ -76,7 +76,9 @@
                         {% for follower in followers %}
                             {% if loop.index <= 9 %}
                                 <li class="follow-avatar">
-                                    <img src="{{ getGravatarUrl(follower.user, 25) }}">
+                                    <a href="{{ path('slmn_wovie_public_profile', { 'username': follower.user.username }) }}">
+                                        <img src="{{ getGravatarUrl(follower.user, 25) }}">
+                                    </a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -96,7 +98,9 @@
                         {% for follower in followings %}
                             {% if loop.index <= 9 %}
                                 <li class="follow-avatar">
-                                    <img src="{{ getGravatarUrl(follower.follow, 25) }}">
+                                    <a href="{{ path('slmn_wovie_public_profile', { 'username': follower.follow.username }) }}">
+                                        <img src="{{ getGravatarUrl(follower.follow, 25) }}">
+                                    </a>
                                 </li>
                             {% endif %}
                         {% endfor %}
