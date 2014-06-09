@@ -278,6 +278,17 @@ class UserController extends Controller
             {
                 $userOptions->set($key, $value);
             }
+            if ($userOptions->get('publicProfile', false) == false)
+            {
+                // Remove all followers
+                $query = $this->getDoctrine()->getManager()
+                    ->createQueryBuilder()->delete('SLMNWovieMainBundle:Follow', 'follow')
+                    ->where('follow.follow = :user')
+                    ->setParameter('user', $this->getUser())
+                    ->getQuery();
+                $query->getResult();
+            }
+
             $this->get('session')->getFlashBag()->add('success', 'Successfully saved your settings.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_general'));
             // TODO: If profile set to public, add an flashbag: you can now view your profile here blablabla

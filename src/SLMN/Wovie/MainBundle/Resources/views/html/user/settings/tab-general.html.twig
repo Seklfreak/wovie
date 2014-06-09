@@ -50,6 +50,9 @@
                     {{ form_row(generalSettingsForm.publicProfile, { 'checked': getUserOption('publicProfile', false) }) }}
                     {{ form_row(generalSettingsForm.submit) }}
                     {{ form_end(generalSettingsForm) }}
+                    {% if getUserOption('publicProfile', false) == true %}
+                        {{ main.alertBox('If you make your public profile private you will lose all your followers!', 'warning', 0) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
