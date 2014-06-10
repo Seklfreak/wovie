@@ -56,8 +56,32 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
+            case 'customer.subscription.deleted':
+                $subscription = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $customer = $stripeCustomersRepo->findOneByCustomerId($subscription->customer);
+                if ($customer)
+                {
+                    /*
+                    $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                    $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                    $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                    $userOptionRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                    $viewRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                    // TODO: Remove all
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($customer);
+                    $em->remove($customer->getUser());
+                    $em->flush();
+                    */
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
             // TODO: customer.subscription.trial_will_end -> three days before trial ends
-            // TODO: invoice.created -> send subscription receipt
+            // TODO: invoice.payment_succeeded-> send subscription receipt
             //          -> if stripe_invoice.closed and stripe_invoice.total == 0 -> trial invoice, dont send an email
             default:
                 break;

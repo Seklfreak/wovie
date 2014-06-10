@@ -234,6 +234,23 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   height: 25px;
 }
 
+#cc-number.visa, #cc-number.discover, #cc-number.american-express, #cc-number.mastercard {
+  background-repeat: no-repeat, no-repeat;
+  background-position: 98% 2px;
+}
+#cc-number.visa {
+  background-image: url("/bundles/slmnwoviemain/images/visa_32.png");
+}
+#cc-number.discover {
+  background-image: url("/bundles/slmnwoviemain/images/discover_32.png");
+}
+#cc-number.american-express {
+  background-image: url("/bundles/slmnwoviemain/images/american_express_32.png");
+}
+#cc-number.mastercard {
+  background-image: url("/bundles/slmnwoviemain/images/mastercard_32.png");
+}
+
 /* GENERAL */
 .meta-header-small {
   font-size: 0.75rem;
@@ -243,4 +260,8 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 }
 .avatar-100 {
   @include border-radius(5px);
+}
+.small-panel {
+  padding: 5px 10px 5px 10px;
+  margin-bottom: 10px;
 }

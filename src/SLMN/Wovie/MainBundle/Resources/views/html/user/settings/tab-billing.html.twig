@@ -9,60 +9,126 @@
         </div>
         <div class="large-10 columns">
             <div class="row">
-                <div class="large-12 columns">
-                    <h4>Billing settings</h4>
-                </div>
-            </div>
-            <div class="row">
                 <div class="large-6 large-push-6 columns last">
-                    {# TODO: Show invoices #}
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h4>Invoices <small>Next invoice at </small></h4>
+                        </div>
+                    </div>
                 </div>
                 <div class="large-6 large-pull-6 columns">
-                    <form action="" method="POST" id="payment-form">
-                        <div data-alert="" class="alert radius payment-errors">
-                        </div>
-                        {# CARD NUMBER #}
+                    <div class="small-12 columns">
+                        <h4>Billing settings</h4>
+                    </div>
+                    {% if customer %}
+                        {% if customer.subscriptions.data[0].trial_end > 'now'|date('U') %}
+                            {% set diffUntilTrialEnd = customer.subscriptions.data[0].trial_end - 'now'|date('U') %}
+                            {% set trialDays = diffUntilTrialEnd / 86400  %}
+                            {% set trialDays = trialDays|round(0, 'ceil') %}
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="panel small-panel">
+                                        <p><i class="fa fa-calendar"></i> Your trial will end in <b>{{ trialDays }} days</b>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="panel small-panel">
+                                        <p><i class="fa fa-calendar"></i> Subscription active to <b>{{ customer.subscriptions.data[0].current_period_end|date('Y-m-d') }}</b>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="row">
                             <div class="small-12 columns">
-                                <label>
-                                    <span>Card Number</span>
-                                    <input type="text" size="20" data-stripe="number"/>
-                                </label>
+                                <div class="panel small-panel">
+                                    <p>
+                                        <i class="fa fa-credit-card"></i> Your current card:
+                                    {% if customer.cards.total_count > 0 %}
+                                        <b>**** **** **** {{ customer.cards.data[0].last4 }}</b>
+                                    {% else %}
+                                        <b>None added yet.</b>
+                                    {% endif %}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        {# EXPIRATION #}
                         <div class="row">
                             <div class="small-12 columns">
-                                <label for="exp-month">Expiration</label>
+                                <div class="panel small-panel">
+                                    <form action="" method="POST" id="payment-form">
+                                        {# encryption info #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <div class="panel small-panel">
+                                                    <i class="fa fa-lock"></i> 256-bit SSL encrypted payment.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-alert="" class="alert radius payment-errors">
+                                        </div>
+                                        {# CARD NUMBER #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <label>
+                                                    <span>Card Number</span>
+                                                    <input type="text" size="20" id="cc-number" data-stripe="number"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {# EXPIRATION #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <label for="exp-month">Expiration</label>
+                                            </div>
+                                        </div>
+                                        <div class="row collapse">
+                                            <div class="small-5 columns">
+                                                <input placeholder="MM" id="exp-month" type="text" size="2" data-stripe="exp-month"/>
+                                            </div>
+                                            <div class="small-1 columns">
+                                                <span style="line-height: 35px; margin-left: 14px;">/</span>
+                                            </div>
+                                            <div class="small-6 columns">
+                                                <input placeholder="YYYY" type="text" size="4" data-stripe="exp-year"/>
+                                            </div>
+                                        </div>
+                                        {# CVC #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <label>
+                                                    <span>CVC <span style="font-size: 80%;">3 or 4 numbers on the back.</span></span>
+                                                    <input type="text" size="4" data-stripe="cvc"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {# Price info #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <div class="panel small-panel">
+                                                    <p>
+                                                        Price: <b>$3.00/Monthly</b>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {# SUBMIT #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                {% if customer.cards.total_count > 0 %}
+                                                    <button class="expand" style="margin-bottom: 5px;" type="submit">Change credit card</button>
+                                                {% else %}
+                                                    <button class="expand" style="margin-bottom: 5px;" type="submit">Add credit card</button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="row collapse">
-                            <div class="small-5 columns">
-                                <input placeholder="MM" id="exp-month" type="text" size="2" data-stripe="exp-month"/>
-                            </div>
-                            <div class="small-1 columns">
-                                <span style="line-height: 35px; margin-left: 14px;">/</span>
-                            </div>
-                            <div class="small-6 columns">
-                                <input placeholder="YYYY" type="text" size="4" data-stripe="exp-year"/>
-                            </div>
-                        </div>
-                        {# CVC #}
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <label>
-                                    <span>CVC</span>
-                                    <input type="text" size="4" data-stripe="cvc"/>
-                                </label>
-                            </div>
-                        </div>
-                        {# SUBMIT #}
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <button class="expand" type="submit">Save payment data</button>
-                            </div>
-                        </div>
-                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -95,6 +161,41 @@
                 Stripe.card.createToken($form, stripeResponseHandler);
 
                 return false;
+            });
+            $('#cc-number').validateCreditCard(function(result)
+            {
+                var $input = $('#cc-number');
+                if (result.card_type)
+                {
+                    switch(result.card_type.name)
+                    {
+                        case 'visa':
+                            $input.addClass('visa');
+                            break;
+                        case 'amex':
+                            $input.addClass('american-express');
+                            break;
+                        case 'discover':
+                            $input.addClass('discover');
+                            break;
+                        case 'mastercard':
+                            $input.addClass('mastercard');
+                            break;
+                        default:
+                            $input.removeClass('visa');
+                            $input.removeClass('american-express');
+                            $input.removeClass('discover');
+                            $input.removeClass('mastercard');
+                            break;
+                    }
+                }
+                else
+                {
+                    $input.removeClass('visa');
+                    $input.removeClass('american-express');
+                    $input.removeClass('discover');
+                    $input.removeClass('mastercard');
+                }
             });
         });
     </script>
