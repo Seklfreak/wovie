@@ -70,7 +70,8 @@ class BillingListener
                     $stripeCustomer = new StripeCustomer();
                     $stripeCustomer->setUser($this->context->getToken()->getUser());
                     $stripeCustomer->setCustomerId($customer['id']);
-                    $paidUntil = new \DateTime($customer['subscriptions'][0]['current_period_end']);
+                    $paidUntil = new \DateTime();
+                    $paidUntil->setTimestamp($customer['subscriptions'][0]['current_period_end']);
                     $paidUntil->modify('+30 day');
                     $stripeCustomer->setPaidUntil($paidUntil);
                     $this->em->persist($stripeCustomer);
