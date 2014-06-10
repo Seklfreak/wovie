@@ -28,8 +28,10 @@
                     </div>
                 </div>
                 <div class="large-6 large-pull-6 columns">
-                    <div class="small-12 columns">
-                        <h4>Billing settings</h4>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <h4>Billing settings</h4>
+                        </div>
                     </div>
                     {% if customer %}
                         {% if customer.subscriptions.data[0].trial_end > 'now'|date('U') %}
