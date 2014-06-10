@@ -24,8 +24,7 @@ class WebhookController extends Controller
                 $customer = $stripeCustomersRepo->findOneByCustomerId($invoice->customer);
                 if ($customer)
                 {
-                    var_dump($customer);
-                    $customer->setPaidUntil(new \DateTime($invoice->lines[0]->data[0]->period[0]->end));
+                    $customer->setPaidUntil(new \DateTime($invoice->lines->data[0]->period->end));
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($customer);
                     $em->flush();
