@@ -37,6 +37,28 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
+            case 'invoice.payment_failed':
+                $invoice = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $customer = $stripeCustomersRepo->findOneByCustomerId($invoice->customer);
+                if ($customer)
+                {
+                    $paidUntil = new \DateTime();
+                    $paidUntil->setTimestamp($invoice['lines']['data'][0]['period']['start']);
+                    $customer->setPaidUntil($paidUntil);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($customer);
+                    $em->flush();
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
+                break;
+            // TODO: customer.subscription.trial_will_end -> three days before trial ends
+            // TODO: invoice.created -> send subscription receipt
+            //          -> if stripe_invoice.closed and stripe_invoice.total == 0 -> trial invoice, dont send an email
             default:
                 break;
         }
