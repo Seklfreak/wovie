@@ -30,6 +30,7 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/jsrouting-bundle": "1.5.x",
+        "stripe/stripe-php": "~1.15",
         "sekl/main/foundationbundle": "dev-master",
         "sekl/main/userbundle": "dev-master"
     },

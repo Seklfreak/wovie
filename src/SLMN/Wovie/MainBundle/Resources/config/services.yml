@@ -8,6 +8,7 @@ parameters:
     slmn_wovie_main.form.type.profile.class: SLMN\Wovie\MainBundle\Form\Type\ProfileType
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
+    slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
 
 services:
     # System
@@ -15,6 +16,17 @@ services:
         class: %slmn_wovie_main.session_fix.class%
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+    slmn_wovie_main.billing_listener:
+        class: %slmn_wovie_main.billing_listener.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: "-255" }
+        arguments:
+            em: @doctrine.orm.entity_manager
+            context: @security.context
+            session: @session
+            router: @router
+            apiKey: %slmn_wovie_mainbundle.stripe.secret_key%
+            plan: %slmn_wovie_mainbundle.stripe.plan_id.standard%
     slmn_wovie_cache:
         class: Doctrine\Common\Cache\%slmn_wovie_mainbundle.cache.type%
     media_api:

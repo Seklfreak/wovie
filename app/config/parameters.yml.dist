@@ -27,3 +27,6 @@ parameters:
     slmn_wovie_mainbundle.google_api_key: yourkey
     slmn_wovie_mainbundle.amazon_affiliate_trackingid.us: example-20
     slmn_wovie_mainbundle.amazon_affiliate_trackingid.de: example-21
+    slmn_wovie_mainbundle.stripe.publishable_key: pk_example_key
+    slmn_wovie_mainbundle.stripe.secret_key: sk_example_key
+    slmn_wovie_mainbundle.stripe.plan_id.standard: standard

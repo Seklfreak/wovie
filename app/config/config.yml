@@ -37,6 +37,7 @@ twig:
         piwikSiteId: %slmn_main_userbundle.piwik.site_id%
         amazonAffiliateUs: %slmn_wovie_mainbundle.amazon_affiliate_trackingid.us%
         amazonAffiliateDe: %slmn_wovie_mainbundle.amazon_affiliate_trackingid.de%
+        stripePublishableKey: %slmn_wovie_mainbundle.stripe.publishable_key%
 
 # Assetic Configuration
 assetic:

@@ -80,7 +80,7 @@ slmn_wovie_user_settings_profile:
 slmn_wovie_user_settings_billing:
     pattern:  /settings/billing
     defaults: { _controller: SLMNWovieMainBundle:User:settingsBilling }
-    methods:  [GET]
+    methods:  [GET, POST]
 
 # Actions
 slmn_wovie_action_ajax_search_external:
@@ -151,6 +151,12 @@ slmn_wovie_image_coverImage:
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         freebaseId: "^\/m\/[0-9a-z_]{2,10}$"
+
+# Webhook
+slmn_wovie_webhook_stripe:
+    pattern: /webhook/stripe
+    defaults: { _controller: SLMNWovieMainBundle:Webhook:stripe }
+    methods: [POST]
 
 # JS ASSETS
 slmn_wovie_js_zeroClipboardSwf:

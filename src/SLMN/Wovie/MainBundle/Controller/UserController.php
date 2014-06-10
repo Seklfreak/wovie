@@ -4,6 +4,7 @@ namespace SLMN\Wovie\MainBundle\Controller;
 
 use SLMN\Wovie\MainBundle\Entity\Media;
 use SLMN\Wovie\MainBundle\Entity\Profile;
+use SLMN\Wovie\MainBundle\Entity\StripeCustomer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -304,6 +305,7 @@ class UserController extends Controller
 
     public function settingsProfileAction(Request $request)
     {
+        // TODO: Update stripe customer if email changed
         $usersRepo = $this->getDoctrine()
             ->getRepository('SeklMainUserBundle:User');
         $profilesRepo = $this->getDoctrine()
@@ -367,6 +369,79 @@ class UserController extends Controller
                 'accountForm' => $accountForm->createView(),
                 'profileForm' => $profileForm->createView()
             )
+        );
+    }
+
+    public function settingsBillingAction(Request $request)
+    {
+        $error = null;
+        try {
+            \Stripe::setApiKey($this->container->getParameter('slmn_wovie_mainbundle.stripe.secret_key'));
+        }
+        catch (Exception $e)
+        {
+            $error = $e->getMessage();
+        }
+
+        $stripeCustomersRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:StripeCustomer');
+        $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
+        if ($stripeCustomer)
+        {
+            try
+            {
+                $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
+            }
+            catch (\Exception $e)
+            {
+                $error = $e->getMessage();
+            }
+        }
+
+        if (($stripeKey=trim($request->get('stripeToken'))) != null)
+        {
+            try {
+                // Customer is already created, save/replace this card to the customer
+                /*$customer = \Stripe_Customer::create(array(
+                        'card' => $stripeKey,
+                        'plan' => $this->container->getParameter('slmn_wovie_mainbundle.stripe.plan_id.standard'),
+                        'email' => $this->getUser()->getEmail()
+                    )
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $stripeCustomer = new StripeCustomer();
+                $stripeCustomer->setUser($this->getUser());
+                $stripeCustomer->setCustomerId($customer['id']);
+                $paidUntil = new \DateTime($customer['subscriptions'][0]['current_period_end']);
+                $paidUntil->modify('+30 day');
+                $stripeCustomer->setPaidUntil($paidUntil);
+                $em->persist($stripeCustomer);
+                $em->flush();*/
+            }
+            catch (\Exception $e)
+            {
+                $error = $e->getMessage();
+            }
+
+            if ($error == null)
+            {
+                $this->get('session')->getFlashBag()->add('success', 'Successfully save billing settings.');
+            }
+            else
+            {
+                $this->get('session')->getFlashBag()->add('error', 'Billing error: '.$error);
+            }
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
+        }
+
+        if ($error != null)
+        {
+            $this->get('session')->getFlashBag()->add('error', 'Billing error: '.$error);
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/settings:tab-billing.html.twig'
         );
     }
 

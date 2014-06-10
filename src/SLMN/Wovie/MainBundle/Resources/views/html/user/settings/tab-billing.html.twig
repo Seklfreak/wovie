@@ -1,0 +1,101 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - settings - billingt{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-2 columns">
+            {% include 'SLMNWovieMainBundle:html/user/settings:menu.html.twig' %}
+        </div>
+        <div class="large-10 columns">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h4>Billing settings</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 large-push-6 columns last">
+                    {# TODO: Show invoices #}
+                </div>
+                <div class="large-6 large-pull-6 columns">
+                    <form action="" method="POST" id="payment-form">
+                        <div data-alert="" class="alert radius payment-errors">
+                        </div>
+                        {# CARD NUMBER #}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <label>
+                                    <span>Card Number</span>
+                                    <input type="text" size="20" data-stripe="number"/>
+                                </label>
+                            </div>
+                        </div>
+                        {# EXPIRATION #}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <label for="exp-month">Expiration</label>
+                            </div>
+                        </div>
+                        <div class="row collapse">
+                            <div class="small-5 columns">
+                                <input placeholder="MM" id="exp-month" type="text" size="2" data-stripe="exp-month"/>
+                            </div>
+                            <div class="small-1 columns">
+                                <span style="line-height: 35px; margin-left: 14px;">/</span>
+                            </div>
+                            <div class="small-6 columns">
+                                <input placeholder="YYYY" type="text" size="4" data-stripe="exp-year"/>
+                            </div>
+                        </div>
+                        {# CVC #}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <label>
+                                    <span>CVC</span>
+                                    <input type="text" size="4" data-stripe="cvc"/>
+                                </label>
+                            </div>
+                        </div>
+                        {# SUBMIT #}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <button class="expand" type="submit">Save payment data</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block customJavascript %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+        Stripe.setPublishableKey('{{ stripePublishableKey }}');
+        var stripeResponseHandler = function(status, response) {
+            var $form = $('#payment-form');
+
+            if (response.error) {
+                $form.find('.payment-errors').text(response.error.message);
+                $form.find('.payment-errors').addClass('alert-box');
+                $form.find('button').prop('disabled', false);
+            } else {
+                var token = response.id;
+                $form.append($('<input type="hidden" name="stripeToken">').val(token));
+                $form.get(0).submit();
+            }
+        };
+        $(function($) {
+            $('#payment-form').submit(function(event) {
+                var $form = $(this);
+
+                $form.find('button').prop('disabled', true);
+
+                Stripe.card.createToken($form, stripeResponseHandler);
+
+                return false;
+            });
+        });
+    </script>
+{% endblock customJavascript %}
