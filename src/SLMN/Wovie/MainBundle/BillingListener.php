@@ -82,20 +82,23 @@ class BillingListener
                     $this->session->getFlashBag()->add('error', 'Error: '.$e->getMessage());
                 }
             }
-
-            if (new \DateTime() > $customer->getPaidUntil())
+            else
             {
-                $route = 'slmn_wovie_user_settings_billing';
-
-                if ($route === $event->getRequest()->get('_route'))
+                // Check if subscription is valid
+                if (new \DateTime() > $customer->getPaidUntil())
                 {
-                    $this->session->getFlashBag()->add('error', 'You subscription or trial ended please update your billing information.');
-                    return;
-                }
+                    $route = 'slmn_wovie_user_settings_billing';
 
-                $url = $this->router->generate($route);
-                $response = new RedirectResponse($url);
-                $event->setResponse($response);
+                    if ($route === $event->getRequest()->get('_route'))
+                    {
+                        $this->session->getFlashBag()->add('error', 'You subscription or trial ended please update your billing information.');
+                        return;
+                    }
+
+                    $url = $this->router->generate($route);
+                    $response = new RedirectResponse($url);
+                    $event->setResponse($response);
+                }
             }
         }
         return;
