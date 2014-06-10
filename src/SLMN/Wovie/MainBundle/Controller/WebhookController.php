@@ -19,11 +19,12 @@ class WebhookController extends Controller
         switch ($event['type'])
         {
             case 'invoice.created':
+                $invoice = $event->data->object;
                 $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                $customer = $stripeCustomersRepo->findOneByCustomerId($event->customer);
+                $customer = $stripeCustomersRepo->findOneByCustomerId($invoice->customer);
                 if ($customer)
                 {
-                    $customer->setPaidUntil(new \DateTime($event->lines[0]->data[0]->period[0]->end));
+                    $customer->setPaidUntil(new \DateTime($invoice->lines[0]->data[0]->period[0]->end));
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($customer);
                     $em->flush();
