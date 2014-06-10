@@ -396,13 +396,13 @@ class UserController extends Controller
                         'customer' => $stripeCustomer->getCustomerId(),
                         'limit' => 24)
                 );
+                $upcomingInvoice = \Stripe_Invoice::upcoming(array('customer' => $stripeCustomer->getCustomerId()));
             }
             catch (\Exception $e)
             {
                 $error = $e->getMessage();
             }
         }
-
         if ($customer && ($stripeKey=trim($request->get('stripeToken'))) != null)
         {
             try
@@ -425,6 +425,28 @@ class UserController extends Controller
             }
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
         }
+        if ($customer && ($stripeCode=trim($request->get('stripeCode'))) != null)
+        {
+            try
+            {
+                $customer->coupon = $stripeCode;
+                $customer->save();
+            }
+            catch (\Exception $e)
+            {
+                $error = $e->getMessage();
+            }
+
+            if ($error == null)
+            {
+                $this->get('session')->getFlashBag()->add('success', 'Successfully added discount.');
+            }
+            else
+            {
+                $this->get('session')->getFlashBag()->add('error', 'Error: '.$error);
+            }
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
+        }
 
         if ($error != null)
         {
@@ -435,7 +457,8 @@ class UserController extends Controller
             'SLMNWovieMainBundle:html/user/settings:tab-billing.html.twig',
             array(
                 'customer' => $customer,
-                'invoices' => $invoices
+                'invoices' => $invoices,
+                'upcomingInvoice' => $upcomingInvoice
             )
         );
     }

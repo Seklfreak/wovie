@@ -12,7 +12,18 @@
                 <div class="large-6 large-push-6 columns last">
                     <div class="row">
                         <div class="small-12 columns">
-                            <h4>Invoices <small>Next invoice at </small></h4>
+                            <h4>Invoices
+                                {% if not customer.subscriptions.data[0].cancel_at_period_end %}
+                                    <small>
+                                        Next invoice at {{ upcomingInvoice.date|date('Y-m-d') }}
+                                        {% if upcomingInvoice.total > 0 %}
+                                            (${{ upcomingInvoice.total[:-2] }}.{{ upcomingInvoice.total[-2:] }})
+                                        {% else %}
+                                            ($0.00)
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -122,6 +133,53 @@
                                                 {% else %}
                                                     <button class="expand" style="margin-bottom: 5px;" type="submit">Add credit card</button>
                                                 {% endif %}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% if customer.discount %}
+                           <div class="row">
+                               <div class="small-12 columns">
+                                   <div class="panel small-panel">
+                                       <i class="fa fa-gift"></i>
+                                       {% if customer.discount.coupon.percent_off %}
+                                           {{ customer.discount.coupon.percent_off }} % off
+                                       {% elseif customer.discount.coupon.amount_off %}
+                                           - ${{ customer.discount.coupon.amount_off }}
+                                       {% endif %}
+                                       {% if customer.discount.end %}
+                                           until {{ customer.discount.end|date('Y-m-d')  }}.
+                                       {% else %}
+                                           forever.
+                                       {% endif %}
+                                   </div>
+                               </div>
+                           </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="panel small-panel">
+                                    <form action="" method="POST">
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <h4>Have an code?</h4>
+                                            </div>
+                                        </div>
+                                        {# CARD NUMBER #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <label>
+                                                    <span>Code</span>
+                                                    <input name="stripeCode" type="text">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {# SUBMIT #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <button class="expand" style="margin-bottom: 5px;" type="submit">Activate Code</button>
                                             </div>
                                         </div>
                                     </form>
