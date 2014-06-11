@@ -9,6 +9,7 @@ parameters:
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
     slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
+    slmn_wovie_main.activity.listener.class: SLMN\Wovie\MainBundle\ActivityListener
 
 services:
     # System
@@ -37,6 +38,13 @@ services:
         arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption, @router]
         tags:
             - { name: twig.extension }
+    # DB
+    slmn_wovie_main.activity.listener:
+        class: %slmn_wovie_main.activity.listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+        arguments:
+            container: @service_container
     userOption:
         class:  %slmn_wovie_main.userOption.class%
         arguments:
