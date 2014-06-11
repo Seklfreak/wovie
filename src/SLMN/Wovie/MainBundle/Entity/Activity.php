@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="activity", indexes={@ORM\Index(name="user_idx", columns={"user"})})
+ * @ORM\Entity(repositoryClass="SLMN\Wovie\MainBundle\Entity\ActivityRepository")
  */
 class Activity
 {

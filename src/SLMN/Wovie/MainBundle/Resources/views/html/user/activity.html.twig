@@ -1,0 +1,37 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - activity{% endblock pagetitle %}
+
+{% block body %}
+    {% for activity in activities %}
+        <div class="row activities-row">
+            <div class="small-12 columns">
+                {# TODO: User profile card on hover #}
+                <p>
+                    {# TODO: Link to profile #}
+                    <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
+                        <img
+                                data-tooltip
+                                class="has-tip tip-right avatar-30"
+                                title="{{ activity.user.username }}"
+                                src="{{ getGravatarUrl(activity.user, 30) }}"
+                                >
+                    </a>
+                    {% if activity.key == 'follow.added' %}
+                        is now following
+                        <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
+                            <img
+                                    data-tooltip
+                                    class="has-tip tip-right avatar-30"
+                                    title="{{ activity.value.username }}"
+                                    src="{{ getGravatarUrl(activity.value, 30) }}"
+                                    >
+                        </a>.
+                    {% else %}
+                        {{ activity.key }} {{ dump(activity.value) }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock body %}

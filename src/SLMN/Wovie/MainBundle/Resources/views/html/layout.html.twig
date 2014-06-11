@@ -78,8 +78,8 @@
                                 <i class="fa fa-list"></i> Library
                             </a>
                         </li>
-                        <li>
-                            <a href="#">
+                        <li{% if app.request.get('_route') == 'slmn_wovie_user_activity' %} class="active"{% endif %}>
+                            <a id="shelf" href="{{ path('slmn_wovie_user_activity') }}">
                                 <i class="fa fa-clock-o"></i> Activity
                             </a>
                         </li>

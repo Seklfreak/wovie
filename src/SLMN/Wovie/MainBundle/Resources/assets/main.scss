@@ -256,12 +256,25 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   background-image: url("/bundles/slmnwoviemain/images/mastercard_32.png");
 }
 
+/* ACTIVITES */
+.activities-row {
+  margin-top: 5px;
+  & p {
+    margin-bottom: 0;
+  }
+}
+
 /* GENERAL */
 .meta-header-small {
   font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 800;
   margin-bottom: 1px;
+}
+.avatar-30 {
+  width: 30px;
+  height: 30px;
+  @include border-radius(5px);
 }
 .avatar-100 {
   @include border-radius(5px);

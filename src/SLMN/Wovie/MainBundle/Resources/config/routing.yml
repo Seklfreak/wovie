@@ -61,24 +61,28 @@ slmn_wovie_user_movie_details:
     methods:  [GET]
     requirements:
         id: \d+
+slmn_wovie_user_activity:
+    pattern:  /activity/
+    defaults: { _controller: SLMNWovieMainBundle:User:activity }
+    methods:  [GET]
 slmn_wovie_user_search:
     pattern:  /search
     defaults: { _controller: SLMNWovieMainBundle:User:search }
     methods:  [GET]
 slmn_wovie_user_feedback:
-    pattern:  /feedback
+    pattern:  /feedback/
     defaults: { _controller: SLMNWovieMainBundle:User:feedback }
     methods:  [GET, POST]
 slmn_wovie_user_settings_general:
-    pattern:  /settings/general
+    pattern:  /settings/general/
     defaults: { _controller: SLMNWovieMainBundle:User:settingsGeneral }
     methods:  [GET, POST]
 slmn_wovie_user_settings_profile:
-    pattern:  /settings/account
+    pattern:  /settings/account/
     defaults: { _controller: SLMNWovieMainBundle:User:settingsProfile }
     methods:  [GET, POST]
 slmn_wovie_user_settings_billing:
-    pattern:  /settings/billing
+    pattern:  /settings/billing/
     defaults: { _controller: SLMNWovieMainBundle:User:settingsBilling }
     methods:  [GET, POST]
 

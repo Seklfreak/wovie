@@ -578,7 +578,6 @@ class UserController extends Controller
 
     public function detailsMediaAction($id)
     {
-
         $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
         $media = $mediasRepo->findOneById($id);
 
@@ -591,6 +590,19 @@ class UserController extends Controller
             'SLMNWovieMainBundle:html/user:detailsMedia.html.twig',
             array(
                 'media' => $media
+            )
+        );
+    }
+
+    public function activityAction()
+    {
+        $activitiesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Activity');
+        $activities = $activitiesRepo->findAllForUser($this->getUser());
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user:activity.html.twig',
+            array(
+                'activities' => $activities
             )
         );
     }
