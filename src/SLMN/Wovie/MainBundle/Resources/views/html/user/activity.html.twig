@@ -28,7 +28,16 @@
                                     >
                         </a>.
                     {% else %}
-                        {{ activity.key }} {{ dump(activity.value) }}
+                        {{ activity.key }}
+                        {
+                        {% if activity.value is iterable %}
+                            {% for key, value in activity.value %}
+                                {{ key }} => {{ value }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {{ activity.value }}
+                        {% endif %}
+                         }
                     {% endif %}
                 </p>
             </div>
