@@ -11,21 +11,19 @@
                     <p>
                         <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
                             <img
-                                    data-tooltip
-                                    class="has-tip tip-right avatar-30"
-                                    title="{{ activity.user.username }}"
+                                    class="avatar-30"
                                     src="{{ getGravatarUrl(activity.user, 30) }}"
                                     >
+                            {{ activity.user.username }}
                         </a>
                         {% if activity.key == 'follow.added' %}
                             is now following
                             <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
                                 <img
-                                        data-tooltip
-                                        class="has-tip tip-right avatar-30"
-                                        title="{{ activity.value.username }}"
+                                        class="avatar-30"
                                         src="{{ getGravatarUrl(activity.value, 30) }}"
                                         >
+                                {{ activity.value.username }}
                             </a>.
                         {% elseif activity.key == 'media.added' %}
                             added
