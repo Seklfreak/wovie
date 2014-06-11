@@ -7,61 +7,63 @@
         {% for activity in activities %}
             <div class="row activities-row">
                 <div class="small-12 columns">
-                    {# TODO: User profile card on hover #}
-                    <p>
-                        <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
-                            <img
-                                    class="avatar-30"
-                                    src="{{ getGravatarUrl(activity.user, 30) }}"
-                                    >
-                            {{ activity.user.username }}
-                        </a>
-                        {% if activity.key == 'follow.added' %}
-                            is now following
-                            <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
+                    <div class="panel small-panel">
+                        {# TODO: User profile card on hover #}
+                        <p>
+                            <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
                                 <img
                                         class="avatar-30"
-                                        src="{{ getGravatarUrl(activity.value, 30) }}"
+                                        src="{{ getGravatarUrl(activity.user, 30) }}"
                                         >
-                                {{ activity.value.username }}
-                            </a>.
-                        {% elseif activity.key == 'media.added' %}
-                            added
-                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
-                                {{ activity.value.title }}
-                            </a> in their library.
-                        {% elseif activity.key == 'view.added' %}
-                            watched
-                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
-                                {{ activity.value.media.title }}
+                                {{ activity.user.username }}
                             </a>
-                            {% if activity.value.episode is defined and activity.value.episode.season %}
-                                season {{ activity.value.episode.season }}:
-                            {% endif %}
-                            {% if activity.value.episode is defined and activity.value.episode.episode %}
-                                {% if activity.value.episode.name %}
-                                    <span data-tooltip class="has-tip" title="{{ activity.value.episode.name }}">
+                            {% if activity.key == 'follow.added' %}
+                                is now following
+                                <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
+                                    <img
+                                            class="avatar-30"
+                                            src="{{ getGravatarUrl(activity.value, 30) }}"
+                                            >
+                                    {{ activity.value.username }}
+                                </a>.
+                            {% elseif activity.key == 'media.added' %}
+                                added
+                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
+                                    {{ activity.value.title }}
+                                </a> in their library.
+                            {% elseif activity.key == 'view.added' %}
+                                watched
+                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
+                                    {{ activity.value.media.title }}
+                                </a>
+                                {% if activity.value.episode is defined and activity.value.episode.season %}
+                                    season {{ activity.value.episode.season }}:
+                                {% endif %}
+                                {% if activity.value.episode is defined and activity.value.episode.episode %}
+                                    {% if activity.value.episode.name %}
+                                        <span data-tooltip class="has-tip" title="{{ activity.value.episode.name }}">
                                         {{ activity.value.episode.episode }}
                                     </span>
-                                {% else %}
-                                    {{ activity.value.episode.episode }}
-                                {% endif %}
-                            {% elseif activity.value.episodeId %}
-                                episode {{ activity.value.episodeId }}
-                            {% endif %}.
-                        {% else %}
-                            {{ activity.key }}
-                            {
-                            {% if activity.value is iterable %}
-                                {% for key, value in activity.value %}
-                                    {{ key }} => {{ value }}{% if not loop.last %},{% endif %}
-                                {% endfor %}
+                                    {% else %}
+                                        {{ activity.value.episode.episode }}
+                                    {% endif %}
+                                {% elseif activity.value.episodeId %}
+                                    episode {{ activity.value.episodeId }}
+                                {% endif %}.
                             {% else %}
-                                {{ activity.value }}
+                                {{ activity.key }}
+                                {
+                                {% if activity.value is iterable %}
+                                    {% for key, value in activity.value %}
+                                        {{ key }} => {{ value }}{% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ activity.value }}
+                                {% endif %}
+                                }
                             {% endif %}
-                            }
-                        {% endif %}
-                    </p>
+                        </p>
+                    </div>
                 </div>
             </div>
         {% endfor %}
