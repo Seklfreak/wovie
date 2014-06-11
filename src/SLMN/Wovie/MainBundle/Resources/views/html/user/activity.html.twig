@@ -45,6 +45,10 @@
             </div>
         {% endfor %}
     {% else %}
-        {{ main.alertBox('No activities here, try to add some friends.', '', 0) }} {# TODO: Friendssearch #}
+        <div class="row">
+            <div class="small-12 columns">
+                {{ main.alertBox('No activities here, try to add some friends.', '', 0) }} {# TODO: Friendssearch #}
+            </div>
+        </div>
     {% endif %}
 {% endblock body %}
