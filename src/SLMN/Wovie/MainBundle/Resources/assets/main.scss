@@ -217,7 +217,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 
 /* PUBLIC PAGE */
 .avatar {
-  width: 100%;
+  width: 200px;
   height: 200px;
   @include border-radius(10px); // TODO: Shadow?
 }
@@ -225,6 +225,11 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 .follow-button, .defollow-button {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+@media #{$medium-up} {
+  .follow-button, .defollow-button {
+    width: 200px !important;
+  }
 }
 .follow-avatar {
   padding-bottom: 3px;

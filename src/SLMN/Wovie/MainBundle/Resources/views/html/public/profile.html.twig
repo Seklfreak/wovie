@@ -12,12 +12,12 @@
         {% set followers = getFollowers(user) %}
         {% set followings = getFollowings(user) %}
         <div class="large-3 small-12 columns">
-            <div class="row collapse">
+            <div class="row collapse text-center">
                 <img class="avatar" src="{{ getGravatarUrl(user) }}">
             </div>
             {% if is_granted('ROLE_USER') and user != app.security.getToken().getUser() %}
                 {% if isFollowing(user) %}
-                    <div class="row collapse">
+                    <div class="row collapse text-center">
                         <button
                                 autocomplete="off"
                                 class="small radius alert expand defollow-button"
