@@ -56,6 +56,23 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
+            case 'customer.updated':
+                $customer = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $stripeCustomer = $stripeCustomersRepo->findOneByCustomerId($customer->id);
+                if ($stripeCustomer)
+                {
+                    $stripeCustomer->setDelinquent($customer->delinquent);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stripeCustomer);
+                    $em->flush();
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
+                break;
             case 'customer.subscription.deleted':
                 $subscription = $event->data->object;
                 $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
@@ -80,6 +97,24 @@ class WebhookController extends Controller
                     $response->setContent('Customer not found!');
                     $response->setStatusCode(500);
                 }
+            case 'charge.succeeded':
+            case 'charge.failed':
+                $charge = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $stripeCustomer = $stripeCustomersRepo->findOneByCustomerId($charge->customer);
+                if ($stripeCustomer)
+                {
+                    $stripeCustomer->setChargeFailureMessage($charge->failure_code); // TODO: Translate
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stripeCustomer);
+                    $em->flush();
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
+                break;
             // TODO: customer.subscription.trial_will_end -> three days before trial ends
             // TODO: invoice.payment_succeeded-> send subscription receipt
             //          -> if stripe_invoice.closed and stripe_invoice.total == 0 -> trial invoice, dont send an email

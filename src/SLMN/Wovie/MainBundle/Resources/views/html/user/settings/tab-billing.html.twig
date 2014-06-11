@@ -46,13 +46,28 @@
                                 </div>
                             </div>
                         {% else %}
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <div class="panel small-panel">
-                                        <p><i class="fa fa-calendar"></i> Subscription active to <b>{{ customer.subscriptions.data[0].current_period_end|date('Y-m-d') }}</b>.</p>
+                            {% if not customer.delinquent %}
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <div class="panel small-panel">
+                                            <p><i class="fa fa-calendar"></i> Subscription active to <b>{{ customer.subscriptions.data[0].current_period_end|date('Y-m-d') }}</b>.</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% else %}
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <div class="panel small-panel">
+                                            <p>
+                                                <i class="fa fa-calendar"></i> Subscription <b>inactive</b>.
+                                                {% if stripeCustomer.getChargeFailureMessage() %}
+                                                    <br>Charge failure: <b>{{ stripeCustomer.getChargeFailureMessage() }}</b>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         {% endif %}
                         <div class="row">
                             <div class="small-12 columns">

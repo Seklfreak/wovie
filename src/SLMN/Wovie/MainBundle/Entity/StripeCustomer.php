@@ -27,6 +27,49 @@ class StripeCustomer
     protected $paidUntil;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $delinquent = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $chargeFailureMessage;
+
+    /**
+     * @return mixed
+     */
+    public function getChargeFailureMessage()
+    {
+        return $this->chargeFailureMessage;
+    }
+
+    /**
+     * @param mixed $chargeFailureMessage
+     */
+    public function setChargeFailureMessage($chargeFailureMessage)
+    {
+        $this->chargeFailureMessage = $chargeFailureMessage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDelinquent()
+    {
+        return $this->delinquent;
+    }
+
+    /**
+     * @param mixed $delinquent
+     */
+    public function setDelinquent($delinquent)
+    {
+        $this->delinquent = $delinquent;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getPaidUntil()

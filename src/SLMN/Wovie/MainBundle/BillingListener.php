@@ -85,7 +85,7 @@ class BillingListener
             else
             {
                 // Check if subscription is valid
-                if (new \DateTime() > $customer->getPaidUntil())
+                if ($customer->getDelinquent() == true || new \DateTime() > $customer->getPaidUntil())
                 {
                     $route = 'slmn_wovie_user_settings_billing';
 

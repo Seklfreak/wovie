@@ -456,6 +456,7 @@ class UserController extends Controller
         return $this->render(
             'SLMNWovieMainBundle:html/user/settings:tab-billing.html.twig',
             array(
+                'stripeCustomer' => $stripeCustomer,
                 'customer' => $customer,
                 'invoices' => $invoices,
                 'upcomingInvoice' => $upcomingInvoice
