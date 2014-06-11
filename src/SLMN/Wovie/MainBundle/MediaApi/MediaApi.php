@@ -79,7 +79,7 @@ class MediaApi
         }
     }
 
-    public function fetchEpisodes($id)
+    public function fetchEpisodes($id, $totalCount=false)
     {
         $url = 'https://www.googleapis.com/freebase/v1/mqlread'.'?';
         $parameter = array(
@@ -113,7 +113,36 @@ class MediaApi
             {
                 $episodesArray[$episode['season_number']][$episode['episode_number']] = $episode['name'];
             }
-            return $episodesArray;
+
+            if ($totalCount != false)
+            {
+                $totalEpisodes = count($result);
+                $totalCountArray = array();
+                $curSeason = 1;
+                $curEpisodeInSeason = 1;
+                foreach (range(1, $totalEpisodes) as $curEpisodeTotal)
+                {
+                    if (!array_key_exists($curSeason, $episodesArray) || !array_key_exists($curEpisodeInSeason, $episodesArray[$curSeason]))
+                    {
+                        $curEpisodeInSeason = 1;
+                        $curSeason++;
+                    }
+                    if (array_key_exists($curSeason, $episodesArray) && array_key_exists($curEpisodeInSeason, $episodesArray[$curSeason]))
+                    {
+                        $totalCountArray[$curEpisodeTotal] = array(
+                            'name' => $episodesArray[$curSeason][$curEpisodeInSeason],
+                            'season' => $curSeason,
+                            'episode' => $curEpisodeInSeason
+                        );
+                        $curEpisodeInSeason++;
+                    }
+                }
+                return $totalCountArray;
+            }
+            else
+            {
+                return $episodesArray;
+            }
         }
         else
         {

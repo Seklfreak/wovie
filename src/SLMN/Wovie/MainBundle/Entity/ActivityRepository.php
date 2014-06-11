@@ -10,6 +10,7 @@ class ActivityRepository extends EntityRepository
     {
         $followersRepo = $this->getEntityManager()->getRepository('SLMNWovieMainBundle:Follow');
         $usersRepo = $this->getEntityManager()->getRepository('SeklMainUserBundle:User');
+        $mediasRepo = $this->getEntityManager()->getRepository('SLMNWovieMainBundle:Media');
         $followers = $followersRepo->findBy(array('user' => $user));
         $users = array();
         foreach ($followers as $follower)
@@ -49,12 +50,19 @@ class ActivityRepository extends EntityRepository
                         unset($activities[$key]);
                     }
                     break;
+                case 'media.added':
+                    $activities[$key]['value'] = $mediasRepo->findOneById($value->getValue());
+                    break;
+                case 'view.added':
+                    $activities[$key]['value']['media'] = $mediasRepo->findOneById($value->getValue()['mediaId']);
+                    $activities[$key]['value']['episodeId'] = $value->getValue()['episodeId'];
+                    break;
                 default:
                     break;
             }
         }
 
-        // TODO: Remove duplicates
+        // TODO: Merge array (like if watches of multiple episodes, not one entry for every episode)
 
         return $activities;
     }

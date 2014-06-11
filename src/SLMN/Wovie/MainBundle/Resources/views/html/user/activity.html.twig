@@ -9,7 +9,6 @@
                 <div class="small-12 columns">
                     {# TODO: User profile card on hover #}
                     <p>
-                        {# TODO: Link to profile #}
                         <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
                             <img
                                     data-tooltip
@@ -28,6 +27,30 @@
                                         src="{{ getGravatarUrl(activity.value, 30) }}"
                                         >
                             </a>.
+                        {% elseif activity.key == 'media.added' %}
+                            added
+                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
+                                {{ activity.value.title }}
+                            </a> in their library.
+                        {% elseif activity.key == 'view.added' %}
+                            watched
+                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
+                                {{ activity.value.media.title }}
+                            </a>
+                            {% if activity.value.episode is defined and activity.value.episode.season %}
+                                season {{ activity.value.episode.season }}:
+                            {% endif %}
+                            {% if activity.value.episode is defined and activity.value.episode.episode %}
+                                {% if activity.value.episode.name %}
+                                    <span data-tooltip class="has-tip" title="{{ activity.value.episode.name }}">
+                                        {{ activity.value.episode.episode }}
+                                    </span>
+                                {% else %}
+                                    {{ activity.value.episode.episode }}
+                                {% endif %}
+                            {% elseif activity.value.episodeId %}
+                                episode {{ activity.value.episodeId }}
+                            {% endif %}.
                         {% else %}
                             {{ activity.key }}
                             {
