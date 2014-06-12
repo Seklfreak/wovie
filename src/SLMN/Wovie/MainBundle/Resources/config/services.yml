@@ -43,6 +43,7 @@ services:
         class: %slmn_wovie_main.activity.listener.class%
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preRemove }
         arguments:
             container: @service_container
     userOption:

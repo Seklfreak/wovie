@@ -43,15 +43,28 @@ class ActivityRepository extends EntityRepository
             switch ($value->getKey())
             {
                 case 'follow.added':
-                    $activities[$key]['value'] = $usersRepo->findOneById($value->getValue());
-
+                    if (($user=$usersRepo->findOneById($value->getValue()))) // TODO: Check this for all
+                    {
+                        $activities[$key]['value'] = $user;
+                    }
+                    else
+                    {
+                        unset($activities[$key]);
+                    }
                     if ($activities[$key]['value'] == $user)
                     {
                         unset($activities[$key]);
                     }
                     break;
                 case 'media.added':
-                    $activities[$key]['value'] = $mediasRepo->findOneById($value->getValue());
+                    if (($media=$mediasRepo->findOneById($value->getValue())))
+                    {
+                        $activities[$key]['value'] = $mediasRepo->findOneById($value->getValue());
+                    }
+                    else
+                    {
+                        unset($activities[$key]);
+                    }
                     break;
                 case 'view.added':
                     $activities[$key]['value']['media'] = $mediasRepo->findOneById($value->getValue()['mediaId']);

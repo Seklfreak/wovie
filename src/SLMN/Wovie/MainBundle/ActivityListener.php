@@ -70,4 +70,64 @@ class ActivityListener
             $em->flush();
         }
     }
+
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        $em = $args->getEntityManager();
+        $activitiesRepo = $em->getRepository('SLMNWovieMainBundle:Activity');
+
+        if ($entity instanceof Media)
+        {
+            $activities = $activitiesRepo->findBy(array(
+                    'user' => $this->getUser(),
+                    'key' => 'media.added',
+                    'value' => $entity->getId()
+                ),
+                array(
+                    'createdAt' => 'DESC'
+                )
+            );
+            if (array_key_exists(0, $activities) && $activities[0] != null)
+            {
+                $em->remove($activities[0]);
+            }
+        }
+        /* else if ($entity instanceof View)
+        {
+            // TODO: Doctrine does not serializes the array, how to remove?
+            $activities = $activitiesRepo->findBy(array(
+                    'user' => $this->getUser(),
+                    'key' => 'view.added',
+                    'value' => array(
+                        'mediaId' => $entity->getMedia()->getId(),
+                        'episodeId' => $entity->getEpisode()
+                    )
+                ),
+                array(
+                    'createdAt' => 'DESC'
+                )
+            );
+            if (array_key_exists(0, $activities) && $activities[0] != null)
+            {
+                $em->remove($activities[0]);
+            }
+        }*/
+        else if ($entity instanceof Follow)
+        {
+            $activities = $activitiesRepo->findBy(array(
+                    'user' => $this->getUser(),
+                    'key' => 'follow.added',
+                    'value' => $entity->getFollow()->getId()
+                ),
+                array(
+                    'createdAt' => 'DESC'
+                )
+            );
+            if (array_key_exists(0, $activities) && $activities[0] != null)
+            {
+                $em->remove($activities[0]);
+            }
+        }
+    }
 }
