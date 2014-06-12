@@ -137,6 +137,12 @@ slmn_wovie_actions_ajax_user_defollow:
       expose: true
     requirements:
         userId: \d+
+slmn_wovie_actions_ajax_infinite_activity:
+    pattern: /action/ajax/infinite/activity/{page}.html
+    defaults: { _controller: SLMNWovieMainBundle:Action:infiniteActivity }
+    methods: [GET]
+    requirements:
+        page: \d+
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

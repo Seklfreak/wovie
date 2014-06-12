@@ -4,72 +4,17 @@
 
 {% block body %}
     {% if activities|length > 0 %}
-        {% for activity in activities %}
-            <div class="row activities-row">
-                <div class="small-12 columns">
-                    <div class="panel activity-panel">
-                        {# TODO: User profile card on hover #}
-                        <p>
-                            <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
-                                <img
-                                        class="avatar-30"
-                                        src="{{ getGravatarUrl(activity.user, 30) }}"
-                                        >
-                                {{ activity.user.username }}
-                            </a>
-                            {% if activity.key == 'follow.added' %}
-                                is now following
-                                <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
-                                    <img
-                                            class="avatar-30"
-                                            src="{{ getGravatarUrl(activity.value, 30) }}"
-                                            >
-                                    {{ activity.value.username }}
-                                </a>.
-                            {% elseif activity.key == 'media.added' %}
-                                added
-                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
-                                    {{ activity.value.title }}
-                                </a> in their library.
-                            {% elseif activity.key == 'view.added' %}
-                                watched
-                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
-                                    {{ activity.value.media.title }}
-                                </a>
-                                {% if activity.value.episode is defined and activity.value.episode.season %}
-                                    season {{ activity.value.episode.season }}:
-                                {% endif %}
-                                {% if activity.value.episode is defined and activity.value.episode.episode %}
-                                    {% if activity.value.episode.name %}
-                                        <span data-tooltip class="has-tip" title="{{ activity.value.episode.name }}">
-                                        {{ activity.value.episode.episode }}
-                                    </span>
-                                    {% else %}
-                                        {{ activity.value.episode.episode }}
-                                    {% endif %}
-                                {% elseif activity.value.episodeId %}
-                                    episode {{ activity.value.episodeId }}
-                                {% endif %}.
-                            {% else %}
-                                {{ activity.key }}
-                                {
-                                {% if activity.value is iterable %}
-                                    {% for key, value in activity.value %}
-                                        {{ key }} => {{ value }}{% if not loop.last %},{% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    {{ activity.value }}
-                                {% endif %}
-                                }
-                            {% endif %}
-                            <span class="right activity-date">
-                                {{ activity.createdAt|date('Y-m-d H:i') }} {# TODO: Add relative time (x minutes ago…) #}
-                            </span>
-                        </p>
-                    </div>
-                </div>
+        <div id="activity-infinite-container">
+            {% for activity in activities %}
+                {{ wovie.activityBox(activity) }}
+            {% endfor %}
+            <a class="hide infinite-more-link" href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': 2}) }}"></a>
+        </div>
+        <div class="row hide" id="activity-infinite-spinner">
+            <div class="small-12 text-center columns">
+                <fa class="fa fa-spinner fa-spin fa-2x activity-spinner"></fa>
             </div>
-        {% endfor %}
+        </div>
     {% else %}
         <div class="row" style="margin-top: 10px;">
             <div class="small-12 columns">

@@ -1,0 +1,13 @@
+{% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
+
+{% if activities|length > 0 %}
+    {% for activity in activities %}
+        <div class="infinite-item">
+            {{ wovie.activityBox(activity) }}
+            {% if loop.last %}
+                <a class="hide infinite-more-link"
+                   href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': page+1}) }}"></a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}

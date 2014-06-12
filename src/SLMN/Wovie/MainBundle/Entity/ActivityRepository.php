@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class ActivityRepository extends EntityRepository
 {
-    public function findAllForUser($user)
+    public function findAllForUser($user, $offset=0)
     {
         $followersRepo = $this->getEntityManager()->getRepository('SLMNWovieMainBundle:Follow');
         $usersRepo = $this->getEntityManager()->getRepository('SeklMainUserBundle:User');
@@ -26,7 +26,8 @@ class ActivityRepository extends EntityRepository
             ->groupBy('activity.user')
             ->addGroupBy('activity.key')
             ->addGroupBy('activity.value')
-            ->setMaxResults(25) // TODO: Lazyloading with offset? ( ->setFirstResult( $offset ) )
+            ->setMaxResults(25)
+            ->setFirstResult($offset*25)
             ->getQuery();
 
         $result = $query->getResult();

@@ -259,6 +259,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 /* ACTIVITES */
 .activities-row {
   margin-top: 5px;
+  margin-bottom: 5px;
   & p {
     margin-bottom: 0;
   }
@@ -270,6 +271,9 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 }
 .activity-date {
   color: #797979;
+}
+.activity-spinner {
+  margin-bottom: 7px;
 }
 
 /* GENERAL */

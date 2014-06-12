@@ -96,12 +96,20 @@ function init()
                 });
         }
     });
+    // Activity infinite container
+    $('#activity-infinite-container').waypoint('infinite', {
+        onBeforePageLoad: function() {
+            $('#activity-infinite-spinner').removeClass('hide');
+        },
+        onAfterPageLoad: function() {
+            $('#activity-infinite-spinner').addClass('hide');
+        }
+    });
 }
 
 function resetFilter()
 {
     $('#media-entries').html($('#media-entries').data('html'));
-    //$('.media-entry').css('display', 'none');
     $('.filter-nav > dd').removeClass('active');
 }
 
