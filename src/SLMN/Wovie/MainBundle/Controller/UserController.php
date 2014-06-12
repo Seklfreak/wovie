@@ -318,7 +318,6 @@ class UserController extends Controller
         }
 
         $accountForm = $this->createForm('editUser', $myUser)
-            ->remove('username')
             ->remove('roles');
 
         $oldPassword = $myUser->getPassword();

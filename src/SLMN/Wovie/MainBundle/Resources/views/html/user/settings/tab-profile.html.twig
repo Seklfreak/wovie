@@ -19,6 +19,7 @@
                     <input type="text" name="prevent_autofill" value="" style="display:none;">
                     <input type="password" name="prevent_autofill" value="" style="display:none;">
                     {{ form_errors(accountForm) }}
+                    {{ form_row(accountForm.username) }}
                     {{ form_row(accountForm.email) }}
                     {{ form_row(accountForm.password) }}
                     {{ form_row(accountForm.Submit, { 'label': 'Update account' }) }}
