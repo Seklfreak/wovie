@@ -20,32 +20,41 @@ class ActivityRepository extends EntityRepository
         }
         $users[] = $user;
 
-        // TODO: time offset! (each page, 6 hours?)
+        $dateStart = new \DateTime();
+        $dateStart->modify('-'.(24*intval($offset)).' hour');
+        $dateTo = new \DateTime();
+        $dateTo->modify('-'.(24*(intval($offset)+1)).' hour');
         $query = $this->createQueryBuilder('activity')
             ->where('activity.user IN (:users)')
-            ->setParameter('users', $users)
-            ->orderBy('activity.createdAt', 'DESC')
-            ->groupBy('activity.user')
-            ->addGroupBy('activity.key')
-            ->addGroupBy('activity.value')
-            ->setMaxResults(50)
-            ->setFirstResult($offset*50)
-            ->getQuery();
-        $followingYouQuery = $this->createQueryBuilder('activity')
-            ->where('activity.value = :me')
-            ->andWhere('activity.user NOT IN (:users)')
-            ->andWhere('activity.key = :key')
+            ->andWhere('activity.createdAt < :dateStart')
+            ->andWhere('activity.createdAt > :dateTo')
             ->setParameters(array(
-                'me' => serialize($user->getId()),
-                'key' => 'follow.added',
-                'users' => $users
+                'users' => $users,
+                'dateStart' => $dateStart,
+                'dateTo' => $dateTo
             ))
             ->orderBy('activity.createdAt', 'DESC')
             ->groupBy('activity.user')
             ->addGroupBy('activity.key')
             ->addGroupBy('activity.value')
-            ->setMaxResults(50)
-            ->setFirstResult($offset*50)
+            ->getQuery();
+        $followingYouQuery = $this->createQueryBuilder('activity')
+            ->where('activity.value = :me')
+            ->andWhere('activity.user NOT IN (:users)')
+            ->andWhere('activity.key = :key')
+            ->andWhere('activity.createdAt < :dateStart')
+            ->andWhere('activity.createdAt > :dateTo')
+            ->setParameters(array(
+                'me' => serialize($user->getId()),
+                'key' => 'follow.added',
+                'users' => $users,
+                'dateStart' => $dateStart,
+                'dateTo' => $dateTo
+            ))
+            ->orderBy('activity.createdAt', 'DESC')
+            ->groupBy('activity.user')
+            ->addGroupBy('activity.key')
+            ->addGroupBy('activity.value')
             ->getQuery();
 
         $result = $query->getResult();
