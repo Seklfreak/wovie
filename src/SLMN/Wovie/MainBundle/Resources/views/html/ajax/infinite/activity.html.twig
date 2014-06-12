@@ -18,10 +18,19 @@
                                                 class="avatar-30"
                                                 src="{{ getGravatarUrl(time.0.user, 30) }}"
                                                 >
-                                        {{ time.0.user.username }}
+                                        {% if app.security.getToken().getUser().username != time.0.user.username %}
+                                            {{ time.0.user.username }}
+                                        {% else %}
+                                            you
+                                        {% endif %}
                                     </a>
                                     {% if time.0.key == 'follow.added' %}
-                                        is now following
+                                        {% if app.security.getToken().getUser().username != time.0.user.username %}
+                                            is
+                                        {% else %}
+                                            are
+                                        {% endif %}
+                                        now following
                                         {% for activity in time %}
                                             <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
                                                 <img
