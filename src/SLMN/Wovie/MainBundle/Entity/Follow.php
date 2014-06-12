@@ -11,7 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Follow
 {
     /**
+     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Sekl\Main\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user", referencedColumnName="id")
      */
