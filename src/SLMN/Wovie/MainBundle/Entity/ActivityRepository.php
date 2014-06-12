@@ -52,7 +52,7 @@ class ActivityRepository extends EntityRepository
                     {
                         unset($activities[$key]);
                     }
-                    if ($activities[$key]['value'] == $user->getId())
+                    if ($activities[$key]['value']->getId() == $user->getId())
                     {
                         unset($activities[$key]);
                     }

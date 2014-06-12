@@ -37,9 +37,15 @@
                                     {% elseif time.0.key == 'media.added' %}
                                         added
                                         {% for activity in time %}
-                                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
-                                                {{ activity.value.title }}
-                                            </a>
+                                            {% if time.0.user == app.security.getToken().getUser() %}
+                                                <a href="{{ path('slmn_wovie_user_movie_details', {'id': activity.value.id}) }}">
+                                                    {{ activity.value.title }}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
+                                                    {{ activity.value.title }}
+                                                </a>
+                                            {% endif %}
                                             {% if not loop.last %}
                                                 ,
                                             {% endif %}
@@ -53,14 +59,20 @@
                                         {% set iEpisode = 0 %}
                                         {% set lastWasSeries = false %}
                                         {% for activity in time %}
-                                            {% if activity.value.media.title != lastMedia %}
+                                            {% if activity.value.media.id != lastMedia %}
                                                 {% if iMovie > 0 and lastWasSeries == false%}
                                                     ,
                                                 {% endif %}
-                                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
-                                                    {{ activity.value.media.title }}
-                                                </a>
-                                                {% set lastMedia = activity.value.media.title %}
+                                                {% if time.0.user == app.security.getToken().getUser() %}
+                                                    <a href="{{ path('slmn_wovie_user_movie_details', {'id': activity.value.media.id}) }}">
+                                                        {{ activity.value.media.title }}
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
+                                                        {{ activity.value.media.title }}
+                                                    </a>
+                                                {% endif %}
+                                                {% set lastMedia = activity.value.media.id %}
                                                 {% set lastSeason = null %}
                                                 {% set iMovie = iMovie+1 %}
                                                 {% if activity.value.media.mediaType == 2 %}
