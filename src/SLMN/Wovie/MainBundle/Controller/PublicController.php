@@ -127,7 +127,7 @@ class PublicController extends Controller
         $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
         if (!$publicProfileBool || $publicProfileBool->getValue() == false)
         {
-            throw $this->createNotFoundException('Profile not found!');
+            throw $this->createNotFoundException('Profile not public viewable!');
         }
         $myMedia = $mediasRepo->findBy(array('createdBy' => $myUser), array('title' => 'ASC'));
 

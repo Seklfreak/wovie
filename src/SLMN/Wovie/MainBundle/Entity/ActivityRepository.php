@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 class ActivityRepository extends EntityRepository
@@ -19,6 +20,7 @@ class ActivityRepository extends EntityRepository
         }
         $users[] = $user;
 
+        // TODO: time offset! (each page, 6 hours?)
         $query = $this->createQueryBuilder('activity')
             ->where('activity.user IN (:users)')
             ->setParameter('users', $users)
@@ -29,8 +31,26 @@ class ActivityRepository extends EntityRepository
             ->setMaxResults(50)
             ->setFirstResult($offset*50)
             ->getQuery();
+        $followingYouQuery = $this->createQueryBuilder('activity')
+            ->where('activity.value = :me')
+            ->andWhere('activity.user NOT IN (:users)')
+            ->andWhere('activity.key = :key')
+            ->setParameters(array(
+                'me' => serialize($user->getId()),
+                'key' => 'follow.added',
+                'users' => $users
+            ))
+            ->orderBy('activity.createdAt', 'DESC')
+            ->groupBy('activity.user')
+            ->addGroupBy('activity.key')
+            ->addGroupBy('activity.value')
+            ->setMaxResults(50)
+            ->setFirstResult($offset*50)
+            ->getQuery();
 
         $result = $query->getResult();
+        $followingYou = $followingYouQuery->getResult();
+        $result = new ArrayCollection(array_merge($result, $followingYou));
         $activities = array();
         foreach ($result as $key=>$value)
         {
@@ -44,15 +64,11 @@ class ActivityRepository extends EntityRepository
             switch ($value->getKey())
             {
                 case 'follow.added':
-                    if (($user=$usersRepo->findOneById($value->getValue())))
+                    if (($oUser=$usersRepo->findOneById($value->getValue())))
                     {
-                        $activities[$key]['value'] = $user;
+                        $activities[$key]['value'] = $oUser;
                     }
                     else
-                    {
-                        unset($activities[$key]);
-                    }
-                    if ($activities[$key]['value']->getId() == $user->getId())
                     {
                         unset($activities[$key]);
                     }

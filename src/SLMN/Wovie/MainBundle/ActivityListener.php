@@ -95,7 +95,7 @@ class ActivityListener
         }
         /* else if ($entity instanceof View)
         {
-            // TODO: Doctrine does not serializes the array, how to remove?
+            // TODO: Doctrine does not serializes the array, how to remove? Query Builder!
             $activities = $activitiesRepo->findBy(array(
                     'user' => $this->getUser(),
                     'key' => 'view.added',

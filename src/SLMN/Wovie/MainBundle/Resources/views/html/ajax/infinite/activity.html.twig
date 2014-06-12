@@ -28,7 +28,11 @@
                                                         class="avatar-30"
                                                         src="{{ getGravatarUrl(activity.value, 30) }}"
                                                         >
-                                                {{ activity.value.username }}
+                                                {% if app.security.getToken().getUser().username != activity.value.username %}
+                                                    {{ activity.value.username }}
+                                                {% else %}
+                                                    you
+                                                {% endif %}
                                             </a>
                                             {% if not loop.last %}
                                                 ,
