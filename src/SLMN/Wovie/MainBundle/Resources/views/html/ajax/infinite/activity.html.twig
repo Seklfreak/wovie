@@ -70,10 +70,8 @@
                                         {% set lastSeason = null %}
                                         {% set iMovie = 0 %}
                                         {% set iEpisode = 0 %}
-                                        {% set lastEpisode = 0 %}
                                         {% set lastWasSeries = false %}
-                                        {% set firstEpisodePrinted = false %}
-                                        {% for key, activity in time %}
+                                        {% for activity in time %}
                                             {% if activity.value.media.id != lastMedia %}
                                                 {% if iMovie > 0 and lastWasSeries == false%}
                                                     ,
@@ -100,31 +98,18 @@
                                                 season {{ activity.value.episode.season }}:
                                                 {% set lastSeason = activity.value.episode.season %}
                                                 {% set iEpisode = 0 %}
-                                                {% set firstEpisodePrinted = false %}
-                                                {% set lastEpisode = 0 %}
                                             {% endif %}
                                             {% if activity.value.episode is defined and activity.value.episode.episode %}
-                                                {% if iEpisode+1 != activity.value.episode.episode or firstEpisodePrinted != true %}
-                                                    {% if iEpisode > 0 %}
-                                                        ,
-                                                    {% endif %}
-                                                    {% if activity.value.episode.name %}
-                                                        <span data-tooltip class="has-tip"
-                                                              title="{{ activity.value.episode.name }}">
-                                                            {{ activity.value.episode.episode }}
-                                                        </span>
-                                                    {% else %}
-                                                        {{ activity.value.episode.episode }}
-                                                    {% endif %}
-                                                    {% if time[key+1].value.episode is defined and time[key+1].value.episode.episode != activity.value.episode.episode %}
-                                                        {% set firstEpisodePrinted = true %}
-                                                    {% endif %}
-                                                    {% set lastEpisode = activity.value.episode.episode %}
+                                                {% if iEpisode > 0 %}
+                                                    ,
                                                 {% endif %}
-                                                {% if firstEpisodePrinted == true and time[key+1].value.episode is defined and lastEpisode != activity.value.episode.episode and time[key+1].value.episode.episode != activity.value.episode.episode+1 %}
-                                                    - {{ activity.value.episode.episode }}
-                                                {% elseif firstEpisodePrinted == true and time[key+1].value.episode is not defined and activity.value.episode.episode != iEpisode %}
-                                                    - {{ activity.value.episode.episode }}
+                                                {% if activity.value.episode.name %}
+                                                    <span data-tooltip class="has-tip"
+                                                          title="{{ activity.value.episode.name }}">
+                                                        {{ activity.value.episode.episode }}
+                                                    </span>
+                                                {% else %}
+                                                    {{ activity.value.episode.episode }}
                                                 {% endif %}
                                                 {% set iEpisode = iEpisode+1 %}
                                             {% elseif activity.value.episodeId %}
@@ -137,7 +122,7 @@
                                         {% endfor %}.
                                     {% endif %}
                                     <span class="activity-date">
-                                        {{ time.0.createdAt|date('Y-m-d H:i') }} {# TODO: Add relative time (x minutes ago…) #}
+                                        {{ time.0.createdAt|date('Y-m-d H:i') }} {# TODO: Add relative time (x minutes agoâ€¦) #}
                                     </span>
                                 </p>
                             </div>
