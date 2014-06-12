@@ -382,12 +382,39 @@ class ActionController extends Controller
                     breaK;
             }
         }
+        // Merge together
+        $activitiesTimeMerged = array(
+            'view.added' => array(),
+            'media.added' => array(),
+            'follow.added' => array()
+        );
+        foreach ($activities as $activity) {
+            $addedToTimeArray = false;
+            if (array_key_exists($activity['user']->getId(), $activitiesTimeMerged[$activity['key']])) {
+                foreach ($activitiesTimeMerged[$activity['key']][$activity['user']->getId()] as $timestamp => $timeArray) {
+                    $time = new \DateTime();
+                    $time->setTimestamp($timestamp);
+                    // In one hour time range?
+                    if (
+                        abs($timestamp - $activity['createdAt']->getTimestamp()) < 1800 // &&
+                    ) {
+                        $activitiesTimeMerged[$activity['key']][$activity['user']->getId()][$timestamp][] = $activity;
+                        $addedToTimeArray = true;
+                        break;
+                    }
+                }
+            }
+            if ($addedToTimeArray == false) {
+                $activitiesTimeMerged[$activity['key']][$activity['user']->getId()][$activity['createdAt']->getTimestamp()][] = $activity;
+            }
+        }
 
         return $this->render(
             'SLMNWovieMainBundle:html/ajax/infinite:activity.html.twig',
             array(
-                'activities' => $activities,
-                'page' => $page
+                //'activities' => $activities,
+                'page' => $page,
+                'activities' => $activitiesTimeMerged
             )
         );
     }

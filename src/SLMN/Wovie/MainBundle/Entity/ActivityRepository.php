@@ -26,8 +26,8 @@ class ActivityRepository extends EntityRepository
             ->groupBy('activity.user')
             ->addGroupBy('activity.key')
             ->addGroupBy('activity.value')
-            ->setMaxResults(25)
-            ->setFirstResult($offset*25)
+            ->setMaxResults(50)
+            ->setFirstResult($offset*50)
             ->getQuery();
 
         $result = $query->getResult();

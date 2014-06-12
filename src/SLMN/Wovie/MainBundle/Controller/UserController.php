@@ -595,34 +595,8 @@ class UserController extends Controller
 
     public function activityAction()
     {
-        $activitiesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Activity');
-        $activities = $activitiesRepo->findAllForUser($this->getUser());
-
-        $mediaApi = $this->get('mediaApi');
-        foreach ($activities as $key=>$activity)
-        {
-            switch ($activity['key'])
-            {
-                case 'view.added':
-                    if ($activity['value']['episodeId'] && $activity['value']['media']->getFreebaseId())
-                    {
-                        $episodes = $mediaApi->fetchEpisodes($activity['value']['media']->getFreebaseId(), true);
-                        if (array_key_exists($activity['value']['episodeId'], $episodes))
-                        {
-                            $activities[$key]['value']['episode'] = $episodes[$activity['value']['episodeId']];
-                        }
-                    }
-                    break;
-                default:
-                    breaK;
-            }
-        }
-
         return $this->render(
-            'SLMNWovieMainBundle:html/user:activity.html.twig',
-            array(
-                'activities' => $activities
-            )
+            'SLMNWovieMainBundle:html/user:activity.html.twig'
         );
     }
 }

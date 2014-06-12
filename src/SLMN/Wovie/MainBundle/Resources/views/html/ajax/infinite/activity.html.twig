@@ -1,13 +1,125 @@
+{% import "SeklMainFoundationBundle::macros.html.twig" as main %}
 {% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
 
+{% set activitiesCount = 0 %}
 {% if activities|length > 0 %}
-    {% for activity in activities %}
-        <div class="infinite-item">
-            {{ wovie.activityBox(activity) }}
-            {% if loop.last %}
-                <a class="hide infinite-more-link"
-                   href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': page+1}) }}"></a>
-            {% endif %}
-        </div>
+    {% for type in activities %}
+        {% for user in type %}
+            {% for time in user %}
+                {% set activitiesCount = activitiesCount+1%}
+                <div class="infinite-item">
+                    <div class="row activities-row infinite-item">
+                        <div class="small-12 columns">
+                            <div class="panel activity-panel">
+                                {# TODO: User profile card on hover #}
+                                <p>
+                                    <a href="{{ path('slmn_wovie_public_profile', {'username': time.0.user.username}) }}">
+                                        <img
+                                                class="avatar-30"
+                                                src="{{ getGravatarUrl(time.0.user, 30) }}"
+                                                >
+                                        {{ time.0.user.username }}
+                                    </a>
+                                    {% if time.0.key == 'follow.added' %}
+                                        is now following
+                                        {% for activity in time %}
+                                            <a href="{{ path('slmn_wovie_public_profile', {'username': activity.value.username}) }}">
+                                                <img
+                                                        class="avatar-30"
+                                                        src="{{ getGravatarUrl(activity.value, 30) }}"
+                                                        >
+                                                {{ activity.value.username }}
+                                            </a>
+                                            {% if not loop.last %}
+                                                ,
+                                            {% endif %}
+                                        {% endfor %}.
+                                    {% elseif time.0.key == 'media.added' %}
+                                        added
+                                        {% for activity in time %}
+                                            <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.id}) }}">
+                                                {{ activity.value.title }}
+                                            </a>
+                                            {% if not loop.last %}
+                                                ,
+                                            {% endif %}
+                                        {% endfor %}
+                                        in their library.
+                                    {% elseif time.0.key == 'view.added' %}
+                                        watched
+                                        {% set lastMedia = null %}
+                                        {% set lastSeason = null %}
+                                        {% set iMovie = 0 %}
+                                        {% set iEpisode = 0 %}
+                                        {% set lastWasSeries = false %}
+                                        {% for activity in time %}
+                                            {% if activity.value.media.title != lastMedia %}
+                                                {% if iMovie > 0 and lastWasSeries == false%}
+                                                    ,
+                                                {% endif %}
+                                                <a href="{{ path('slmn_wovie_public_media_details', {'id': activity.value.media.id}) }}">
+                                                    {{ activity.value.media.title }}
+                                                </a>
+                                                {% set lastMedia = activity.value.media.title %}
+                                                {% set lastSeason = null %}
+                                                {% set iMovie = iMovie+1 %}
+                                                {% if activity.value.media.mediaType == 2 %}
+                                                    {% set lastWasSeries = 1 %}
+                                                {% else %}
+                                                    {% set lastWasSeries = 0 %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if activity.value.episode is defined and activity.value.episode.season and activity.value.episode.season  != lastSeason %}
+                                                season {{ activity.value.episode.season }}:
+                                                {% set lastSeason = activity.value.episode.season %}
+                                                {% set iEpisode = 0 %}
+                                            {% endif %}
+                                            {% if activity.value.episode is defined and activity.value.episode.episode %}
+                                                {% if iEpisode > 0 %}
+                                                    ,
+                                                {% endif %}
+                                                {% if activity.value.episode.name %}
+                                                    <span data-tooltip class="has-tip"
+                                                          title="{{ activity.value.episode.name }}">
+                                                        {{ activity.value.episode.episode }}
+                                                    </span>
+                                                {% else %}
+                                                    {{ activity.value.episode.episode }}
+                                                {% endif %}
+                                                {% set iEpisode = iEpisode+1 %}
+                                            {% elseif activity.value.episodeId %}
+                                                {% if iEpisode > 0 %}
+                                                    ,
+                                                {% endif %}
+                                                episode {{ activity.value.episodeId }}
+                                                {% set iEpisode = iEpisode+1 %}
+                                            {% endif %}
+                                        {% endfor %}.
+                                    {% endif %}
+                                    <span class="activity-date">
+                                        {{ time.0.createdAt|date('Y-m-d H:i') }} {# TODO: Add relative time (x minutes ago…) #}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
     {% endfor %}
+    {% if activitiesCount > 0 %}
+        <div class="infinite-more-link">
+            <a
+                    class="hide infinite-more-link"
+                    href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': page+1}) }}"></a>
+        </div>
+    {% else %}
+        <div class="infinite-item">
+            <div class="row infinite-item" style="margin-top: 10px;">
+                <div class="small-12 columns">
+                    {{ main.alertBox('No activities here, try to add some friends.', '', 0) }} {# TODO: Friendssearch #}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endif %}
