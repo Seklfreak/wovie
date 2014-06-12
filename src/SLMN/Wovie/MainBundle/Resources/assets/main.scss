@@ -219,7 +219,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 .avatar {
   width: 200px;
   height: 200px;
-  @include border-radius(10px); // TODO: Shadow?
+  @include border-radius(10px);
 }
 
 .follow-button, .defollow-button {
