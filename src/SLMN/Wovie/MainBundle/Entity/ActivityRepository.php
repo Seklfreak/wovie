@@ -28,25 +28,11 @@ class ActivityRepository extends EntityRepository
             ->where('activity.user IN (:users)')
             ->andWhere('activity.createdAt < :dateStart')
             ->andWhere('activity.createdAt > :dateTo')
-            ->setParameters(array(
-                'users' => $users,
-                'dateStart' => $dateStart,
-                'dateTo' => $dateTo
-            ))
-            ->orderBy('activity.createdAt', 'DESC')
-            ->groupBy('activity.user')
-            ->addGroupBy('activity.key')
-            ->addGroupBy('activity.value')
-            ->getQuery();
-        $followingYouQuery = $this->createQueryBuilder('activity')
-            ->where('activity.value = :me')
-            ->andWhere('activity.user NOT IN (:users)')
-            ->andWhere('activity.key = :key')
+            ->orWhere('activity.value = :me')
             ->andWhere('activity.createdAt < :dateStart')
             ->andWhere('activity.createdAt > :dateTo')
             ->setParameters(array(
                 'me' => serialize($user->getId()),
-                'key' => 'follow.added',
                 'users' => $users,
                 'dateStart' => $dateStart,
                 'dateTo' => $dateTo
@@ -58,8 +44,6 @@ class ActivityRepository extends EntityRepository
             ->getQuery();
 
         $result = $query->getResult();
-        $followingYou = $followingYouQuery->getResult();
-        $result = new ArrayCollection(array_merge($result, $followingYou));
         $activities = array();
         foreach ($result as $key=>$value)
         {
