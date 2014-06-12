@@ -44,7 +44,7 @@ class ActivityRepository extends EntityRepository
             switch ($value->getKey())
             {
                 case 'follow.added':
-                    if (($user=$usersRepo->findOneById($value->getValue()))) // TODO: Check this for all
+                    if (($user=$usersRepo->findOneById($value->getValue())))
                     {
                         $activities[$key]['value'] = $user;
                     }
@@ -75,8 +75,6 @@ class ActivityRepository extends EntityRepository
                     break;
             }
         }
-
-        // TODO: Merge array (like if watches of multiple episodes, not one entry for every episode)
 
         return $activities;
     }

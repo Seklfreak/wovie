@@ -305,7 +305,6 @@ class UserController extends Controller
 
     public function settingsProfileAction(Request $request)
     {
-        // TODO: Update stripe customer if email changed
         $usersRepo = $this->getDoctrine()
             ->getRepository('SeklMainUserBundle:User');
         $profilesRepo = $this->getDoctrine()
@@ -343,6 +342,20 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($myUser);
             $em->flush();
+
+            try
+            {
+                $stripeCustomersRepo = $this->getDoctrine()
+                    ->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
+                $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
+                $customer->email = $myUser->getEmail();
+                $customer->save();
+            }
+            catch (\Exception $e)
+            {
+                $error = $e->getMessage(); // TODO: Log error
+            }
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully changed your account.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
