@@ -6,9 +6,9 @@ framework:
       assets_base_urls:
         http: ["http://%slmn_wovie_mainbundle.cdn%"]
         ssl: ["https://%slmn_wovie_mainbundle.cdn%"]
-#framework:
-#    validation:
-#        cache: apc
+framework:
+    validation:
+        cache: apc
 
 doctrine:
     orm:
