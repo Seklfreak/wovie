@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="follow", indexes={@ORM\Index(name="follow_idx", columns={"follow"})})
+ * @ORM\Table(name="follow", indexes={@ORM\Index(name="follow_idx", columns={"follow"}), @ORM\Index(name="user_idx", columns={"user"})})
  */
 class Follow
 {

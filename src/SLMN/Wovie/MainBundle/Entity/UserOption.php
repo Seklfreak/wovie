@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="userOptions")
+ * @ORM\Table(name="userOptions", indexes={@ORM\Index(name="o_key_idx", columns={"o_key"}), @ORM\Index(name="createdBy_idx", columns={"createdBy"})})
  */
 class UserOption
 {

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="media")
+ * @ORM\Table(name="media", indexes={@ORM\Index(name="createdBy_idx", columns={"createdBy"}), @ORM\Index(name="mediaType_idx", columns={"mediaType"})})
  */
 class Media
 {

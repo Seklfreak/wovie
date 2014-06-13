@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="view")
+ * @ORM\Table(name="view", indexes={@ORM\Index(name="mediaId_idx", columns={"mediaId"})})
  */
 class View
 {
