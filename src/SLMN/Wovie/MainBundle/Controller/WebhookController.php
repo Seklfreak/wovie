@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\Invoice;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
@@ -134,8 +135,50 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
+            case 'invoice.payment_succeeded':
+                $invoice = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $customer = $stripeCustomersRepo->findOneByCustomerId($invoice->customer);
+                if ($customer)
+                {
+                    $invoiceDb = new Invoice();
+                    $invoiceDb->setUser($customer->getUser());
+                    $invoiceDb->setAmount($invoice->total);
+                    $invoiceDate = new \DateTime();
+                    $invoiceDate->setTimestamp($invoice['date']);
+                    $invoiceDb->setDate($invoiceDate);
+                    $invoiceDb->setInvoiceId($invoice->id);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($invoiceDb);
+                    $em->flush();
+                    if ($invoiceDb->getAmount() > 0)
+                    {
+                        // TODO: SEND RECEIPT VIA EMAIL
+                        /*
+                        $pdfBody = null;
+                        $attachment = \Swift_Attachment::newInstance($pdfBody, 'receipt-'.$invoiceDb->getDate()->format('Y-m-d').'.pdf', 'application/pdf');
+
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject('WovieApp.com receipt from '.$invoiceDb->getDate()->format('Y-m-d'))
+                            ->setFrom('billing@wovieapp.com')
+                            ->setTo($invoiceDb->getUser()->getEmail())
+                            ->setBody(
+                                'RECEIPT' // TODO: Body
+                            )
+                            ->attach($attachment)
+                        ;
+                        $this->get('mailer')->send($message);
+                        */
+                    }
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
+                break;
             // TODO: customer.subscription.trial_will_end -> three days before trial ends
-            // TODO: invoice.payment_succeeded-> send subscription receipt
+            // TODO: invoice.payment_succeeded-> create end send subscription receipt
             //          -> if stripe_invoice.closed and stripe_invoice.total == 0 -> trial invoice, dont send an email
             default:
                 break;
