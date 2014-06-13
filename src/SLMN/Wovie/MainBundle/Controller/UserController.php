@@ -354,7 +354,8 @@ class UserController extends Controller
             }
             catch (\Exception $e)
             {
-                $error = $e->getMessage(); // TODO: Log error
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
             }
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully changed your account.');
@@ -386,15 +387,6 @@ class UserController extends Controller
 
     public function settingsBillingAction(Request $request)
     {
-        $error = null;
-        try {
-            \Stripe::setApiKey($this->container->getParameter('slmn_wovie_mainbundle.stripe.secret_key'));
-        }
-        catch (Exception $e)
-        {
-            $error = $e->getMessage();
-        }
-
         $stripeCustomersRepo = $this->getDoctrine()
             ->getRepository('SLMNWovieMainBundle:StripeCustomer');
         $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
@@ -412,7 +404,8 @@ class UserController extends Controller
             }
             catch (\Exception $e)
             {
-                $error = $e->getMessage();
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
             }
         }
         if ($customer && ($stripeKey=trim($request->get('stripeToken'))) != null)
@@ -424,17 +417,11 @@ class UserController extends Controller
             }
             catch (\Exception $e)
             {
-                $error = $e->getMessage();
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
             }
 
-            if ($error == null)
-            {
-                $this->get('session')->getFlashBag()->add('success', 'Successfully saved new credit card.');
-            }
-            else
-            {
-                $this->get('session')->getFlashBag()->add('error', 'Error: '.$error);
-            }
+            $this->get('session')->getFlashBag()->add('success', 'Successfully saved new credit card.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
         }
         if ($customer && ($stripeCode=trim($request->get('stripeCode'))) != null)
@@ -446,23 +433,12 @@ class UserController extends Controller
             }
             catch (\Exception $e)
             {
-                $error = $e->getMessage();
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
             }
 
-            if ($error == null)
-            {
-                $this->get('session')->getFlashBag()->add('success', 'Successfully added discount.');
-            }
-            else
-            {
-                $this->get('session')->getFlashBag()->add('error', 'Error: '.$error);
-            }
+            $this->get('session')->getFlashBag()->add('success', 'Successfully added discount.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
-        }
-
-        if ($error != null)
-        {
-            $this->get('session')->getFlashBag()->add('error', 'Error: '.$error);
         }
 
         return $this->render(
