@@ -415,3 +415,28 @@
     </div>
     {# TODO: Add widget, more statistics, etc #}
 {% endmacro %}
+
+{% macro share(url, message) %}
+    <div class="row">
+        <div class="small-12 columns">
+            <ul class="inline-list">
+                <li>
+                    <p style="margin-top: 4px;">Share on</p>
+                </li>
+                <li style="margin-left: 10px;">
+                    <ul class="button-group">
+                        <li><a
+                                    href="https://twitter.com/share?url={{ url|default('')|url_encode }}&via=WovieApp&message={{ message|default('')|url_encode }}"
+                                    target="_new" class="button tiny"><i class="fa fa-twitter fa-lg"></i></a></li>
+                        <li><a
+                                    href="https://www.facebook.com/sharer/sharer.php?u={{ url|default('')|url_encode }}"
+                                    target="_new" class="button tiny"><i class="fa fa-facebook fa-lg"></i></a></li>
+                        <li><a
+                                    href="https://plus.google.com/share?url={{ url|default('')|url_encode }}"
+                                    target="_new" class="button tiny"><i class="fa fa-google-plus fa-lg"></i></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endmacro %}
