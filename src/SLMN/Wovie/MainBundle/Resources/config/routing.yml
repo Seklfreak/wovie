@@ -179,6 +179,12 @@ slmn_wovie_js_zeroClipboardSwf:
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
 
+# Downloads
+slmn_wovie_download_receipt:
+    pattern: /dl/receipt/{id}.pdf
+    defaults: { _controller: SLMNWovieMainBundle:Download:receipt }
+    methods: [GET]
+
 # Sitemap
 slmn_wovie_sitemap_main:
     pattern: /sitemap.{_format}

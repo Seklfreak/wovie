@@ -389,17 +389,16 @@ class UserController extends Controller
     {
         $stripeCustomersRepo = $this->getDoctrine()
             ->getRepository('SLMNWovieMainBundle:StripeCustomer');
+        $invoicesRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:Invoice');
         $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
+        $invoices = $invoicesRepo->findBy(array('user' => $this->getUser()), array('date' => 'DESC'));
         $customer = null;
         if ($stripeCustomer)
         {
             try
             {
                 $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
-                $invoices = \Stripe_Invoice::all(array(
-                        'customer' => $stripeCustomer->getCustomerId(),
-                        'limit' => 24)
-                );
                 $upcomingInvoice = \Stripe_Invoice::upcoming(array('customer' => $stripeCustomer->getCustomerId()));
             }
             catch (\Exception $e)

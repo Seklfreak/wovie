@@ -12,7 +12,7 @@
                 <div class="large-6 large-push-6 columns last">
                     <div class="row">
                         <div class="small-12 columns">
-                            <h4>Invoices
+                            <h4>Receipts
                                 {% if not customer.subscriptions.data[0].cancel_at_period_end %}
                                     <small>
                                         Next invoice at {{ upcomingInvoice.date|date('Y-m-d') }}
@@ -24,6 +24,31 @@
                                     </small>
                                 {% endif %}
                             </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            {% for invoice in invoices %}
+                                <div class="panel small-panel">
+                                    <div class="row">
+                                        <div class="small-5 columns">
+                                            {{ invoice.date|date('Y-m-d') }}
+                                        </div>
+                                        <div class="small-5 columns">
+                                            {% if invoice.amount > 0 %}
+                                                USD ${{ invoice.amount[:-2] }}.{{ invoice.amount[-2:] }}
+                                            {% else %}
+                                                USD $0.00
+                                            {% endif %}
+                                        </div>
+                                        <div class="small-2 columns text-right">
+                                            <a href="{{ path('slmn_wovie_download_receipt', {'id': invoice.invoiceId}) }}">
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -137,7 +162,7 @@
                                             <div class="small-12 columns">
                                                 <div class="panel small-panel">
                                                     <p>
-                                                        Price: <b>$3.00/Monthly</b>
+                                                        Price: <b>USD $3.00/Monthly</b>
                                                     </p>
                                                 </div>
                                             </div>
