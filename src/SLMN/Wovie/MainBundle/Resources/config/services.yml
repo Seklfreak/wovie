@@ -10,6 +10,7 @@ parameters:
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
     slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
     slmn_wovie_main.activity.listener.class: SLMN\Wovie\MainBundle\ActivityListener
+    slmn_wovie_main.service.pdf_docs.class: SLMN\Wovie\MainBundle\PdfDocs
 
 services:
     # System
@@ -38,6 +39,10 @@ services:
         arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption, @router]
         tags:
             - { name: twig.extension }
+    pdf_docs:
+        class: %slmn_wovie_main.service.pdf_docs.class%
+        arguments:
+            kernel: @kernel
     # DB
     slmn_wovie_main.activity.listener:
         class: %slmn_wovie_main.activity.listener.class%

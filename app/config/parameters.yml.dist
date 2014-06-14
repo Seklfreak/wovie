@@ -30,3 +30,4 @@ parameters:
     slmn_wovie_mainbundle.stripe.publishable_key: pk_example_key
     slmn_wovie_mainbundle.stripe.secret_key: sk_example_key
     slmn_wovie_mainbundle.stripe.plan_id.standard: standard
+    slmn_wovie_mainbundle.billing-email: billing@example.org

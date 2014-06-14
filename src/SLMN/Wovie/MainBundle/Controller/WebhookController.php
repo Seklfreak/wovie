@@ -153,22 +153,21 @@ class WebhookController extends Controller
                     $em->flush();
                     if ($invoiceDb->getAmount() > 0)
                     {
-                        // TODO: SEND RECEIPT VIA EMAIL
-                        /*
-                        $pdfBody = null;
+                        $pdfDocs = $this->get('pdf_docs');
+                        $pdfDocs->generateReceipt($invoiceDb);
+                        $pdfBody = $pdfDocs->getBody();
                         $attachment = \Swift_Attachment::newInstance($pdfBody, 'receipt-'.$invoiceDb->getDate()->format('Y-m-d').'.pdf', 'application/pdf');
 
-                        $message = \Swift_Message::newInstance()
-                            ->setSubject('WovieApp.com receipt from '.$invoiceDb->getDate()->format('Y-m-d'))
-                            ->setFrom('billing@wovieapp.com')
-                            ->setTo($invoiceDb->getUser()->getEmail())
-                            ->setBody(
-                                'RECEIPT' // TODO: Body
-                            )
-                            ->attach($attachment)
-                        ;
-                        $this->get('mailer')->send($message);
-                        */
+                        $this->get('templateMailer')->send(
+                            $invoiceDb->getUser()->getEmail(),
+                            'Receipt from '.$invoiceDb->getDate()->format('Y-m-d'),
+                            'SLMNWovieMainBundle:email:receipt.html.twig',
+                            array(
+                                'dbUser' => $invoiceDb->getUser()
+                            ),
+                            $attachment,
+                            $this->container->getParameter('slmn_wovie_mainbundle.billing-email')
+                        );
                     }
                 }
                 else
@@ -177,9 +176,7 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
-            // TODO: customer.subscription.trial_will_end -> three days before trial ends
-            // TODO: invoice.payment_succeeded-> create end send subscription receipt
-            //          -> if stripe_invoice.closed and stripe_invoice.total == 0 -> trial invoice, dont send an email
+            // TODO: customer.subscription.trial_will_end -> three days before trial ends, warn and more
             default:
                 break;
         }

@@ -1,0 +1,14 @@
+{% extends 'SLMNWovieMainBundle::email/layout.html.twig' %}
+
+{% block content %}
+    {{ email.tableRow('
+    <td>
+        <h4>Hello ' ~ dbUser.username|default('#dbUser.username') ~ ',</h4>
+        <p>
+        Attached we sent you your latest receipt.<br>
+        If you have any questions please just answer this mail.<br>
+        <b>Thank you!</b>
+        </p>
+    </td>
+    ') }}
+{% endblock content %}
