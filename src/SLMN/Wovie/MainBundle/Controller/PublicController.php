@@ -221,4 +221,10 @@ class PublicController extends Controller
             )
         );
     }
+
+    public function indexAction()
+    {
+        // TODO: If logged in, redirect to dashboard. ? (If site is public)
+        return $this->render('SLMNWovieMainBundle:html/public:index.html.twig');
+    }
 } 

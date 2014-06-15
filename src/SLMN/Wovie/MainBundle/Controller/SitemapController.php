@@ -16,6 +16,11 @@ class SitemapController extends Controller
             'changefreq' => 'monthly',
             'priority' => '0.8'
         );
+        $urls[] = array(
+            'loc' => $this->get('router')->generate('slmn_wovie_public_index', array(), true),
+            'changefreq' => 'monthly',
+            'priority' => '1'
+        );
 
         return $this->render('SLMNWovieMainBundle:html/sitemap:main.xml.twig', array(
             'urls' => $urls

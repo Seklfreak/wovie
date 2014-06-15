@@ -1,4 +1,8 @@
 # Public
+slmn_wovie_public_index:
+    path: /
+    defaults: { _controller: SLMNWovieMainBundle:Public:index }
+    methods: [GET]
 slmn_wovie_public_requestNewPassword:
     path:   /recover
     defaults: { _controller: SLMNWovieMainBundle:Public:requestNewPassword }
@@ -36,7 +40,7 @@ slmn_wovie_public_media_details:
 
 # User
 slmn_wovie_user_dashboard:
-    pattern:  /
+    pattern:  /dashboard/
     defaults: { _controller: SLMNWovieMainBundle:User:dashboard }
     methods:  [GET]
 slmn_wovie_user_movie_shelf:

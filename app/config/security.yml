@@ -25,7 +25,7 @@ security:
                 domain:   ~
             pattern: ^/
             form_login:
-                default_target_path: /
+                default_target_path: /dashboard
                 use_referer: true
                 csrf_provider: form.csrf_provider
                 intention: form_login
