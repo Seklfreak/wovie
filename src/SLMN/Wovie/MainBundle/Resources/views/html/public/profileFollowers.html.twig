@@ -1,0 +1,67 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - {{ user.username }}s followers{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row panel" style="margin-top: 15px; padding: 10px;">
+        <ul class="breadcrumbs profile-breadcrumbs">
+            <li>
+                <a href="{{ path('slmn_wovie_public_profile', { 'username': user.username }) }}">
+                    {{ user.username }}s profile
+                </a>
+            </li>
+            <li class="current">
+                <a href="{{ path('slmn_wovie_public_profile_followers', { 'username': user.username }) }}">
+                    Follower
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="small-12 large-8 large-centered columns">
+                <ul class="small-block-grid-1 large-block-grid-3">
+                    {% for follower in followers %}
+                        <li class="text-center">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <a href="{{ path('slmn_wovie_public_profile', { 'username': follower.user.username }) }}">
+                                        <img src="{{ getGravatarUrl(follower.user, 50) }}">
+                                        {{ follower.user.username }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    {% if is_granted('ROLE_USER') %}
+                                        {% if follower.user == app.security.getToken().getUser() %}
+                                            <a
+                                                    href="{{ path('slmn_wovie_public_profile', { 'username': follower.user.username }) }}"
+                                                    class="button small radius secondary expand">
+                                                Profile
+                                            </a>
+                                        {% elseif isFollowing(follower.user) %}
+                                            <button
+                                                    autocomplete="off"
+                                                    class="small radius alert expand defollow-button"
+                                                    style="width: 100% !important"
+                                                    data-user-id="{{ follower.user.id }}">
+                                                Unfollow
+                                            </button>
+                                        {% else %}
+                                            <button
+                                                    autocomplete="off"
+                                                    class="small radius expand follow-button"
+                                                    style="width: 100% !important"
+                                                    data-user-id="{{ follower.user.id }}">
+                                                Follow
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

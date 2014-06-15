@@ -216,13 +216,16 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 }
 
 /* PUBLIC PAGE */
+.profile-breadcrumbs {
+  display: inline-block;
+}
 .avatar {
   width: 200px;
   height: 200px;
   @include border-radius(10px);
 }
 
-.follow-button, .defollow-button {
+.follow-button, .defollow-button, .profile-button {
   margin-top: 5px;
   margin-bottom: 5px;
 }

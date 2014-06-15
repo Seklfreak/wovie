@@ -165,4 +165,60 @@ class PublicController extends Controller
             )
         );
     }
+
+    public function profileFollowersAction($username)
+    {
+        $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+        $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+        $myUser = $usersRepo->findOneByUsername($username);
+
+        if (!$myUser)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Profile not public viewable!');
+        }
+
+        $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
+        $followers = $followsRepo->findBy(array('follow' => $myUser), array('createdAt' => 'DESC'));
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/public:profileFollowers.html.twig',
+            array(
+                'user' => $myUser,
+                'followers' => $followers
+            )
+        );
+    }
+
+    public function profileFollowingsAction($username)
+    {
+        $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+        $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+        $myUser = $usersRepo->findOneByUsername($username);
+
+        if (!$myUser)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Profile not public viewable!');
+        }
+
+        $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
+        $followers = $followsRepo->findBy(array('user' => $myUser), array('createdAt' => 'DESC'));
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/public:profileFollowings.html.twig',
+            array(
+                'user' => $myUser,
+                'followers' => $followers
+            )
+        );
+    }
 } 

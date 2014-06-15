@@ -10,6 +10,7 @@ class ImageController extends Controller
 {
     public function coverImageAction($freebaseId)
     {
+        $logger = $this->get('logger');
         $image = null;
         $path = $this->container->getParameter("kernel.cache_dir").'/wovie/covers/';
         @mkdir($path, 0755, $recursive=true);
@@ -22,6 +23,7 @@ class ImageController extends Controller
             if (file_exists($path.$filename) && is_readable($path.$filename))
             {
                 $image = file_get_contents($path.$filename);
+                $logger->info('Loaded cover ('.$freebaseId.') from filecache: '.$path.$filename);
             }
         }
 

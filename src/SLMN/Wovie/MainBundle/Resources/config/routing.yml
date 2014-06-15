@@ -17,13 +17,13 @@ slmn_wovie_public_profile:
         username: "^[a-zA-Z0-9]+$"
 slmn_wovie_public_profile_followers:
     path:   /u/{username}/followers
-    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowers } # TODO: Create action
+    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowers }
     methods:  [GET]
     requirements:
         username: "^[a-zA-Z0-9]+$"
 slmn_wovie_public_profile_followings:
     path:   /u/{username}/follows
-    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowings } # TODO: Create action
+    defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowings }
     methods:  [GET]
     requirements:
         username: "^[a-zA-Z0-9]+$"
