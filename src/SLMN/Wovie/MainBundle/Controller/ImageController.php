@@ -93,6 +93,7 @@ class ImageController extends Controller
 
                 if ($image != null)
                 {
+                    $logger->info('Saved cover ('.$freebaseId.') to filecache: '.$path.$filename);
                     file_put_contents($path.$filename, $image);
                     $response->setMaxAge(2592000); # 1 Month
                 }
@@ -106,6 +107,7 @@ class ImageController extends Controller
         # Fallback to placeholder
         if (empty($image))
         {
+            $logger->info('Cover '.$freebaseId.' not found.');
             $image = file_get_contents($this->get('kernel')->locateResource('@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'));
         }
 
