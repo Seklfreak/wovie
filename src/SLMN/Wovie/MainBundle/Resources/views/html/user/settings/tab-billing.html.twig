@@ -181,6 +181,18 @@
                                 </div>
                             </div>
                         </div>
+                        {# TODO: Receipt info #}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <div class="panel small-panel">
+                                    <h4>Receipt info</h4>
+                                    {{ form_start(stripeCustomerForm) }}
+                                    {{ form_row(stripeCustomerForm.receiptInfo, { 'label': false }) }}
+                                    {{ form_row(stripeCustomerForm.submit, { 'label': 'Save receipt info', 'attr': { 'style': 'margin-bottom: 5px;' } }) }}
+                                    {{ form_end(stripeCustomerForm) }}
+                                </div>
+                            </div>
+                        </div>
                         {% if customer.discount %}
                            <div class="row">
                                <div class="small-12 columns">

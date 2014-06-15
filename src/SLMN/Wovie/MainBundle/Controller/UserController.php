@@ -439,6 +439,16 @@ class UserController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Successfully added discount.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
         }
+        
+        $stripeCustomerForm = $this->createForm('stripeCustomer', $stripeCustomer);
+        $stripeCustomerForm->handleRequest($request);
+        if ($stripeCustomerForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($stripeCustomer);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'Successfully edited your receipt info.');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
+        }
 
         return $this->render(
             'SLMNWovieMainBundle:html/user/settings:tab-billing.html.twig',
@@ -446,7 +456,8 @@ class UserController extends Controller
                 'stripeCustomer' => $stripeCustomer,
                 'customer' => $customer,
                 'invoices' => $invoices,
-                'upcomingInvoice' => $upcomingInvoice
+                'upcomingInvoice' => $upcomingInvoice,
+                'stripeCustomerForm' => $stripeCustomerForm->createView()
             )
         );
     }

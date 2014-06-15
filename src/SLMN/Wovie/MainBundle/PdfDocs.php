@@ -12,11 +12,14 @@ namespace SLMN\Wovie\MainBundle;
 class PdfDocs
 {
     protected $kernel;
+    protected $em;
+
     protected $currentDoc = null;
 
-    public function __construct($kernel)
+    public function __construct($kernel, $em)
     {
         $this->kernel = $kernel;
+        $this->em = $em;
     }
 
     protected function initDoc($title)
@@ -43,6 +46,13 @@ class PdfDocs
         {
             $amount = '0.00';
         }
+        $receiptInfo = null;
+        $stripeCustomersRepo = $this->em->getRepository('SLMNWovieMainBundle:StripeCustomer');
+        $stripeCustomer = $stripeCustomersRepo->findOneByUser($invoice->getUser());
+        if ($stripeCustomer && $stripeCustomer->getReceiptInfo())
+        {
+            $receiptInfo = $stripeCustomer->getReceiptInfo()."\n";
+        }
 
         $this->initDoc('WovieApp.com receipt from '.$invoice->getDate()->format('Y-m-d'));
         $this->currentDoc->AddPage();
@@ -51,12 +61,7 @@ class PdfDocs
     <tr>
         <td width="75%">
             <h1>Receipt</h1>
-            <p>Invoice ID: '.$invoice->getInvoiceId().'</p>
-            <p>
-                <b>Account</b><br>
-                Blablabla<br>
-                '.$invoice->getUser()->getEmail().'
-            </p>
+            <p>Invoice ID: '.$invoice->getInvoiceId().'<br><br><b>Account</b><br>'.nl2br(htmlspecialchars($receiptInfo)).$invoice->getUser()->getEmail().'</p>
             <h3></h3>
         </td>
         <td width="25%">

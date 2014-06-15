@@ -37,6 +37,27 @@ class StripeCustomer
     protected $chargeFailureMessage;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $receiptInfo;
+
+    /**
+     * @return mixed
+     */
+    public function getReceiptInfo()
+    {
+        return $this->receiptInfo;
+    }
+
+    /**
+     * @param mixed $receiptInfo
+     */
+    public function setReceiptInfo($receiptInfo)
+    {
+        $this->receiptInfo = $receiptInfo;
+    }
+
+    /**
      * @return mixed
      */
     public function getChargeFailureMessage()

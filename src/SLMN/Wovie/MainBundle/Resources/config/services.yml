@@ -6,6 +6,7 @@ parameters:
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
     slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
     slmn_wovie_main.form.type.profile.class: SLMN\Wovie\MainBundle\Form\Type\ProfileType
+    slmn_wovie_main.form.type.stripeCustomer.class: SLMN\Wovie\MainBundle\Form\Type\StripeCustomerType
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
     slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
@@ -43,6 +44,7 @@ services:
         class: %slmn_wovie_main.service.pdf_docs.class%
         arguments:
             kernel: @kernel
+            em: @doctrine.orm.entity_manager
     # DB
     slmn_wovie_main.activity.listener:
         class: %slmn_wovie_main.activity.listener.class%
@@ -77,4 +79,8 @@ services:
         class: %slmn_wovie_main.form.type.profile.class%
         tags:
             - { name: form.type, alias: profile }
+    slmn_wovie_main.form.type.stipeCustomer:
+        class: %slmn_wovie_main.form.type.stripeCustomer.class%
+        tags:
+            - { name: form.type, alias: stripeCustomer }
 
