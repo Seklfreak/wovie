@@ -42,7 +42,8 @@ class SlmnWovieExtension extends \Twig_Extension
             'getProfile' => new \Twig_Function_Method($this, 'getProfileFunction'),
             'getFollowers' => new \Twig_Function_Method($this, 'getFollowersFunction'),
             'getFollowings' => new \Twig_Function_Method($this, 'getFollowingsFunction'),
-            'isFollowing' => new \Twig_Function_Method($this, 'isFollowingFunction')
+            'isFollowing' => new \Twig_Function_Method($this, 'isFollowingFunction'),
+            'isInMyLibrary' => new \Twig_Function_Method($this, 'isInMyLibraryFunction')
         );
     }
 
@@ -172,6 +173,17 @@ class SlmnWovieExtension extends \Twig_Extension
         {
             return $moviesRepo->findByCreatedBy($user, array('title' => 'ASC'));
         }
+    }
+
+    public function isInMyLibraryFunction($freebaseId, $user=null)
+    {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+        $mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneBy(array('createdBy' => $user, 'freebaseId' => $freebaseId));
+        return $media;
     }
 
     public function wovieRevisionFunction()

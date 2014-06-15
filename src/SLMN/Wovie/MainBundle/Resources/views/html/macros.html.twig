@@ -333,11 +333,19 @@
                         <a
                                 href="{{ path('slmn_wovie_user_movie_add', { 'prefill': media.id }) }}"
                                 class="button expand tiny"
+                                style="margin-bottom: 10px;"
                                 >
                             <i class="fa fa-plus fa-lg"></i> Add to my library
                         </a>
                     </div>
                 </div>
+                {% if media.createdBy != app.security.getToken().getUser() and media.freebaseId %}
+                    {% if isInMyLibrary(media.freebaseId) %}
+                        <div class="row collapse small-text-center">
+                            <span class="label secondary">Already in your library.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             {% endif %}
         </div>
         <div class="small-12 large-6 pull-1 columns">
