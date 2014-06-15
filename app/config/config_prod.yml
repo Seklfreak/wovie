@@ -24,6 +24,8 @@ monolog:
             handler:            grouped
             excluded_404s:
                 - ^/phpmyadmin
+                - ^/wordpress
+                - ^/wp-login.php
         grouped:
             type:               group
             members:            [streamed, buffered_swift]
