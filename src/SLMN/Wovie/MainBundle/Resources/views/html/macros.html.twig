@@ -277,6 +277,7 @@
                                                 Next S{% if episode.season|length < 2 %}0{% endif %}{{ episode.season }}E{% if episode.episode|length < 2 %}0{% endif %}{{ episode.episode }}
                                                   </span>
                                             {% set hasUnwatched = true %}
+                                            <button class="next-episode-watched watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ key }}"><i class="fa fa-eye"></i></button>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
