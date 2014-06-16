@@ -78,6 +78,9 @@ class MediaType extends AbstractType
                 'disabled' => true,
                 'required' => false
             ))
+            ->add('allowUpdates', 'checkbox', array(
+                'required' => false
+            ))
             ->add('submit', 'submit', array(
                 'attr' => array(
                     'class' => 'expand'

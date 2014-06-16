@@ -111,7 +111,13 @@
                     <a data-media-id="{{ mediaId }}" class="action-media-delete button alert expand"><i class="fa fa-trash-o"></i></a>
                 </div>
             </div>
-            {% if mediaForm.freebaseId is defined and mediaForm.imdbId is defined %}
+            {% if mediaForm.freebaseId is defined %}
+                <div class="row">
+                    <div class="small-12 columns">
+                        {{ form_widget(mediaForm.allowUpdates) }}
+                        <label for="media_allowUpdates" style="font-size: 0.78rem;"><b>Allow updates</b> disable this, so our updates don't overwrite fields you changed.</label>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="large-6 columns">
                         {{ form_row(mediaForm.freebaseId) }}

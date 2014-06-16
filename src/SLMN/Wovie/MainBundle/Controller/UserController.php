@@ -482,6 +482,7 @@ class UserController extends Controller
         $result = array();
         if ($media->getFreebaseId() == null)
         {
+            $mediaForm->remove('allowUpdates');
             $mediaForm->remove('imdbId');
             $mediaForm->remove('freebaseId');
         }

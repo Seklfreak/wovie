@@ -50,11 +50,11 @@ class SlmnWovieMediaUpdateCommand extends ContainerAwareCommand
             {
                 $mediaApi->setLang('en');
             }
-            if ($media->getFreebaseId())
+            if ($media->getAllowUpdates() && $media->getFreebaseId())
             {
                 if (($episodes=$mediaApi->fetchEpisodes($media->getFreebaseId(), true)) && is_array($episodes))
                 {
-                    if ($media->getEpisodes() != $episodes)
+                    if ($media->getEpisodes() != $episodes || $media->getNumberOfEpisodes() != count($episodes))
                     {
                         $output->writeln('(user '.$media->getCreatedBy()->getEmail().', lang '.$lang->getValue().') Replace episodes of #'.$media->getId().' ('.$media->getTitle().') with "'.$episodes[1]['name'].'"… ('.count($episodes).' episodes)');
                         $media->setEpisodes($episodes);

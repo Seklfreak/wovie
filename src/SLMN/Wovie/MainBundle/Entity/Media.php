@@ -104,6 +104,27 @@ class Media
     protected $episodes;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $allowUpdates = true;
+
+    /**
+     * @return mixed
+     */
+    public function getAllowUpdates()
+    {
+        return $this->allowUpdates;
+    }
+
+    /**
+     * @param mixed $allowUpdates
+     */
+    public function setAllowUpdates($allowUpdates)
+    {
+        $this->allowUpdates = $allowUpdates;
+    }
+
+    /**
      * @return mixed
      */
     public function getEpisodes()
