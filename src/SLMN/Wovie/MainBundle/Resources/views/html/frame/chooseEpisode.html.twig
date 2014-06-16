@@ -53,7 +53,7 @@
                 {% if media.numberOfEpisodes > 0 %}
                     {% for i in 1..media.numberOfEpisodes %}
                         {% set views = viewsOfId(media.id, i) %}
-                        {% if episodes != false %}
+                        {% if media.episodes != false %}
                             {% if curEpisodeInSeason == 1 %}
                                 <ul class="inline-list">
                                     <li>
@@ -90,12 +90,12 @@
                                 </li>
                                 <li>
                                     <button class="button tiny watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ i }}">
-                                        {% if episodes != false %}
+                                        {% if media.episodes != false %}
                                             {% set curEpisodeInSeason = curEpisodeInSeason+1 %}
                                             {{ curEpisodeInSeason-1 }} ({{ i }})
-                                            {% if episodes[curSeason] is defined and episodes[curSeason][curEpisodeInSeason-1] is defined %}
-                                                {{ episodes[curSeason][curEpisodeInSeason-1] }}
-                                                {% if media.numberOfEpisodes > i and episodes[curSeason][curEpisodeInSeason] is not defined %}
+                                            {% if media.episodes[i] is defined %}
+                                                {{ media.episodes[i].name }}
+                                                {% if media.numberOfepisodes > i and media.episodes[i+1] is defined and media.episodes[i+1].season != curSeason %}
                                                     {% set curEpisodeInSeason = 1 %}
                                                     {% set curSeason = curSeason+1 %}
                                                 {% endif %}

@@ -162,6 +162,11 @@ class UserController extends Controller
                     }
                 }
             }
+            if (($episodes=$mediaApi->fetchEpisodes($fbId, true)) && is_array($episodes))
+            {
+                $newMedia->setNumberOfEpisodes(count($episodes), $newMedia->getEpisodes());
+                $newMedia->setEpisodes($episodes);
+            }
         }
 
         $newMediaForm = $this->createForm('media', $newMedia);
@@ -485,7 +490,7 @@ class UserController extends Controller
 
             $mediaApi = $this->get('media_api');
             $result = $mediaApi->search('(all (all id:"'.$media->getFreebaseId().'") (any type:/film/film type:/tv/tv_program))');
-            if (array_key_exists(0, $result))
+            if (is_array($result) && array_key_exists(0, $result))
             {
                 $result = $result[0];
                 $result['description'] = $mediaApi->fetchDescription($media->getFreebaseId());

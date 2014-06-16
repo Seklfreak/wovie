@@ -263,15 +263,35 @@
             <div class="row">
                 <div class="small-12 columns">
                     <div class="cover-progress-big">
+                        <p class="right next-episode-p">
+                            {% if public == false and views < media.numberOfEpisodes %}
+                                {# TODO: Query: join views of episode? (Also in frame/chooseEpisode) #}
+                                {% set hasUnwatched = false %}
+                                {% for key,episode in media.episodes %}
+                                    {% if hasUnwatched == false  %}
+                                        {% if viewsOfId(media.id, key) <= 0 %}
+                                            <span data-tooltip
+                                                  class="has-tip"
+                                                  style="color: #fff; font-weight: normal;"
+                                                  title="{{ episode.name }}">
+                                                Next S{% if episode.season|length < 2 %}0{% endif %}{{ episode.season }}E{% if episode.episode|length < 2 %}0{% endif %}{{ episode.episode }}
+                                                  </span>
+                                            {% set hasUnwatched = true %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </p>
                         {% if media.mediaType == 2 %}
-                            <span class="meter"
+                            <span class="meter clearfix"
                                   style="width: {% if views > 0 %}{{ views / (media.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
-                          <p><b>
+                          <p class="left" style="margin-bottom: 0; white-space: nowrap;"><b>
                                   {% if views >= media.numberOfEpisodes %}
                                       <i class="fa fa-check-square"></i>
                                   {% endif %}
                                   {{ views }}/{{ media.numberOfEpisodes }}
-                              </b></p>
+                              </b>
+                          </p>
                     </span>
                         {% else %}
                             {% if views > 0 %}

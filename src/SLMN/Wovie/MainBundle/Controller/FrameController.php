@@ -13,17 +13,11 @@ class FrameController extends Controller
         $media = $mediaRepo->findOneById($id);
         if ($media != null && $media->getCreatedBy() == $this->getUser()) {
             if ($media->getMediaType() == 2) {
-                if ($media->getFreebaseId() != null)
-                {
-                    $mediaApi = $this->get('media_api');
-                    $episodes = $mediaApi->fetchEpisodes($media->getFreebaseId());
-                }
 
                 return $this->render(
                     'SLMNWovieMainBundle:html/frame:chooseEpisode.html.twig',
                     array(
-                        'media' => $media,
-                        'episodes' => $episodes
+                        'media' => $media
                     )
                 );
             }

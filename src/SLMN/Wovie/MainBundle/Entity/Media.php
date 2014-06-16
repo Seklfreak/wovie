@@ -99,6 +99,27 @@ class Media
     protected $posterImage;
 
     /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    protected $episodes;
+
+    /**
+     * @return mixed
+     */
+    public function getEpisodes()
+    {
+        return $this->episodes;
+    }
+
+    /**
+     * @param mixed $episodes
+     */
+    public function setEpisodes($episodes)
+    {
+        $this->episodes = $episodes;
+    }
+
+    /**
      * @return mixed
      */
     public function getLastUpdatedAt()

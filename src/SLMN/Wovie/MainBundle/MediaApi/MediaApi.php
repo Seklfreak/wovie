@@ -8,14 +8,16 @@ class MediaApi
 {
     protected $apiKey;
     protected $kernel;
+    protected $monolog;
     protected $limit = 50;
     protected $cacheHandler;
     protected $userOptions;
     protected $em;
 
-    public function __construct(Kernel $kernel, $em, $apiKey, $cacheHandler, $userOptions)
+    public function __construct(Kernel $kernel, $monolog, $em, $apiKey, $cacheHandler, $userOptions)
     {
         $this->apiKey = $apiKey;
+        $this->monolog = $monolog;
         $this->kernel = $kernel;
         $this->em = $em;
         $this->cacheHandler = $cacheHandler;
@@ -343,6 +345,8 @@ class MediaApi
     {
         $cacheKey = 'request_'.$this->lang.'_'.$this->limit.'_'.md5($url);
         if (false === ($result = $this->cacheHandler->fetch($cacheKey))) {
+            $this->monolog->info('Running request: '.$url);
+
             $curl_handle = curl_init();
             curl_setopt($curl_handle, CURLOPT_URL, $url);
             curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);

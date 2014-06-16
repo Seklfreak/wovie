@@ -103,6 +103,7 @@ function init()
         },
         onAfterPageLoad: function() {
             $('#activity-infinite-spinner').addClass('hide');
+            init();
         }
     });
 }

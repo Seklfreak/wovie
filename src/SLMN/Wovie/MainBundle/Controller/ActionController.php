@@ -371,7 +371,7 @@ class ActionController extends Controller
                 case 'view.added':
                     if ($activity['value']['episodeId'] && $activity['value']['media']->getFreebaseId())
                     {
-                        $episodes = $mediaApi->fetchEpisodes($activity['value']['media']->getFreebaseId(), true);
+                        $episodes = $activity['value']['media']->getEpisodes();
                         if (array_key_exists($activity['value']['episodeId'], $episodes))
                         {
                             $activities[$key]['value']['episode'] = $episodes[$activity['value']['episodeId']];
