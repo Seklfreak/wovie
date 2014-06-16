@@ -18,6 +18,11 @@ class UserOption
 
     public function get($key, $default=null)
     {
+        if ($this->context->getToken() == null)
+        {
+            return $default;
+        }
+
         $option = $this->repo->findOneBy(
             array(
                 'key' => $key,

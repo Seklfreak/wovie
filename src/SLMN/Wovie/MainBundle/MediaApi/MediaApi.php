@@ -26,6 +26,11 @@ class MediaApi
         $this->lang = $userOptions->get('language', 'en');
     }
 
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+    }
+
     public function fetchDescription($id)
     {
         if ($this->lang == 'en')
@@ -107,7 +112,7 @@ class MediaApi
 
         $result = $this->request($url);
 
-        if (array_key_exists('result', $result) && array_key_exists('/tv/tv_program/episodes', $result['result']))
+        if (is_array($result) && array_key_exists('result', $result) && is_array($result['result']) && array_key_exists('/tv/tv_program/episodes', $result['result']))
         {
             $episodesArray = array();
             $result = $result['result']['/tv/tv_program/episodes'];
