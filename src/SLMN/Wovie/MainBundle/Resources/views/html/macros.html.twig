@@ -29,7 +29,7 @@
         {% if movie.mediaType == 2 %}
             <div class="cover-progress small-12">
                 <span class="meter"
-                      style="width: {% if views > 0 %}{{ views / (movie.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
+                      style="width: {% if views > 0 %}{% if views >= movie.numberOfEpisodes %}100{% else %}{{ views / (movie.numberOfEpisodes / 100) }}{% endif %}{% else %}0{% endif %}%">
                         <p><b>
                             {% if views >= movie.numberOfEpisodes %}
                                 <i class="fa fa-check-square"></i>
@@ -111,7 +111,7 @@
         {% if movie.mediaType == 2 %}
             <div class="cover-progress small-12">
                                         <span class="meter"
-                                              style="width: {% if views > 0 %}{{ views / (movie.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
+                                              style="width: {% if views > 0 %}{% if views >= movie.numberOfEpisodes %}100{% else %}{{ views / (movie.numberOfEpisodes / 100) }}{% endif %}{% else %}0{% endif %}%">
                                             <p>
                                                 <b>
                                                     {% if views >= movie.numberOfEpisodes %}
@@ -284,7 +284,7 @@
                         </p>
                         {% if media.mediaType == 2 %}
                             <span class="meter clearfix"
-                                  style="width: {% if views > 0 %}{{ views / (media.numberOfEpisodes / 100) }}{% else %}0{% endif %}%">
+                                  style="width: {% if views > 0 %}{% if views >= media.numberOfEpisodes %}100{% else %}{{ views / (media.numberOfEpisodes / 100) }}{% endif %}{% else %}0{% endif %}%">
                           <p class="left" style="margin-bottom: 0; white-space: nowrap;"><b>
                                   {% if views >= media.numberOfEpisodes %}
                                       <i class="fa fa-check-square"></i>
