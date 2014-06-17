@@ -55,7 +55,7 @@ function init()
         effect : "fadeIn"
     });
     // Watched it buttons
-    $('.watched_it, .watched_it_cover').click(function() {
+    $('.watched_it, .watched_it_cover').unbind().click(function() {
         var button = $(this);
         if ($(button).data('media-id') != null)
         {
@@ -87,7 +87,7 @@ function init()
                 });
         }
     });
-    $('.watched_it_not').click(function() {
+    $('.watched_it_not').unbind().click(function() {
         var button = $(this);
         if ($(button).data('media-id') != null)
         {
@@ -293,7 +293,7 @@ $(function() {
         });
         chooseEpisodeSelectCount();
     });
-    $('.choose-episode-select-submit-watched').click(function() {
+    $('.choose-episode-select-submit-watched').unbind().click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');
         var selected = [];
@@ -326,7 +326,7 @@ $(function() {
                 });
         }
     });
-    $('.choose-episode-select-submit-notwatched').click(function() {
+    $('.choose-episode-select-submit-notwatched').unbind().click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');
         var selected = [];
@@ -368,7 +368,7 @@ $(function() {
             $('#' + input).val(value);
         }
     });
-    $('.action-media-delete').click(function() {
+    $('.action-media-delete').unbind().click(function() {
         var button = $(this);
         var mediaId = $(this).data('media-id');
         if (mediaId != null)
@@ -397,7 +397,7 @@ $(function() {
         }
     });
     /* FOLLOW AND DEFOLLOW */
-    $('.follow-button').click(function() {
+    $('.follow-button').unbind().click(function() {
         var button = $(this);
         var userId = $(this).data('user-id');
         if (userId)
@@ -424,7 +424,7 @@ $(function() {
                 });
         }
     });
-    $('.defollow-button').click(function() {
+    $('.defollow-button').unbind().click(function() {
         var button = $(this);
         var userId = $(this).data('user-id');
         if (userId)

@@ -18,10 +18,12 @@ class ActivityListener
      */
 
     protected $container;
+    protected $logger;
 
-    public function __construct($container)
+    public function __construct($container, $logger)
     {
         $this->container = $container;
+        $this->logger = $logger;
     }
 
     protected function getUser()
@@ -29,7 +31,7 @@ class ActivityListener
         return $this->container->get('security.context')->getToken()->getUser();
     }
 
-    public function postPersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         $em = $args->getEntityManager();
@@ -42,7 +44,7 @@ class ActivityListener
             $activity->setKey('media.added');
             $activity->setValue($entity->getId());
             $em->persist($activity);
-            $em->flush();
+            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
         else if ($entity instanceof View)
         {
@@ -57,7 +59,7 @@ class ActivityListener
                 )
             );
             $em->persist($activity);
-            $em->flush();
+            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
         else if ($entity instanceof Follow)
         {
@@ -67,7 +69,7 @@ class ActivityListener
             $activity->setKey('follow.added');
             $activity->setValue($entity->getFollow()->getId());
             $em->persist($activity);
-            $em->flush();
+            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
     }
 
@@ -91,28 +93,33 @@ class ActivityListener
             if (array_key_exists(0, $activities) && $activities[0] != null)
             {
                 $em->remove($activities[0]);
+                $this->logger->info('Deleted activity '.$activities[0]->getKey().': #'.$activities[0]->getId());
             }
         }
-        /* else if ($entity instanceof View)
+        else if ($entity instanceof View)
         {
-            // TODO: Doctrine does not serializes the array, how to remove? Query Builder!
-            $activities = $activitiesRepo->findBy(array(
+            $query = $activitiesRepo->createQueryBuilder('activity')
+                ->where('activity.user = :user')
+                ->andWhere('activity.key = :key')
+                ->andWhere('activity.value = :value')
+                ->setParameters(array(
                     'user' => $this->getUser(),
                     'key' => 'view.added',
-                    'value' => array(
-                        'mediaId' => $entity->getMedia()->getId(),
-                        'episodeId' => $entity->getEpisode()
-                    )
-                ),
-                array(
-                    'createdAt' => 'DESC'
-                )
-            );
+                    'value' => serialize(array(
+                            'mediaId' => $entity->getMedia()->getId(),
+                            'episodeId' => $entity->getEpisode()
+                        ))
+                    ))
+                ->orderBy('activity.createdAt', 'DESC')
+                ->getQuery();
+            $activities = $query->getResult();
+
             if (array_key_exists(0, $activities) && $activities[0] != null)
             {
                 $em->remove($activities[0]);
+                $this->logger->info('Deleted activity '.$activities[0]->getKey().': #'.$activities[0]->getId());
             }
-        }*/
+        }
         else if ($entity instanceof Follow)
         {
             $activities = $activitiesRepo->findBy(array(
@@ -127,6 +134,7 @@ class ActivityListener
             if (array_key_exists(0, $activities) && $activities[0] != null)
             {
                 $em->remove($activities[0]);
+                $this->logger->info('Deleted activity '.$activities[0]->getKey().': #'.$activities[0]->getId());
             }
         }
     }
