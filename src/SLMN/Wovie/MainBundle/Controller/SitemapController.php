@@ -21,6 +21,11 @@ class SitemapController extends Controller
             'changefreq' => 'monthly',
             'priority' => '1'
         );
+        $urls[] = array(
+            'loc' => $this->get('router')->generate('slmn_wovie_public_imprint', array(), true),
+            'changefreq' => 'monthly',
+            'priority' => '0.6'
+        );
 
         return $this->render('SLMNWovieMainBundle:html/sitemap:main.xml.twig', array(
             'urls' => $urls

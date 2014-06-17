@@ -1,0 +1,50 @@
+{% extends "SLMNWovieMainBundle::html/layout_public.html.twig" %}
+
+{% block pagetitle %}WOVIE{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="medium-6 medium-push-6 columns">
+            {{ form_start(newContactForm) }}
+            <div class="row">
+                <div class="small-12 columns">
+                    <h4>Send a message</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_row(newContactForm.email) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_row(newContactForm.subject) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_row(newContactForm.message) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_row(newContactForm.submit) }}
+                </div>
+            </div>
+            {{ form_end(newContactForm) }}
+        </div>
+        <div class="medium-6 medium-pull-6 columns">
+            <h4>Contact / Kontakt</h4>
+            <p>
+                Phone/Telefon: +4961883019086<br>
+                Fax/Telefax: +4961883019073<br>
+                E-Mail:	<a href="mailto:hello@wovieapp.com">hello@wovieapp.com</a>
+            </p>
+            <h4>Angaben gemäß § 5 TMG</h4>
+            <p>Sebastian Winkler<br>
+                Friedhofstraße 11<br>
+                63791 Karlstein am Main<br>
+            </p>
+        </div>
+    </div>
+{% endblock body %}

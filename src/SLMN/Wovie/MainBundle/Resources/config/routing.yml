@@ -3,6 +3,10 @@ slmn_wovie_public_index:
     path: /
     defaults: { _controller: SLMNWovieMainBundle:Public:index }
     methods: [GET]
+slmn_wovie_public_imprint:
+    path: /imprint/
+    defaults: { _controller: SLMNWovieMainBundle:Public:imprint }
+    methods: [GET, POST]
 slmn_wovie_public_requestNewPassword:
     path:   /recover
     defaults: { _controller: SLMNWovieMainBundle:Public:requestNewPassword }

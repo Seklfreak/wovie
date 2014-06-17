@@ -18,8 +18,11 @@ user.email.max_message: Your email must not be longer than {{ limit }} character
 user.password.regex: Your password must contain uppercase and lowercase letters and numbers and must be at least 6 characters long.
 user.password.max_message: Your password must be no more than {{limit}} characters long.
 
-feedback.email.email: Please enter an valid email.
-feedback.email.max_message: Your email must not be longer than {{ limit }} characters long.
 feedback.subject.min_message: Your subject is too short.
 feedback.subject.max_message: Your subject cant be longer than {{ limit }} characters long.
 feedback.message.min_message: Your message must be at least {{ limit }} characters long.
+
+contact.email.invalid_message: Please enter an valid email.
+contact.subject.min_message: Your subject is too short.
+contact.subject.max_message: Your subject cant be longer than {{ limit }} characters long.
+contact.message.min_message: Your message must be at least {{ limit }} characters long.

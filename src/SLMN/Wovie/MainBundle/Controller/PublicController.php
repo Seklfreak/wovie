@@ -227,4 +227,35 @@ class PublicController extends Controller
         // TODO: If logged in, redirect to dashboard. ? (If site is public)
         return $this->render('SLMNWovieMainBundle:html/public:index.html.twig');
     }
+
+    public function imprintAction(Request $request)
+    {
+        $newContactForm = $this->createForm('contact');
+
+        $newContactForm->handleRequest($request);
+
+        if ($newContactForm->isValid()) {
+            $message = \Swift_Message::newInstance()
+                ->setSubject(
+                    $this->container->getParameter('slmn_main_userbundle.mail.subject').' contact form | subject: '.$newContactForm->get('subject')->getData()
+                )
+                ->setFrom(array(
+                    $this->container->getParameter('slmn_main_userbundle.mail.sender.email') => $this->container->getParameter('slmn_main_userbundle.mail.sender.title')
+                ))
+                ->setReplyTo($newContactForm->get('email')->getData())
+                ->setTo($this->container->getParameter('slmn_wovie_mainbundle.admin_email'))
+                ->setBody(
+                    'Message from '.$newContactForm->get('email')->getData().': '.$newContactForm->get('message')->getData()
+                )
+            ;
+            $this->get('mailer')->send($message);
+
+            $this->get('session')->getFlashBag()->add('success', 'Message sent. Thank you!');
+            return $this->redirect($this->generateUrl('slmn_wovie_public_imprint'));
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/public:imprint.html.twig', array(
+            'newContactForm' => $newContactForm->createView()
+        ));
+    }
 } 

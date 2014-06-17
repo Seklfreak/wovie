@@ -475,16 +475,22 @@
     <ul class="title-area">
         <li class="name">
             <h1>
-                <a href="{{ path('slmn_wovie_user_dashboard') }}">
-                    WOVIE <span
-                            data-tooltip
-                            class="has-tip"
-                            title="Alpha. Based on commit {{ wovieRevision() }}."
-                            style="color: white;"
-                            >
-                                α
-                            </span>
-                </a>
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('slmn_wovie_user_dashboard') }}">
+                        WOVIE <span
+                                data-tooltip
+                                class="has-tip"
+                                title="Alpha. Based on commit {{ wovieRevision() }}."
+                                style="color: white;"
+                                >
+                                    α
+                                </span>
+                    </a>
+                {% else %}
+                    <a href="{{ path('slmn_wovie_public_index') }}">
+                        WOVIE
+                    </a>
+                {% endif %}
             </h1>
         </li>
         {% if is_granted('ROLE_USER') %}
@@ -579,4 +585,25 @@
         </ul>
     </section>
 </nav>
+{% endmacro %}
+
+{% macro footer() %}
+<footer id="footer">
+    <div class="footer">
+        <div class="row">
+            <div class="large-12 columns">
+                    <span>
+                        <a class="logo" href="//wovieapp.com" target="_blank">WOVIE</a>
+                        <span class="logo-nolink">by</span>
+                        <a class="logo" href="//slmn.de" target="_blank">SLMN</a>
+                    </span>
+                <ul class="inline-list footer-first-list">
+                    {# <li><a href="#{# TODO: BLOG }">BLOG</a></li> #}
+                    <li><a href="{{ path('slmn_wovie_public_imprint') }}">CONTACT / IMPRESSUM</a></li>
+                </ul>
+                <p class="copyright">© {{ copyrightYear(2014) }} Sebastian Winkler</p>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endmacro %}

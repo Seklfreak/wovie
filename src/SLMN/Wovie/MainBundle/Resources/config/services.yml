@@ -3,6 +3,7 @@ parameters:
     slmn_wovie_main.twig.slmn_wovie_extension.class: SLMN\Wovie\MainBundle\Twig\SlmnWovieExtension
     slmn_wovie_main.form.type.media.class: SLMN\Wovie\MainBundle\Form\Type\MediaType
     slmn_wovie_main.form.type.feedback.class: SLMN\Wovie\MainBundle\Form\Type\FeedbackType
+    slmn_wovie_main.form.type.contact.class: SLMN\Wovie\MainBundle\Form\Type\ContactType
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
     slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
     slmn_wovie_main.form.type.profile.class: SLMN\Wovie\MainBundle\Form\Type\ProfileType
@@ -67,6 +68,10 @@ services:
         class: %slmn_wovie_main.form.type.feedback.class%
         tags:
             - { name: form.type, alias: feedback }
+    slmn_wovie_main.form.type.contact:
+        class: %slmn_wovie_main.form.type.contact.class%
+        tags:
+            - { name: form.type, alias: contact }
     slmn_wovie_main.form.type.editUser:
         class: %slmn_wovie_main.form.type.editUser.class%
         tags:
