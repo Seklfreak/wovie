@@ -245,7 +245,7 @@ class PublicController extends Controller
                 ->setReplyTo($newContactForm->get('email')->getData())
                 ->setTo($this->container->getParameter('slmn_wovie_mainbundle.admin_email'))
                 ->setBody(
-                    'Message from '.$newContactForm->get('email')->getData().': '.$newContactForm->get('message')->getData()
+                    'Message from '.$newContactForm->get('email')->getData().': '."\n".$newContactForm->get('message')->getData()
                 )
             ;
             $this->get('mailer')->send($message);
