@@ -147,6 +147,14 @@ slmn_wovie_actions_ajax_infinite_activity:
     methods: [GET]
     requirements:
         page: \d+
+slmn_wovie_action_ajax_details_small:
+    pattern: /action/ajax/details/small/{id}.html
+    defaults: { _controller: SLMNWovieMainBundle:Action:detailsSmall }
+    methods: [GET]
+slmn_wovie_action_ajax_details_big:
+    pattern: /action/ajax/details/big/{id}.html
+    defaults: { _controller: SLMNWovieMainBundle:Action:detailsBig }
+    methods: [GET]
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

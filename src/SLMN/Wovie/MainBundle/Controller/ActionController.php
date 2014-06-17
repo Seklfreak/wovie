@@ -418,4 +418,51 @@ class ActionController extends Controller
             )
         );
     }
+
+    public function detailsSmallAction(Request $request, $id)
+    {
+        $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById($id);
+
+        if (!$media || $media->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('Media not found!');
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/ajax:detailsSmall.html.twig',
+            array(
+                'media' => $media
+            )
+        );
+    }
+
+    public function detailsBigAction(Request $request, $id)
+    {
+        $public = intval($request->get('public'));
+        if ($public && $public == 1)
+        {
+            $public = true;
+        }
+        else
+        {
+            $public = false;
+        }
+
+        $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById($id);
+
+        if (!$media || $media->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('Media not found!');
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/ajax:detailsBig.html.twig',
+            array(
+                'media' => $media,
+                'public' => $public
+            )
+        );
+    }
 }

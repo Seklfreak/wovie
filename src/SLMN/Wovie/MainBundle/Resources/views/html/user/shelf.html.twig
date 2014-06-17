@@ -38,7 +38,12 @@
                                 data-numberofepisodes="{{ movie.numberOfEpisodes }}"
                             {% endif %}
                             >
-                        {{ wovie.mediaItem(movie) }}
+                            <div
+                                    data-media-id="{{ movie.id }}"
+                                    data-src="{{ path('slmn_wovie_action_ajax_details_small', {'id': movie.id}) }}"
+                                    class="refresh-media">
+                                {{ wovie.mediaItem(movie) }}
+                            </div>
                     </li>
                 {% endfor %}
             </ul>

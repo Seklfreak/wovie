@@ -16,6 +16,24 @@ function chooseEpisodeSelectCount()
     $('.choose-episode-count').text(len);
 }
 
+function refreshMediaContainers(mediaId)
+{
+    $('.refresh-media').each(function() {
+        var $container = $(this);
+        if ($container.data('src') && (!mediaId || $container.data('media-id') == mediaId)) {
+            var src = $container.data('src');
+            $.ajax({
+                url: src
+            })
+                // TODO: Error handling
+                .success(function (data) {
+                    $container.html(data);
+                    init();
+                });
+        }
+    })
+}
+
 function init()
 {
     // Foundation
@@ -57,7 +75,9 @@ function init()
                         if ($(button).data('episode-id') != null)
                         {
                             window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                            window.parent.refreshMediaContainers($(button).data('media-id'));
                         }
+                        refreshMediaContainers($(button).data('media-id'));
                     }
                     else
                     {
@@ -86,7 +106,9 @@ function init()
                         if ($(button).data('episode-id') != null)
                         {
                             window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                            window.parent.refreshMediaContainers($(button).data('media-id'));
                         }
+                        refreshMediaContainers($(button).data('media-id'));
                     }
                     else
                     {
@@ -294,6 +316,7 @@ $(function() {
                         $(button).addClass('success');
                         $(button).html('Watched!');
                         window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                        window.parent.refreshMediaContainers(mediaId);
                     }
                     else
                     {
@@ -326,6 +349,7 @@ $(function() {
                         $(button).addClass('success');
                         $(button).html('Removed');
                         window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
+                        window.parent.refreshMediaContainers(mediaId);
                     }
                     else
                     {

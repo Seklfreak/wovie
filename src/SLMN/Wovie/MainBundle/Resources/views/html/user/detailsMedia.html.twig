@@ -3,5 +3,10 @@
 {% block pagetitle %}WOVIE - {{ media.title }}{% endblock pagetitle %}
 
 {% block body %}
-    {{ wovie.mediaDetails(media, false) }}
+    <div
+            data-media-id="{{ media.id }}"
+            data-src="{{ path('slmn_wovie_action_ajax_details_big', {'id': media.id}) }}"
+            class="refresh-media">
+        {{ wovie.mediaDetails(media, false) }}
+    </div>
 {% endblock body %}
