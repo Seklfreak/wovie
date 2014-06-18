@@ -1,6 +1,89 @@
 {% import "SeklMainFoundationBundle::macros.html.twig" as main %}
 {% import "SLMNWovieMainBundle::html/macros.html.twig" as wovie %}
 
+{% if activities|length > 0 %}
+    {% for activity in activities %}
+        <div class="infinite-item">
+            <div class="row activities-row infinite-item">
+                <div class="small-12 columns">
+                    <div class="panel activity-panel">
+                        <p>
+                            <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
+                                <img
+                                        class="avatar-30"
+                                        src="{{ getGravatarUrl(activity.user, 30) }}"
+                                        >
+                                {% if app.security.getToken().getUser().username != activity.user.username %}
+                                    {{ activity.user.username }}
+                                {% else %}
+                                    you
+                                {% endif %}
+                            </a>
+                            {% if activity.key == 'view.added' %}
+                                watched
+                                {% set beforeWasSeries = false %}
+                                {% for media in activity.value %}
+                                    {% set myMedia = getMediaById(media.mediaId) %}
+                                    {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                        <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- else -%}
+                                        <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- endif -%}
+                                    {% if media.seasons is defined %}
+                                        {% set beforeWasSeries = true %}
+                                        {% for season,episodes in media.seasons %}
+                                            {% set hyphenPrinted = false %}
+                                            season {{ season }}:
+                                            {% for episodeId,episodeInSeason in episodes|sort %}
+                                                {% if episodes[episodeId+1] is defined and episodes[episodeId+1] == episodeInSeason+1 %}
+                                                    {% if hyphenPrinted == false %}
+                                                        {{ episodes[episodeId] }} -
+                                                        {% set hyphenPrinted = true %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ episodeInSeason }}
+                                                    {% set hyphenPrinted = false %}
+                                                    {%- if not loop.last -%},{%- endif -%}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {%- set beforeWasSeries = false -%}
+                                    {% endif %}
+                                    {%- if not loop.last and beforeWasSeries == false -%},{%- endif -%}
+                                {% endfor %}
+                            {% else %}
+                                #{{ activity.id }} {{ activity.key }}
+                            {% endif %}
+                            <span class="activity-date">
+                                {{ activity.time|date('Y-m-d H:i') }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="infinite-more-link">
+        <a
+                class="hide infinite-more-link"
+                href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': page+1}) }}"></a>
+    </div>
+{% else %}
+    <div class="infinite-item">
+        <div class="row infinite-item" style="margin-top: 10px;">
+            <div class="small-12 columns">
+                {{ main.alertBox('No more activities, try to follow some friends.', '', 0) }}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{#
 {% set activitiesCount = 0 %}
 {% if activities|length > 0 %}
     {% for type in activities %}
@@ -11,7 +94,6 @@
                     <div class="row activities-row infinite-item">
                         <div class="small-12 columns">
                             <div class="panel activity-panel">
-                                {# TODO: User profile card on hover #}
                                 <p>
                                     <a href="{{ path('slmn_wovie_public_profile', {'username': time.0.user.username}) }}">
                                         <img
@@ -122,7 +204,7 @@
                                         {% endfor %}.
                                     {% endif %}
                                     <span class="activity-date">
-                                        {{ time.0.createdAt|date('Y-m-d H:i') }} {# TODO: Add relative time (x minutes agoâ€¦) #}
+                                        {{ time.0.createdAt|date('Y-m-d H:i') }}
                                     </span>
                                 </p>
                             </div>
@@ -142,9 +224,13 @@
         <div class="infinite-item">
             <div class="row infinite-item" style="margin-top: 10px;">
                 <div class="small-12 columns">
-                    {{ main.alertBox('No activities here, try to add some friends.', '', 0) }} {# TODO: Friendssearch #}
+                    {{ main.alertBox('No activities here, try to add some friends.', '', 0) }}
                 </div>
             </div>
         </div>
     {% endif %}
 {% endif %}
+#}
+{# TODO: User profile card on hover #}
+{# TODO: Add relative time (x minutes agoâ) #}
+{# TODO: Usersearch #}

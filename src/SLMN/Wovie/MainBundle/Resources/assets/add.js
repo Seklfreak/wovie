@@ -50,6 +50,14 @@ function init()
             scrollTop: $('#scroll-to').offset().top
         }, 2000);
     }
+    // Shelf titles all same high
+    // TODO: Calculate max high PER LINE
+    boxes = $('.shelf-media-titles');
+    maxHeight = Math.max.apply(
+        Math, boxes.map(function() {
+            return $(this).height();
+        }).get());
+    boxes.height(maxHeight);
     // Watched it buttons
     $('.watched_it, .watched_it_cover').unbind().click(function() {
         var button = $(this);
@@ -114,16 +122,6 @@ function init()
                 });
         }
     });
-    // Activity infinite container
-    $('#activity-infinite-container').waypoint('infinite', {
-        onBeforePageLoad: function() {
-            $('#activity-infinite-spinner').removeClass('hide');
-        },
-        onAfterPageLoad: function() {
-            $('#activity-infinite-spinner').addClass('hide');
-            init();
-        }
-    });
 }
 
 function resetFilter()
@@ -135,15 +133,17 @@ function resetFilter()
 $(function() {
     // Init
     init();
+    // Activity infinite container
+    $('#activity-infinite-container').waypoint('infinite', {
+        onBeforePageLoad: function() {
+            $('#activity-infinite-spinner').removeClass('hide');
+        },
+        onAfterPageLoad: function() {
+            $('#activity-infinite-spinner').addClass('hide');
+            init();
+        }
+    });
     $(document).foundation('joyride', 'start');
-    // Shelf titles all same high
-    // TODO: Calculate max high PER LINE
-    boxes = $('.shelf-media-titles');
-    maxHeight = Math.max.apply(
-        Math, boxes.map(function() {
-            return $(this).height();
-        }).get());
-    boxes.height(maxHeight);
     // Change add/edit form based on media type
     $('input[type=radio][id=media_mediaType_0]').click(function() {
         $('#media_finalYear').prop('disabled', true);

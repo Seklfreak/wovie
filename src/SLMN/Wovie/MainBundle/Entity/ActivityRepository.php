@@ -26,64 +26,22 @@ class ActivityRepository extends EntityRepository
         $dateTo->modify('-'.(24*(intval($offset)+1)).' hour');
         $query = $this->createQueryBuilder('activity')
             ->where('activity.user IN (:users)')
-            ->andWhere('activity.createdAt < :dateStart')
-            ->andWhere('activity.createdAt > :dateTo')
+            ->andWhere('activity.time < :dateStart')
+            ->andWhere('activity.time > :dateTo')
             ->orWhere('activity.value = :me')
-            ->andWhere('activity.createdAt < :dateStart')
-            ->andWhere('activity.createdAt > :dateTo')
+            ->andWhere('activity.time < :dateStart')
+            ->andWhere('activity.time > :dateTo')
             ->setParameters(array(
                 'me' => serialize($user->getId()),
                 'users' => $users,
                 'dateStart' => $dateStart,
                 'dateTo' => $dateTo
             ))
-            ->orderBy('activity.createdAt', 'DESC')
-            ->groupBy('activity.user')
-            ->addGroupBy('activity.key')
-            ->addGroupBy('activity.value')
+            ->orderBy('activity.time', 'DESC')
             ->getQuery();
 
         $result = $query->getResult();
-        $activities = array();
-        foreach ($result as $key=>$value)
-        {
-            $activities[$key] = array(
-                'id' => $value->getId(),
-                'user' => $value->getUser(),
-                'createdAt' => $value->getCreatedAt(),
-                'key' => $value->getKey(),
-                'value' => $value->getValue()
-            );
-            switch ($value->getKey())
-            {
-                case 'follow.added':
-                    if (($oUser=$usersRepo->findOneById($value->getValue())))
-                    {
-                        $activities[$key]['value'] = $oUser;
-                    }
-                    else
-                    {
-                        unset($activities[$key]);
-                    }
-                    break;
-                case 'media.added':
-                    if (($media=$mediasRepo->findOneById($value->getValue())))
-                    {
-                        $activities[$key]['value'] = $mediasRepo->findOneById($value->getValue());
-                    }
-                    else
-                    {
-                        unset($activities[$key]);
-                    }
-                    break;
-                case 'view.added':
-                    $activities[$key]['value']['media'] = $mediasRepo->findOneById($value->getValue()['mediaId']);
-                    $activities[$key]['value']['episodeId'] = $value->getValue()['episodeId'];
-                    break;
-                default:
-                    break;
-            }
-        }
+        return $result;
 
         return $activities;
     }

@@ -253,7 +253,7 @@ class CreateActivityConsumer implements ConsumerInterface
             default:
                 break;
         }
-        echo 'Activity '.$value['key'].' not found => rejected'."\n";
-        return false; // Retry
+        echo 'Activity '.$value['key'].' not found => droped'."\n";
+        return true; // Retry
     }
 }

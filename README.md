@@ -2,6 +2,8 @@
 
 An website to manage your movie shelf.
 
+Rabbit: `sudo -u http app/console rabbitmq:consumer -w -l 128 create_activity -v`
+
 ## TODO
 - [ ] EMails expiration without cronjob, check link opening
 - [ ] Add movie/series to the shelf

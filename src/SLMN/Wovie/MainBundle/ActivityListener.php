@@ -77,12 +77,13 @@ class ActivityListener
         }
     }
 
-    public function preRemove(LifecycleEventArgs $args) // TODO: Work via queue
+    public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         $em = $args->getEntityManager();
         $activitiesRepo = $em->getRepository('SLMNWovieMainBundle:Activity');
 
+        /* TODO: With queue
         if ($entity instanceof Media)
         {
             $activities = $activitiesRepo->findBy(array(
@@ -141,5 +142,6 @@ class ActivityListener
                 $this->logger->info('Deleted activity '.$activities[0]->getKey().': #'.$activities[0]->getId());
             }
         }
+        */
     }
 }
