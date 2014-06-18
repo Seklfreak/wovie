@@ -4,6 +4,20 @@ An website to manage your movie shelf.
 
 Rabbit: `sudo -u http app/console rabbitmq:consumer -w -l 128 create_activity -v`
 
+### supervisord wovie.conf
+```ini
+[program:wovie-rabbitmq-consumer-create-activity]
+command=/usr/bin/php /path/to/wovie/app/console rabbitmq:consumer -w -l 128 create_activity
+directory=/path/to/wovie
+autostart=true
+autorestart=true
+stdout_logfile=/path/to/wovie/app/logs/rabbitmq-consumer-create-activity.log
+stdout_logfile_maxbytes=1MB
+stderr_logfile=/path/to/wovie/app/logs/rabbitmq-consumer-create-activity.log
+stderr_logfile_maxbytes=1MB
+user=http
+```
+
 ## TODO
 - [ ] EMails expiration without cronjob, check link opening
 - [ ] Add movie/series to the shelf

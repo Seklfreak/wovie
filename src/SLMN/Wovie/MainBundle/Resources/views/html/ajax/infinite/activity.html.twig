@@ -19,6 +19,7 @@
                                     you
                                 {% endif %}
                             </a>
+                            {# TODO: Skip objects if deleted (no result for getMediaById or getUserById) #}
                             {% if activity.key == 'media.added' %}
                                 added
                                 {% for media in activity.value %}
