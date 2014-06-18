@@ -385,7 +385,7 @@ $(function() {
                     if (data.status == 'success')
                     {
                         $(button).addClass('alert');
-                        $(button).html('Deleted');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                         window.location.replace(Routing.generate('slmn_wovie_user_movie_shelf'));
                     }
                     else
@@ -414,7 +414,7 @@ $(function() {
                     if (data.status == 'success')
                     {
                         $(button).addClass('success');
-                        $(button).html('Followed');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                     }
                     else
                     {
@@ -441,7 +441,7 @@ $(function() {
                     if (data.status == 'success')
                     {
                         $(button).addClass('alert');
-                        $(button).html('Defollowed');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                     }
                     else
                     {

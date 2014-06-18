@@ -86,7 +86,7 @@
         </div>
         <div class="small-2 columns">
             <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="button expand tiny">
-                <i class="fa fa-info fa-lg"></i>
+                <i class="fa fa-search fa-lg"></i>
             </a>
         </div>
     </div>
@@ -139,7 +139,24 @@
     </div>
     <div class="row collapse">
         <div class="small-12 columns">
-            <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': movie.id }) }}" class="button expand tiny"><i class="fa fa-plus fa-lg"></i> Add to my library</a>
+            {% set inMyLibrary = isInMyLibrary(movie.freebaseId) %}
+            {% if movie.freebaseId and inMyLibrary %}
+                <div class="row collapse">
+                    <div class="small-12 columns">
+                        <a
+                                href="{{ path('slmn_wovie_user_movie_details', { 'id': inMyLibrary.id }) }}"
+                                class="button expand tiny"
+                                style="margin-bottom: 10px;"
+                                >
+                            <i class="fa fa-search fa-lg"></i> View in my library
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': movie.id }) }}" class="button expand tiny">
+                    <i class="fa fa-plus fa-lg"></i> Add to my library
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endmacro %}
@@ -157,7 +174,7 @@
                     <img class="small-cover" src="{{ movie.posterImage|default(placeholderImg) }}">
                 </noscript>
                 <div class="image-label">
-                    <i class="fa fa-info-circle"></i> Details
+                    <i class="fa fa-search"></i> Details
                 </div>
             </a>
         </li>
@@ -349,23 +366,31 @@
                     </div>
                 </div>
             {% else %}
-                <div class="row collapse">
-                    <div class="small-12 columns">
-                        <a
-                                href="{{ path('slmn_wovie_user_movie_add', { 'prefill': media.id }) }}"
-                                class="button expand tiny"
-                                style="margin-bottom: 10px;"
-                                >
-                            <i class="fa fa-plus fa-lg"></i> Add to my library
-                        </a>
-                    </div>
-                </div>
-                {% if media.createdBy != app.security.getToken().getUser() and media.freebaseId %}
-                    {% if isInMyLibrary(media.freebaseId) %}
-                        <div class="row collapse small-text-center">
-                            <span class="label secondary">Already in your library.</span>
+                {% set inMyLibrary = isInMyLibrary(media.freebaseId) %}
+                {% if media.freebaseId and inMyLibrary %}
+                    <div class="row collapse">
+                        <div class="small-12 columns">
+                            <a
+                                    href="{{ path('slmn_wovie_user_movie_details', { 'id': inMyLibrary.id }) }}"
+                                    class="button expand tiny"
+                                    style="margin-bottom: 10px;"
+                                    >
+                                <i class="fa fa-search fa-lg"></i> View in my library
+                            </a>
                         </div>
-                    {% endif %}
+                    </div>
+                {% else %}
+                    <div class="row collapse">
+                        <div class="small-12 columns">
+                            <a
+                                    href="{{ path('slmn_wovie_user_movie_add', { 'prefill': media.id }) }}"
+                                    class="button expand tiny"
+                                    style="margin-bottom: 10px;"
+                                    >
+                                <i class="fa fa-plus fa-lg"></i> Add to my library
+                            </a>
+                        </div>
+                    </div>
                 {% endif %}
             {% endif %}
         </div>
