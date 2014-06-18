@@ -31,7 +31,7 @@ class ActivityListener
         return $this->container->get('security.context')->getToken()->getUser();
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         $em = $args->getEntityManager();
@@ -44,6 +44,7 @@ class ActivityListener
             $activity->setKey('media.added');
             $activity->setValue($entity->getId());
             $em->persist($activity);
+            $em->flush();
             $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
         else if ($entity instanceof View)
@@ -59,6 +60,7 @@ class ActivityListener
                 )
             );
             $em->persist($activity);
+            $em->flush();
             $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
         else if ($entity instanceof Follow)
@@ -69,6 +71,7 @@ class ActivityListener
             $activity->setKey('follow.added');
             $activity->setValue($entity->getFollow()->getId());
             $em->persist($activity);
+            $em->flush();
             $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
         }
     }
