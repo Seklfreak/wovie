@@ -3,7 +3,6 @@
 namespace SLMN\Wovie\MainBundle;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use SLMN\Wovie\MainBundle\Entity\Activity;
 use SLMN\Wovie\MainBundle\Entity\Follow;
 use SLMN\Wovie\MainBundle\Entity\Media;
 use SLMN\Wovie\MainBundle\Entity\View;

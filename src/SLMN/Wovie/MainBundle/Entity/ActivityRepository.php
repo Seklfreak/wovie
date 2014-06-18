@@ -10,8 +10,6 @@ class ActivityRepository extends EntityRepository
     public function findAllForUser($user, $offset=0)
     {
         $followersRepo = $this->getEntityManager()->getRepository('SLMNWovieMainBundle:Follow');
-        $usersRepo = $this->getEntityManager()->getRepository('SeklMainUserBundle:User');
-        $mediasRepo = $this->getEntityManager()->getRepository('SLMNWovieMainBundle:Media');
         $followers = $followersRepo->findBy(array('user' => $user));
         $users = array();
         foreach ($followers as $follower)
