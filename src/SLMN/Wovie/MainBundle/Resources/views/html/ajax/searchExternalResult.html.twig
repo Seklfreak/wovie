@@ -9,10 +9,7 @@
         <ul class="inline-list" style="margin-bottom: 0;"> {# TODO: Move to grid #}
             <li style="width: 8%;">
                 <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}">
-                    <img class="small-cover lazy" data-original="{{ url('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
-                    <noscript>
-                        <img class="small-cover" src="{{ url('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
-                    </noscript>
+                    <img class="small-cover" src="{{ url('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
                     <div class="image-label">
                             <i class="fa fa-plus"></i> Add
                     </div>

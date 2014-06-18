@@ -20,10 +20,7 @@
             filter='?jpegoptim' output='images/placeholder.jpg' %}
             {% set placeholderImg = asset_url %}
             {% endimage %}
-            <img class="cover lazy" data-original="{{ movie.posterImage|default(placeholderImg) }}">
-            <noscript>
-                <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
-            </noscript>
+            <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
         </a>
         {% set views = viewsOfId(movie.id) %}
         {% if movie.mediaType == 2 %}
@@ -77,16 +74,16 @@
             </div>
         {% endif %}
         <div class="small-2 columns">
+            <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="button expand tiny">
+                <i class="fa fa-search fa-lg"></i>
+            </a>
+        </div>
+        <div class="small-2 columns">
             <a
                     id="edit-button"
                     href="{{ path('slmn_wovie_user_movie_edit', {'id': movie.id}) }}"
                     class="button expand tiny">
                 <i class="fa fa-edit fa-lg"></i>
-            </a>
-        </div>
-        <div class="small-2 columns">
-            <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="button expand tiny">
-                <i class="fa fa-search fa-lg"></i>
             </a>
         </div>
     </div>
@@ -102,10 +99,7 @@
             filter='?jpegoptim' output='images/placeholder.jpg' %}
             {% set placeholderImg = asset_url %}
             {% endimage %}
-            <img class="cover lazy" data-original="{{ movie.posterImage|default(placeholderImg) }}">
-            <noscript>
-                <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
-            </noscript>
+            <img class="cover" src="{{ movie.posterImage|default(placeholderImg) }}">
         </a>
         {% set views = viewsOfId(movie.id) %}
         {% if movie.mediaType == 2 %}
@@ -169,10 +163,7 @@
                 filter='?jpegoptim' output='images/placeholder.jpg' %}
                     {% set placeholderImg = asset_url %}
                 {% endimage %}
-                <img class="small-cover lazy" data-original="{{ item.posterImage|default(placeholderImg) }}">
-                <noscript>
-                    <img class="small-cover" src="{{ movie.posterImage|default(placeholderImg) }}">
-                </noscript>
+                <img class="small-cover" src="{{ movie.posterImage|default(placeholderImg) }}">
                 <div class="image-label">
                     <i class="fa fa-search"></i> Details
                 </div>
@@ -326,10 +317,7 @@
             </div>
             <div class="row">
                 <div class="small-12 columns">
-                    <img class="cover-big lazy" data-original="{{ media.posterImage|default(placeholderImg) }}">
-                    <noscript>
-                        <img class="cover-big" src="{{ media.posterImage|default(placeholderImg) }}">
-                    </noscript>
+                    <img class="cover-big" src="{{ media.posterImage|default(placeholderImg) }}">
                 </div>
             </div>
             {% if public == false %}

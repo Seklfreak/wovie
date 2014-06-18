@@ -50,10 +50,6 @@ function init()
             scrollTop: $('#scroll-to').offset().top
         }, 2000);
     }
-    // Lazy load
-    $('img.lazy').show().lazyload({
-        effect : "fadeIn"
-    });
     // Watched it buttons
     $('.watched_it, .watched_it_cover').unbind().click(function() {
         var button = $(this);
