@@ -76,6 +76,28 @@
                                     {% endif %}
                                     {%- if not loop.last and beforeWasSeries == false -%},{%- endif -%}
                                 {% endfor %}
+                            {% elseif activity.key == 'follow.added' %}
+                                {% if app.security.getToken().getUser().username != activity.user.username %}
+                                    is
+                                {% else %}
+                                    are
+                                {% endif %}
+                                now following
+                                {% for user in activity.value %}
+                                    {% set myUser = getUserById(user.userId) %}
+                                    <a href="{{ path('slmn_wovie_public_profile', {'username': myUser.username}) }}">
+                                        <img
+                                                class="avatar-30"
+                                                src="{{ getGravatarUrl(myUser, 30) }}"
+                                                >
+                                        {% if app.security.getToken().getUser().username != myUser.username -%}
+                                            {{ myUser.username }}
+                                        {% else -%}
+                                            you
+                                        {%- endif -%}
+                                    </a>
+                                    {%- if not loop.last -%},{%- endif -%}
+                                {% endfor %}
                             {% else %}
                                 #{{ activity.id }} {{ activity.key }}
                             {% endif %}

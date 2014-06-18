@@ -298,10 +298,62 @@ class CreateActivityConsumer implements ConsumerInterface
                     }
                 }
                 break;
+            case 'follow.added':
+                echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
+                $user = $this->usersRepo->findOneById($value['userId']);
+                $followedUser = $this->usersRepo->findOneById($value['value']['userId']);
+                if (!$user)
+                {
+                    echo ' => user #'.$value['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$followedUser)
+                {
+                    echo ' => user #'.$value['value']['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                $activity = $this->getInTimerange($value['createdAt'], $value['key'], $user);
+                if ($activity == null)
+                {
+                    $activity = new Activity();
+                    $activity->setUser($user);
+                    $activity->setTime($value['createdAt']);
+                    $activity->setKey('follow.added');
+                    $activity->setValue(array(
+                        array(
+                            'userId' => $value['value']['userId']
+                        )
+                    ));
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => created new activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                else
+                {
+                    $activityValue = $activity->getValue();
+                    foreach($activityValue as $aUser)
+                    {
+                        if ($aUser['userId'] == $value['value']['userId'])
+                        {
+                            echo ' => user already in activity => dropped'."\n";
+                            return true;
+                        }
+                    }
+                    $activityValue[] = array(
+                        'userId' => $value['value']['userId']
+                    );
+                    $activity->setValue($activityValue);
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => added user to activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                break;
             default:
                 break;
         }
-        echo 'Activity '.$value['key'].' not found => droped'."\n";
-        return true; // Retry
+        echo 'Activity '.$value['key'].' not found => dropped'."\n";
+        return true;
     }
 }
