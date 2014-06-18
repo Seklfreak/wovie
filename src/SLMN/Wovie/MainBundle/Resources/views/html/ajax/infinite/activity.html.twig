@@ -19,7 +19,27 @@
                                     you
                                 {% endif %}
                             </a>
-                            {% if activity.key == 'view.added' %}
+                            {% if activity.key == 'media.added' %}
+                                added
+                                {% for media in activity.value %}
+                                    {% set myMedia = getMediaById(media.mediaId) %}
+                                    {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                        <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- else -%}
+                                        <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- endif -%}
+                                    {%- if not loop.last -%},{%- endif -%}
+                                {% endfor %}
+                                {% if app.security.getToken().getUser().username != activity.user.username %}
+                                    to their library
+                                {% else %}
+                                    to your library
+                                {% endif %}
+                            {% elseif activity.key == 'view.added' %}
                                 watched
                                 {% set beforeWasSeries = false %}
                                 {% for media in activity.value %}

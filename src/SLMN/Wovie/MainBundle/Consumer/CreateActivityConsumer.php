@@ -58,10 +58,58 @@ class CreateActivityConsumer implements ConsumerInterface
 
     public function execute(AMQPMessage $msg)
     {
-        echo '---'."\n"; // TODO: remove
         $value = unserialize($msg->body);
         switch ($value['key'])
         {
+            case 'media.added':
+                echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
+                if ($value['value']['mediaId'] == null)
+                {
+                    echo ' => no mediaId, is invalid'."\n";
+                    return true;
+                }
+                $user = $this->usersRepo->findOneById($value['userId']);
+                $media = $this->mediasRepo->findOneById($value['value']['mediaId']);
+                if (!$user)
+                {
+                    echo ' => user #'.$value['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$media)
+                {
+                    echo ' => media #'.$value['value']['mediaId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                $activity = $this->getInTimerange($value['createdAt'], $value['key'], $user);
+                if ($activity == null)
+                {
+                    $activity = new Activity();
+                    $activity->setUser($user);
+                    $activity->setTime($value['createdAt']);
+                    $activity->setKey('media.added');
+                    $activity->setValue(array(
+                        array(
+                            'mediaId' => $value['value']['mediaId']
+                        )
+                    ));
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => created new activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                else
+                {
+                    $activityValue = $activity->getValue();
+                    $activityValue[] = array(
+                        'mediaId' => $value['value']['mediaId']
+                    );
+                    $activity->setValue($activityValue);
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => added media to activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                break;
             case 'view.added':
                 echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
                 $user = $this->usersRepo->findOneById($value['userId']);
