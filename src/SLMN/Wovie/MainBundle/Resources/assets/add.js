@@ -71,7 +71,7 @@ function init()
                     if (data.status == 'success')
                     {
                         $(button).addClass('success');
-                        $(button).html('Watched!');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                         if ($(button).data('episode-id') != null)
                         {
                             window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
@@ -102,7 +102,7 @@ function init()
                 .success(function(data) {
                     if (data.status == 'success')
                     {
-                        $(button).html('Removed');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                         if ($(button).data('episode-id') != null)
                         {
                             window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
@@ -314,7 +314,7 @@ $(function() {
                     if (data.status == 'success')
                     {
                         $(button).addClass('success');
-                        $(button).html('Watched!');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                         window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
                         window.parent.refreshMediaContainers(mediaId);
                     }
@@ -347,7 +347,7 @@ $(function() {
                     if (data.status == 'success')
                     {
                         $(button).addClass('success');
-                        $(button).html('Removed');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
                         window.parent.$('#modal-frame-choose-episode').foundation('reveal', 'close');
                         window.parent.refreshMediaContainers(mediaId);
                     }

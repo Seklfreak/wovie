@@ -56,7 +56,7 @@
     <div class="row collapse">
         <div class="{% if views > 0 and movie.mediaType == 1 %}small-6{% else %}small-8{% endif %} columns">
             {% if movie.mediaType == 1 %}
-                <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ movie.id }}">I watched it!
+                <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ movie.id }}">Mark as seen
                 </button>
             {% else %}
                 <button
@@ -65,7 +65,7 @@
                         data-reveal-id="modal-frame-choose-episode"
                         onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
                         >
-                    I watched an episode!
+                    Mark an episode as seen
                 </button>
             {% endif %}
         </div>
@@ -319,7 +319,7 @@
                 <div class="row collapse">
                     <div class="{% if views > 0 and media.mediaType == 1 %}small-8{% else %}small-10{% endif %} columns">
                         {% if media.mediaType == 1 %}
-                            <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ media.id }}">I watched it!
+                            <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ media.id }}">Mark as seen
                             </button>
                         {% else %}
                             <button
@@ -328,7 +328,7 @@
                                     data-reveal-id="modal-frame-choose-episode"
                                     onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': media.id}) }}')"
                                     >
-                                I watched an episode!
+                                Mark an episode as seen
                             </button>
                         {% endif %}
                     </div>
