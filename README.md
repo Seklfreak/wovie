@@ -11,11 +11,13 @@ command=/usr/bin/php /path/to/wovie/app/console rabbitmq:consumer -w -l 128 crea
 directory=/path/to/wovie
 autostart=true
 autorestart=true
-stdout_logfile=/path/to/wovie/app/logs/rabbitmq-consumer-create-activity.log
+stdout_logfile=/path/to/wovie/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
 stdout_logfile_maxbytes=1MB
-stderr_logfile=/path/to/wovie/app/logs/rabbitmq-consumer-create-activity.log
+stderr_logfile=/path/to/wovie/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
 stderr_logfile_maxbytes=1MB
-user=http
+user=www-data
+numprocs=1
+process_name=%(program_name)s_%(process_num)s
 ```
 
 ## TODO

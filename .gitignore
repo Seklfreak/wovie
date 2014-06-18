@@ -5,6 +5,7 @@
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+!app/logs/rabbitmq/.gitkeep
 /build/
 /vendor/
 /bin/
