@@ -106,3 +106,23 @@ services:
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments: ["@pdo", "%pdo.db_options%"]
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     'localhost'
+            port:     5672
+            user:     'guest'
+            password: 'guest'
+            vhost:    '/'
+            lazy:     true
+    producers:
+        create_activity:
+            connection:       default
+            exchange_options: { name: 'wove-create-activity', type: direct }
+    consumers:
+        create_activity:
+            connection:       default
+            exchange_options: { name: 'wove-create-activity', type: direct }
+            queue_options:    { name: 'wove-create-activity' }
+            callback:         wovie.create_activity_service

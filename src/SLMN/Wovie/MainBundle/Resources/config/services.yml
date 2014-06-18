@@ -13,6 +13,7 @@ parameters:
     slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
     slmn_wovie_main.activity.listener.class: SLMN\Wovie\MainBundle\ActivityListener
     slmn_wovie_main.service.pdf_docs.class: SLMN\Wovie\MainBundle\PdfDocs
+    wovie.create_activity_service.class: SLMN\Wovie\MainBundle\Consumer\CreateActivityConsumer
 
 services:
     # System
@@ -46,6 +47,11 @@ services:
         arguments:
             kernel: @kernel
             em: @doctrine.orm.entity_manager
+    wovie.create_activity_service:
+        class: %wovie.create_activity_service.class%
+        arguments:
+            em: @doctrine.orm.entity_manager
+            mediaApi: @media_api
     # DB
     slmn_wovie_main.activity.listener:
         class: %slmn_wovie_main.activity.listener.class%
@@ -55,6 +61,7 @@ services:
         arguments:
             container: @service_container
             logger: @logger
+            rabbitCreateActivity: @old_sound_rabbit_mq.create_activity_producer
     userOption:
         class:  %slmn_wovie_main.userOption.class%
         arguments:

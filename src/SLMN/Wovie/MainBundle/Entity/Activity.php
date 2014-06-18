@@ -26,7 +26,7 @@ class Activity
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    protected $time;
 
     /**
      * @ORM\Column(name="o_key", type="string", length=100)
@@ -34,25 +34,25 @@ class Activity
     protected $key;
 
     /**
+     * @return mixed
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param mixed $time
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+    /**
      * @ORM\Column(type="object")
      */
     protected $value;
-
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
 
     /**
      * @return mixed

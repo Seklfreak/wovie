@@ -19,11 +19,13 @@ class ActivityListener
 
     protected $container;
     protected $logger;
+    protected $rabbitCreateActivity;
 
-    public function __construct($container, $logger)
+    public function __construct($container, $logger, $rabbitCreateActivity)
     {
         $this->container = $container;
         $this->logger = $logger;
+        $this->rabbitCreateActivity = $rabbitCreateActivity;
     }
 
     protected function getUser()
@@ -38,45 +40,44 @@ class ActivityListener
 
         if ($entity instanceof Media)
         {
-            $activity = new Activity();
-            $activity->setUser($this->getUser());
-            $activity->setCreatedAt(new \DateTime());
-            $activity->setKey('media.added');
-            $activity->setValue($entity->getId());
-            $em->persist($activity);
-            $em->flush();
-            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
+            $this->rabbitCreateActivity->publish(serialize(array(
+                'key' => 'media.added',
+                'userId' => $this->getUser()->getId(),
+                'createdAt' => new \DateTime(),
+                'value' => array(
+                    'mediaId' => $entity->getId()
+                )
+            )));
+            $this->logger->info('Published activity "media.added" for user #'.$this->getUser()->getId());
         }
         else if ($entity instanceof View)
         {
-            $activity = new Activity();
-            $activity->setUser($this->getUser());
-            $activity->setCreatedAt(new \DateTime());
-            $activity->setKey('view.added');
-            $activity->setValue(
-                array(
+            $this->rabbitCreateActivity->publish(serialize(array(
+                'key' => 'view.added',
+                'userId' => $this->getUser()->getId(),
+                'createdAt' => new \DateTime(),
+                'value' => array(
                     'mediaId' => $entity->getMedia()->getId(),
                     'episodeId' => $entity->getEpisode()
                 )
-            );
-            $em->persist($activity);
-            $em->flush();
-            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
+            )));
+            $this->logger->info('Published activity "view.added" for user #'.$this->getUser()->getId());
         }
         else if ($entity instanceof Follow)
         {
-            $activity = new Activity();
-            $activity->setUser($this->getUser());
-            $activity->setCreatedAt(new \DateTime());
-            $activity->setKey('follow.added');
-            $activity->setValue($entity->getFollow()->getId());
-            $em->persist($activity);
-            $em->flush();
-            $this->logger->info('Created activity '.$activity->getKey().' for '.serialize($activity->getValue()));
+            $this->rabbitCreateActivity->publish(serialize(array(
+                'key' => 'follow.added',
+                'userId' => $this->getUser()->getId(),
+                'createdAt' => new \DateTime(),
+                'value' => array(
+                    'userId' => $entity->getFollow()->getId()
+                )
+            )));
+            $this->logger->info('Published activity "follow.added" for user #'.$this->getUser()->getId());
         }
     }
 
-    public function preRemove(LifecycleEventArgs $args)
+    public function preRemove(LifecycleEventArgs $args) // TODO: Work via queue
     {
         $entity = $args->getEntity();
         $em = $args->getEntityManager();

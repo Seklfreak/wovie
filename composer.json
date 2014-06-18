@@ -32,6 +32,7 @@
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "stripe/stripe-php": "~1.15",
         "tecnick.com/tcpdf": "~6.0",
+        "oldsound/rabbitmq-bundle": "~1.4",
         "sekl/main/foundationbundle": "dev-master",
         "sekl/main/userbundle": "dev-master"
     },
