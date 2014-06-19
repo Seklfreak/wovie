@@ -566,7 +566,8 @@
                         {% set profileUrl = path('slmn_wovie_public_profile', {'username': app.security.getToken().getUser().username}) %}
                     {% endif %}
                     <a href="{{ profileUrl }}">
-                        <img class="top-bar-avatar" src="{{ getGravatarUrl(app.security.getToken().getUser(), 30) }}"> {{ app.security.getToken().getUser().username }}
+                        <img class="top-bar-avatar" src="{{ getGravatarUrl(app.security.getToken().getUser(), 30) }}">
+                        <b>{{ app.security.getToken().getUser().username }}</b>
                     </a>
                     <ul class="dropdown">
                         <li>
