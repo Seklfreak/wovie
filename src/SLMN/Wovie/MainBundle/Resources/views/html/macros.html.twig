@@ -177,7 +177,6 @@
             {% endif %}
         </div>
     </div>
-
     {# Rating #}
     <div class="text-center rating-container">
         <div>
@@ -379,6 +378,7 @@
                                     class="button expand tiny"
                                     data-reveal-id="modal-frame-choose-episode"
                                     onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': media.id}) }}')"
+                                    style="margin-bottom: 0;"
                                     >
                                 Mark an episode as seen
                             </button>
@@ -386,7 +386,7 @@
                     </div>
                     {% if views > 0 and media.mediaType == 1 %}
                         <div class="small-2 columns">
-                            <button class="button expand tiny alert watched_it_not" data-media-id="{{ media.id }}">
+                            <button class="button expand tiny alert watched_it_not" data-media-id="{{ media.id }}" style="margin-bottom: 0;">
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
@@ -395,7 +395,8 @@
                         <a
                                 id="edit-button"
                                 href="{{ path('slmn_wovie_user_movie_edit', {'id': media.id}) }}"
-                                class="button expand tiny">
+                                class="button expand tiny"
+                                style="margin-bottom: 0;">
                             <i class="fa fa-edit fa-lg"></i>
                         </a>
                     </div>
@@ -408,7 +409,7 @@
                             <a
                                     href="{{ path('slmn_wovie_user_movie_details', { 'id': inMyLibrary.id }) }}"
                                     class="button expand tiny"
-                                    style="margin-bottom: 10px;"
+                                    style="margin-bottom: 0;"
                                     >
                                 <i class="fa fa-search fa-lg"></i> View in my library
                             </a>
@@ -420,7 +421,7 @@
                             <a
                                     href="{{ path('slmn_wovie_user_movie_add', { 'prefill': media.id }) }}"
                                     class="button expand tiny"
-                                    style="margin-bottom: 10px;"
+                                    style="margin-bottom: 0;"
                                     >
                                 <i class="fa fa-plus fa-lg"></i> Add to my library
                             </a>
@@ -428,6 +429,28 @@
                     </div>
                 {% endif %}
             {% endif %}
+            {# Rating #}
+            <div class="text-center rating-container{% if public == false %} rating-editable{% endif %}" style="margin-bottom: 10px;">
+                <div>
+                    {% for i in 1..5 %}
+                        {% set fixedI = (5+1) - loop.index %}
+                        {% if media.rating and fixedI <= media.rating %}
+                            <span{% if public == false %} class="do-rate-media" data-media-id="{{ media.id }}" data-rating="{{ fixedI }}"{% endif %}>
+                        <i class="fa fa-star active"></i>
+                    </span>
+                        {% else %}
+                            <span{% if public == false %} class="do-rate-media" data-media-id="{{ media.id }}" data-rating="{{ fixedI }}"{% endif %}>
+                        <i class="fa fa-star-o"></i>
+                    </span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if media.favorite == true %}
+                    <span><i class="fa fa-heart active{% if public == false %} do-switch-favorite-media{% endif %}" {% if public == false %}data-media-id="{{ media.id }}"{% endif %}></i></span>
+                {% else %}
+                    <span><i class="fa fa-heart-o{% if public == false %} do-switch-favorite-media{% endif %}"{% if public == false %} data-media-id="{{ media.id }}"{% endif %}></i></span>
+                {% endif %}
+            </div>
         </div>
         <div class="small-12 large-6 pull-1 columns">
             <div class="row">
