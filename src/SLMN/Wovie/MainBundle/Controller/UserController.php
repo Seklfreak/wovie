@@ -598,10 +598,17 @@ class UserController extends Controller
         );
     }
 
-    public function activityAction()
+    public function activityAction($id)
     {
-        return $this->render(
-            'SLMNWovieMainBundle:html/user:activity.html.twig'
-        );
+        if ($id > 0)
+        {
+            $activitiesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Activity');
+            $activity = $activitiesRepo->findOneById($id);
+            return $this->render('SLMNWovieMainBundle:html/user:activitySingle.html.twig', array(
+                'activity' => $activity
+            ));
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/user:activity.html.twig');
     }
 }

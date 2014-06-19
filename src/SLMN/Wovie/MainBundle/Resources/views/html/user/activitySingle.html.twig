@@ -1,0 +1,17 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - activity{% endblock pagetitle %}
+
+{% block body %}
+    {% if activity %}
+        <div style="margin-top: 20px;">
+            {{ wovie.printActivity(activity) }}
+        </div>
+    {% else %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="small-12 columns">
+                {{ main.alertBox('Activity not found.', 'warning', 0) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock body %}
