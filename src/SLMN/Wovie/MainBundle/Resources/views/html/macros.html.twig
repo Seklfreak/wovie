@@ -164,18 +164,41 @@
                         <a
                                 href="{{ path('slmn_wovie_user_movie_details', { 'id': inMyLibrary.id }) }}"
                                 class="button expand tiny"
-                                style="margin-bottom: 10px;"
+                                style="margin-bottom: 0;"
                                 >
                             <i class="fa fa-search fa-lg"></i> View in my library
                         </a>
                     </div>
                 </div>
             {% else %}
-                <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': movie.id }) }}" class="button expand tiny">
+                <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': movie.id }) }}" class="button expand tiny" style="margin-bottom: 0;">
                     <i class="fa fa-plus fa-lg"></i> Add to my library
                 </a>
             {% endif %}
         </div>
+    </div>
+
+    {# Rating #}
+    <div class="text-center rating-container">
+        <div>
+            {% for i in 1..5 %}
+                {% set fixedI = (5+1) - loop.index %}
+                {% if movie.rating and fixedI <= movie.rating %}
+                    <span>
+                        <i class="fa fa-star active"></i>
+                    </span>
+                {% else %}
+                    <span>
+                        <i class="fa fa-star-o"></i>
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if movie.favorite == true %}
+            <span><i class="fa fa-heart active"></i></span>
+        {% else %}
+            <span><i class="fa fa-heart-o"></i></span>
+        {% endif %}
     </div>
 {% endmacro %}
 
