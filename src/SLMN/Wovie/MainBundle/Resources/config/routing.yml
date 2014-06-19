@@ -167,8 +167,12 @@ slmn_wovie_actions_ajax_toggle_favorite:
     methods: [POST]
     options:
       expose: true
-    requirements:
-        id: \d+
+slmn_wovie_actions_ajax_rate:
+    pattern: /action/ajax/rate.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:rate }
+    methods: [POST]
+    options:
+      expose: true
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

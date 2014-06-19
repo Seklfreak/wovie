@@ -14,7 +14,6 @@
     <div class="clearfix shelf-media-titles" id="media-{{ movie.id }}">
         <h6 class="left">{{ movie.title }}</h6>
     </div>
-    {# Rating #}
     <div style="position: relative;">
         <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
             {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
@@ -90,10 +89,20 @@
             </a>
         </div>
     </div>
+    {# Rating #}
     <div class="text-center rating-container rating-editable">
         <div>
             {% for i in 1..5 %}
-                <span><i class="fa fa-star-o" data-rating="{{ (5+1) - loop.index }}"></i></span>
+                {% set fixedI = (5+1) - loop.index %}
+                {% if movie.rating and fixedI <= movie.rating %}
+                    <span class="do-rate-media" data-media-id="{{ movie.id }}" data-rating="{{ fixedI }}">
+                        <i class="fa fa-star active"></i>
+                    </span>
+                {% else %}
+                    <span class="do-rate-media" data-media-id="{{ movie.id }}" data-rating="{{ fixedI }}">
+                        <i class="fa fa-star-o"></i>
+                    </span>
+                {% endif %}
             {% endfor %}
         </div>
         {% if movie.favorite == true %}

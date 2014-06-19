@@ -457,4 +457,40 @@ class ActionController extends Controller
         }
         return $response;
     }
+
+    public function rateAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (
+            ($mediaId=intval($request->get('media_id'))) != null &&
+            ($rating=intval($request->get('rating'))) != null
+        )
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediaRepo->findOneById($mediaId);
+            if ($media != null && $media->getCreatedBy() == $this->getUser())
+            {
+                $media->setRating($rating);
+
+                $em->flush();
+                $response->setData(array(
+                    'status' => 'success'
+                ));
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
 }

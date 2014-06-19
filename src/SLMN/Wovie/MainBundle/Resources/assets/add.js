@@ -149,7 +149,33 @@ function init()
                     }
                 });
         }
-    })
+    });
+    $('.do-rate-media').unbind().click(function() {
+        var $button = $(this);
+        var mediaId = $button.data('media-id');
+        var rating = $button.data('rating');
+        if (mediaId != null && rating != null)
+        {
+            $button.parent().html('<i class="fa fa-spinner fa-spin" style="font-size: 1.75em;"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_rate'),
+                type: "POST",
+                data: { media_id: mediaId, rating: rating }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $button.parent().html('<i class="fa fa-check" style="font-size: 1.75em;"></i>');
+                        refreshMediaContainers(mediaId);
+                    }
+                    else
+                    {
+                        $button.parent().html('<i class="fa fa-warning" style="font-size: 1.75em;"></i>');
+                    }
+                });
+        }
+    });
 }
 
 function resetFilter()

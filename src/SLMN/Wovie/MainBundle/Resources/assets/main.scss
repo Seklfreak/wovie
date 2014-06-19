@@ -314,10 +314,13 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   & > span > i.fa-heart.active {
     color: #d20000;
   }
+  & > div > span > i.fa-star.active {
+    color: gold;
+  }
 }
 .rating-editable {
-  & > span > i.fa-heart-o:hover {
-    color: transparent;
+  & > span > i.fa-heart-o:hover > i {
+    color: transparent !important;
   }
   & > span > i.fa-heart-o:hover:before {
     display: inline-block;
@@ -331,8 +334,8 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
     left: 0;
     color: #d20000;
   }
-  & > div > span:hover, > div > span:hover ~ span {
-    color: transparent;
+  & > div > span:hover > i, > div > span:hover ~ span > i {
+    color: transparent !important;
   }
   & > div > span:hover:before, > div > span:hover ~ span:before {
     display: inline-block;
