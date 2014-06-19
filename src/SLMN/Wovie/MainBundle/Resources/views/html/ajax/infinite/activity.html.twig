@@ -24,14 +24,18 @@
                                 added
                                 {% for media in activity.value %}
                                     {% set myMedia = getMediaById(media.mediaId) %}
-                                    {%- if app.security.getToken().getUser().username != activity.user.username -%}
-                                        <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
-                                            {{- myMedia.title -}}
-                                        </a>
+                                    {%- if myMedia -%}
+                                        {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                            <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                                {{- myMedia.title -}}
+                                            </a>
+                                        {%- else -%}
+                                            <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                                {{- myMedia.title -}}
+                                            </a>
+                                        {%- endif -%}
                                     {%- else -%}
-                                        <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
-                                            {{- myMedia.title -}}
-                                        </a>
+                                        deleted
                                     {%- endif -%}
                                     {%- if not loop.last -%},{%- endif -%}
                                 {% endfor %}
@@ -45,36 +49,40 @@
                                 {% set beforeWasSeries = false %}
                                 {% for media in activity.value %}
                                     {% set myMedia = getMediaById(media.mediaId) %}
-                                    {%- if app.security.getToken().getUser().username != activity.user.username -%}
-                                        <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
-                                            {{- myMedia.title -}}
-                                        </a>
-                                    {%- else -%}
-                                        <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
-                                            {{- myMedia.title -}}
-                                        </a>
-                                    {%- endif -%}
-                                    {% if media.seasons is defined %}
-                                        {% set beforeWasSeries = true %}
-                                        {% for season,episodes in media.seasons %}
-                                            {% set hyphenPrinted = false %}
-                                            season {{ season }}:
-                                            {% for episodeId,episodeInSeason in episodes|sort %}
-                                                {% if episodes[episodeId+1] is defined and episodes[episodeId+1] == episodeInSeason+1 %}
-                                                    {% if hyphenPrinted == false %}
-                                                        {{ episodes[episodeId] }} -
-                                                        {% set hyphenPrinted = true %}
+                                    {%- if myMedia -%}
+                                        {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                            <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                                {{- myMedia.title -}}
+                                            </a>
+                                        {%- else -%}
+                                            <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                                {{- myMedia.title -}}
+                                            </a>
+                                        {%- endif -%}
+                                        {% if media.seasons is defined %}
+                                            {% set beforeWasSeries = true %}
+                                            {% for season,episodes in media.seasons %}
+                                                {% set hyphenPrinted = false %}
+                                                season {{ season }}:
+                                                {% for episodeId,episodeInSeason in episodes|sort %}
+                                                    {% if episodes[episodeId+1] is defined and episodes[episodeId+1] == episodeInSeason+1 %}
+                                                        {% if hyphenPrinted == false %}
+                                                            {{ episodes[episodeId] }} -
+                                                            {% set hyphenPrinted = true %}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        {{ episodeInSeason }}
+                                                        {% set hyphenPrinted = false %}
+                                                        {%- if not loop.last -%},{%- endif -%}
                                                     {% endif %}
-                                                {% else %}
-                                                    {{ episodeInSeason }}
-                                                    {% set hyphenPrinted = false %}
-                                                    {%- if not loop.last -%},{%- endif -%}
-                                                {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-                                        {% endfor %}
-                                    {% else %}
-                                        {%- set beforeWasSeries = false -%}
-                                    {% endif %}
+                                        {% else %}
+                                            {%- set beforeWasSeries = false -%}
+                                        {% endif %}
+                                    {%- else -%}
+                                        deleted
+                                    {%- endif -%}
                                     {%- if not loop.last and beforeWasSeries == false -%},{%- endif -%}
                                 {% endfor %}
                             {% elseif activity.key == 'follow.added' %}
@@ -86,17 +94,21 @@
                                 now following
                                 {% for user in activity.value %}
                                     {% set myUser = getUserById(user.userId) %}
-                                    <a href="{{ path('slmn_wovie_public_profile', {'username': myUser.username}) }}">
-                                        <img
-                                                class="avatar-30"
-                                                src="{{ getGravatarUrl(myUser, 30) }}"
-                                                >
-                                        {% if app.security.getToken().getUser().username != myUser.username -%}
-                                            {{ myUser.username }}
-                                        {% else -%}
-                                            you
-                                        {%- endif -%}
-                                    </a>
+                                    {%- if myUser -%}
+                                        <a href="{{ path('slmn_wovie_public_profile', {'username': myUser.username}) }}">
+                                            <img
+                                                    class="avatar-30"
+                                                    src="{{ getGravatarUrl(myUser, 30) }}"
+                                                    >
+                                            {%- if app.security.getToken().getUser().username != myUser.username -%}
+                                                &nbsp;{{ myUser.username }}
+                                            {%- else -%}
+                                                &nbsp;you
+                                            {%- endif -%}
+                                        </a>
+                                    {%- else -%}
+                                        deleted
+                                    {%- endif -%}
                                     {%- if not loop.last -%},{%- endif -%}
                                 {% endfor %}
                             {% else %}
