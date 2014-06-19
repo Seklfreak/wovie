@@ -122,6 +122,34 @@ function init()
                 });
         }
     });
+    $('.do-switch-favorite-media').unbind().click(function() {
+        var $button = $(this);
+        var mediaId = $button.data('media-id');
+        if (mediaId != null)
+        {
+            $button.removeClass('fa-heart-o fa-heart');
+            $button.addClass('fa-spinner fa-spin');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_toggle_favorite'),
+                type: "POST",
+                data: { media_id: mediaId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $button.removeClass('fa-spinner fa-spin');
+                        $button.addClass('fa-check');
+                        refreshMediaContainers(mediaId);
+                    }
+                    else
+                    {
+                        $button.removeClass('fa-spinner fa-spin');
+                        $button.addClass('fa-warning');
+                    }
+                });
+        }
+    })
 }
 
 function resetFilter()
@@ -207,6 +235,14 @@ $(function() {
             }
         });
         init();
+    });
+    $('a[id=filter-favorite]').click(function()
+    {
+        resetFilter();
+        $(this).parent().addClass('active');
+        $('.media-entry').filter('[data-favorite!=1]').remove();
+        init();
+
     });
     // Modal actions
     /* TODO: Load modal only with loading indicator -> when iframe is loaded

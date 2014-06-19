@@ -119,7 +119,7 @@
                     <dd><a id="filter-series">Series</a></dd>
                     <dd><a id="filter-in-progress">In progress</a></dd>
                     <dd><a id="filter-unseen">Unseen</a></dd>
-                    {# TODO: Favorites #}
+                    <dd><a id="filter-favorite">Favorites</a></dd>
                 </dl>
             </div>
             <div class="large-12 columns">
@@ -131,7 +131,9 @@
                                 data-views="{{ viewsOfId(item.id) }}"
                                 {% if item.mediaType == 2 %}
                                 data-numberofepisodes="{{ item.numberOfEpisodes }}"
-                                {% endif %}>
+                                {% endif %}
+                                data-favorite="{{ item.favorite }}"
+                                >
                             {{ wovie.mediaItemPublic(item) }}
                         </li>
                     {% endfor %}

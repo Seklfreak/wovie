@@ -289,6 +289,67 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   margin-bottom: 7px;
 }
 
+/* Rating */
+.rating-container {
+  background: #D3D3D3;
+  padding-top: 5px;
+  @include border-radius(0 0 4px 4px);
+  direction: rtl;
+  & span {
+    position: relative;
+    & i {
+      font-size: 1.75em;
+    }
+  }
+  & > div {
+    display: inline;
+    margin-left: 6px;
+    & > span {
+      position: relative;
+    }
+  }
+  & > span > i.fa-check {
+    color: green;
+  }
+  & > span > i.fa-heart.active {
+    color: #d20000;
+  }
+}
+.rating-editable {
+  & > span > i.fa-heart-o:hover {
+    color: transparent;
+  }
+  & > span > i.fa-heart-o:hover:before {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f004";
+    left: 0;
+    color: #d20000;
+  }
+  & > div > span:hover, > div > span:hover ~ span {
+    color: transparent;
+  }
+  & > div > span:hover:before, > div > span:hover ~ span:before {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1.75em;
+    content: "\f005";
+    position: absolute;
+    left: 0;
+    color: gold;
+  }
+}
+
 /* GENERAL */
 .meta-header-small {
   font-size: 0.75rem;

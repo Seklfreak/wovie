@@ -161,6 +161,14 @@ slmn_wovie_action_ajax_details_big:
     pattern: /action/ajax/details/big/{id}.html
     defaults: { _controller: SLMNWovieMainBundle:Action:detailsBig }
     methods: [GET]
+slmn_wovie_actions_ajax_toggle_favorite:
+    pattern: /action/ajax/favorite/toggle.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:toggleFavorite }
+    methods: [POST]
+    options:
+      expose: true
+    requirements:
+        id: \d+
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

@@ -20,7 +20,7 @@
                         <dd><a id="filter-series">Series</a></dd>
                         <dd><a id="filter-in-progress">In progress</a></dd>
                         <dd><a id="filter-unseen">Unseen</a></dd>
-                        {# TODO: Favorites #}
+                        <dd><a id="filter-favorite">Favorites</a></dd>
                     </dl>
                 </div>
             </div>
@@ -37,6 +37,7 @@
                             {% if movie.mediaType == 2 %}
                                 data-numberofepisodes="{{ movie.numberOfEpisodes }}"
                             {% endif %}
+                            data-favorite="{{ movie.favorite }}"
                             >
                             <div
                                     data-media-id="{{ movie.id }}"

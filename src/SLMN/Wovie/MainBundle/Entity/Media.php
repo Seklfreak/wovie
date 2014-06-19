@@ -109,6 +109,48 @@ class Media
     protected $allowUpdates = true;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $favorite = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $rating;
+
+    /**
+     * @return mixed
+     */
+    public function getFavorite()
+    {
+        return $this->favorite;
+    }
+
+    /**
+     * @param mixed $favorite
+     */
+    public function setFavorite($favorite)
+    {
+        $this->favorite = $favorite;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param mixed $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
      * @return mixed
      */
     public function getAllowUpdates()

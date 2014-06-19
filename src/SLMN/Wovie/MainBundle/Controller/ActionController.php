@@ -418,4 +418,43 @@ class ActionController extends Controller
             )
         );
     }
+
+    public function toggleFavoriteAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($mediaId=intval($request->get('media_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediaRepo->findOneById($mediaId);
+            if ($media != null && $media->getCreatedBy() == $this->getUser())
+            {
+                if ($media->getFavorite())
+                {
+                    $media->setFavorite(false);
+                }
+                else
+                {
+                    $media->setFavorite(true);
+                }
+                $em->flush();
+                $response->setData(array(
+                    'status' => 'success'
+                ));
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
 }

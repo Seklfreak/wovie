@@ -14,6 +14,7 @@
     <div class="clearfix shelf-media-titles" id="media-{{ movie.id }}">
         <h6 class="left">{{ movie.title }}</h6>
     </div>
+    {# Rating #}
     <div style="position: relative;">
         <a href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}">
             {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
@@ -53,12 +54,13 @@
     <div class="row collapse">
         <div class="{% if views > 0 and movie.mediaType == 1 %}small-6{% else %}small-8{% endif %} columns">
             {% if movie.mediaType == 1 %}
-                <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ movie.id }}">Mark as seen
+                <button id="watched-it-button" class="button expand tiny watched_it_cover" style="margin-bottom: 0;" data-media-id="{{ movie.id }}">Mark as seen
                 </button>
             {% else %}
                 <button
                         id="watched-it-button"
                         class="button expand tiny"
+                        style="margin-bottom: 0;"
                         data-reveal-id="modal-frame-choose-episode"
                         onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': movie.id}) }}')"
                         >
@@ -68,13 +70,13 @@
         </div>
         {% if views > 0 and movie.mediaType == 1 %}
             <div class="small-2 columns">
-                <button class="button expand tiny alert watched_it_not" data-media-id="{{ movie.id }}">
+                <button class="button expand tiny alert watched_it_not" style="margin-bottom: 0;" data-media-id="{{ movie.id }}">
                     <i class="fa fa-minus"></i>
                 </button>
             </div>
         {% endif %}
         <div class="small-2 columns">
-            <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="button expand tiny">
+            <a id="details-button" href="{{ path('slmn_wovie_user_movie_details', {'id': movie.id}) }}" class="button expand tiny" style="margin-bottom: 0;">
                 <i class="fa fa-search fa-lg"></i>
             </a>
         </div>
@@ -82,10 +84,23 @@
             <a
                     id="edit-button"
                     href="{{ path('slmn_wovie_user_movie_edit', {'id': movie.id}) }}"
-                    class="button expand tiny">
+                    class="button expand tiny"
+                    style="margin-bottom: 0;">
                 <i class="fa fa-edit fa-lg"></i>
             </a>
         </div>
+    </div>
+    <div class="text-center rating-container rating-editable">
+        <div>
+            {% for i in 1..5 %}
+                <span><i class="fa fa-star-o" data-rating="{{ (5+1) - loop.index }}"></i></span>
+            {% endfor %}
+        </div>
+        {% if movie.favorite == true %}
+            <span><i class="fa fa-heart active do-switch-favorite-media" data-media-id="{{ movie.id }}"></i></span>
+        {% else %}
+            <span><i class="fa fa-heart-o do-switch-favorite-media" data-media-id="{{ movie.id }}"></i></span>
+        {% endif %}
     </div>
 {% endmacro %}
 
