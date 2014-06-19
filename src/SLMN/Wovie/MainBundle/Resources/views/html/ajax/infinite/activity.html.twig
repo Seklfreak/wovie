@@ -115,7 +115,8 @@
                                 #{{ activity.id }} {{ activity.key }}
                             {% endif %}
                             <span class="activity-date">
-                                {{ activity.time|date('Y-m-d H:i') }}
+                                {{ timeAgo(activity.time) }}
+                                {# activity.time|date('Y-m-d H:i') #}
                             </span>
                         </p>
                     </div>

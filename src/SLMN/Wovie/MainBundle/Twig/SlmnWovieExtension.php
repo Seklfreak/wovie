@@ -45,8 +45,34 @@ class SlmnWovieExtension extends \Twig_Extension
             'isFollowing' => new \Twig_Function_Method($this, 'isFollowingFunction'),
             'isInMyLibrary' => new \Twig_Function_Method($this, 'isInMyLibraryFunction'),
             'getMediaById' => new \Twig_Function_Method($this, 'getMediaByIdFunction'),
-            'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction')
+            'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction'),
+            'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction')
         );
+    }
+
+    public function timeAgoFunction($datetime, $fallback='Y-m-d H:i')
+    {
+        $now = new \DateTime();
+        $diff = $now->diff($datetime);
+        if ($diff->days > 0)
+        {
+            return $datetime->format($fallback);
+        }
+        else
+        {
+            if ($diff->h > 0)
+            {
+                return ($diff->h == 1) ? '1 hour ago' : $diff->h.' hours ago';
+            }
+            elseif($diff->i > 0)
+            {
+                return ($diff->i == 1) ? '1 minute ago' : $diff->i.' minutes ago';
+            }
+            else
+            {
+                return ($diff->s == 1) ? '1 seconds ago' : $diff->s.' seconds ago';
+            }
+        }
     }
 
     public function getMediaByIdFunction($mediaId)
