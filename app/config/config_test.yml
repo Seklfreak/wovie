@@ -14,3 +14,13 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     ~
+        port:     ~
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        path:     "%kernel.root_dir%/data/data.db3"
