@@ -58,11 +58,12 @@ class CreateActivityConsumer implements ConsumerInterface
 
     public function execute(AMQPMessage $msg)
     {
+        $now = new \DateTime();
         $value = unserialize($msg->body);
         switch ($value['key'])
         {
             case 'media.added':
-                echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
                 if ($value['value']['mediaId'] == null)
                 {
                     echo ' => no mediaId, is invalid'."\n";
@@ -111,7 +112,7 @@ class CreateActivityConsumer implements ConsumerInterface
                 }
                 break;
             case 'view.added':
-                echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
                 $user = $this->usersRepo->findOneById($value['userId']);
                 $media = $this->mediasRepo->findOneById($value['value']['mediaId']);
                 if (!$user)
@@ -141,13 +142,13 @@ class CreateActivityConsumer implements ConsumerInterface
                     }
                     else
                     {
-                        $episodes = array();
+                        $episodes = null;
                         if ($media->getFreebaseId())
                         {
                             $episodes = $this->mediaApi->fetchEpisodes($media->getFreebaseId(), true);
                         }
                         if (
-                            is_array($episode) &&
+                            is_array($episodes) &&
                             array_key_exists($value['value']['episodeId'], $episodes) &&
                             array_key_exists('season', $episodes[$value['value']['episodeId']]) &&
                             array_key_exists('episode', $episodes[$value['value']['episodeId']])
@@ -300,7 +301,7 @@ class CreateActivityConsumer implements ConsumerInterface
                 }
                 break;
             case 'follow.added':
-                echo 'Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
                 $user = $this->usersRepo->findOneById($value['userId']);
                 $followedUser = $this->usersRepo->findOneById($value['value']['userId']);
                 if (!$user)
@@ -354,7 +355,7 @@ class CreateActivityConsumer implements ConsumerInterface
             default:
                 break;
         }
-        echo 'Activity '.$value['key'].' not found => dropped'."\n";
+        echo '['.$now->format('Y-m-d H:i:s').'] Activity '.$value['key'].' not found => dropped'."\n";
         return true;
     }
 }

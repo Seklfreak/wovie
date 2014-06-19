@@ -20,6 +20,9 @@ numprocs=1
 process_name=%(program_name)s_%(process_num)s
 ```
 
+### RabbitMQ
+vhost: /wovie user: guest:guest
+
 ## TODO
 - [ ] EMails expiration without cronjob, check link opening
 - [ ] Add movie/series to the shelf

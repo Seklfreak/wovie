@@ -114,15 +114,15 @@ old_sound_rabbit_mq:
             port:     5672
             user:     'guest'
             password: 'guest'
-            vhost:    '/'
+            vhost:    '/wovie'
             lazy:     true
     producers:
         create_activity:
             connection:       default
-            exchange_options: { name: 'wove-create-activity', type: direct }
+            exchange_options: { name: 'create-activity', type: direct }
     consumers:
         create_activity:
             connection:       default
-            exchange_options: { name: 'wove-create-activity', type: direct }
-            queue_options:    { name: 'wove-create-activity' }
+            exchange_options: { name: 'create-activity', type: direct }
+            queue_options:    { name: 'create-activity' }
             callback:         wovie.create_activity_service
