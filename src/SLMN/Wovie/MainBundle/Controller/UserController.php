@@ -428,6 +428,28 @@ class UserController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Successfully saved new credit card.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
         }
+        if ($customer && $invoices && $request->get('payNowLastInvoice'))
+        {
+            try
+            {
+                $invoice = \Stripe_Invoice::retrieve($invoices[0]->getInvoiceId());
+                $invoice->pay();
+                $this->get('session')->getFlashBag()->add('success', 'Invoice paid.');
+            }
+            catch(\Stripe_CardError $e)
+            {
+                $body = $e->getJsonBody();
+                $err = $body['error'];
+                $this->get('session')->getFlashBag()->add('error', 'Your card were declined. ('.$err['code'].')');
+            }
+            catch(\Stripe_Error $e)
+            {
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
+                $this->get('session')->getFlashBag()->add('error', 'Internal error! An administrator has been notified.');
+            }
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
+        }
         if ($customer && ($stripeCode=trim($request->get('stripeCode'))) != null)
         {
             try
