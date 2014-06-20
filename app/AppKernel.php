@@ -20,7 +20,8 @@ class AppKernel extends Kernel
             new Sekl\Main\FoundationBundle\SeklMainFoundationBundle(),
             new SLMN\Wovie\MainBundle\SLMNWovieMainBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle()
+            new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new Snc\RedisBundle\SncRedisBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

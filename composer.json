@@ -34,7 +34,9 @@
         "tecnick.com/tcpdf": "~6.0",
         "oldsound/rabbitmq-bundle": "~1.4",
         "sekl/main/foundationbundle": "dev-master",
-        "sekl/main/userbundle": "dev-master"
+        "sekl/main/userbundle": "dev-master",
+        "snc/redis-bundle": "~1.1",
+        "predis/predis": "~0.8"
     },
     "scripts": {
         "post-install-cmd": [

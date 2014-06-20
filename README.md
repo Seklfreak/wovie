@@ -7,6 +7,7 @@ Keep control over your movie collection.
 - MySQL
 - jpegoptim
 - RabbitMQ
+- redis
 
 ### supervisord wovie.conf
 ```ini

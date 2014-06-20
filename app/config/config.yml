@@ -20,7 +20,6 @@ framework:
     trusted_proxies: ~
     session:
         name: "WOVIE_SESSID"
-        handler_id:  session.handler.pdo
     fragments:       ~
     http_method_override: true
 
@@ -86,27 +85,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# pdo save handler things
-parameters:
-    pdo.db_options:
-        db_table:    session
-        db_id_col:   sessionId
-        db_data_col: sessionValue
-        db_time_col: sessionTime
-services:
-    pdo:
-        class: PDO
-        arguments:
-            - "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
-            - "%database_user%"
-            - "%database_password%"
-        calls:
-            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
-
-    session.handler.pdo:
-        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
-        arguments: ["@pdo", "%pdo.db_options%"]
-
 old_sound_rabbit_mq:
     connections:
         default:
@@ -126,3 +104,37 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'create-activity', type: direct }
             queue_options:    { name: 'create-activity' }
             callback:         wovie.create_activity_service
+
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://localhost
+        cache:
+            type: predis
+            alias: cache
+            dsn: redis://localhost/1
+            options:
+                profile: 2.2
+                connection_timeout: 10
+                read_write_timeout: 30
+        session:
+            type: predis
+            alias: session
+            dsn: redis://localhost/2
+    session:
+        client: session
+        use_as_default: true
+        ttl: 1800
+    doctrine:
+        metadata_cache:
+            client: cache
+            entity_manager: default
+            document_manager: default
+        result_cache:
+            client: cache
+            entity_manager: [default]
+        query_cache:
+            client: cache
+            entity_manager: default
