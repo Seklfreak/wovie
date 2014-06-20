@@ -3,12 +3,13 @@
 namespace SLMN\Wovie\MainBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
-    public function coverImageAction($freebaseId)
+    public function coverImageAction(Request $request, $freebaseId)
     {
         $logger = $this->get('logger');
         $image = null;
@@ -100,7 +101,6 @@ class ImageController extends Controller
         }
 
         $response->setMaxAge(2592000); # 1 Month
-
         # Fallback to placeholder
         if (empty($image))
         {
@@ -112,6 +112,8 @@ class ImageController extends Controller
         $response->setPublic();
         $response->setContent($image);
         $response->headers->set('Content-Type', 'image/jpeg');
+        $response->setETag(md5($response->getContent()));
+        $response->isNotModified($request);
         return $response;
     }
 } 
