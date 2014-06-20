@@ -709,8 +709,31 @@
                             you
                         {% endif %}
                     </a>
-                    {# TODO: Skip objects if deleted (no result for getMediaById or getUserById) #}
-                    {% if activity.key == 'media.added' %}
+                    {% if activity.key == 'favorite.added' %}
+                        added
+                        {% for media in activity.value %}
+                            {% set myMedia = getMediaById(media.mediaId) %}
+                            {%- if myMedia -%}
+                                {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                    <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                        {{- myMedia.title -}}
+                                    </a>
+                                {%- else -%}
+                                    <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                        {{- myMedia.title -}}
+                                    </a>
+                                {%- endif -%}
+                            {%- else -%}
+                                deleted
+                            {%- endif -%}
+                            {%- if not loop.last -%},{%- endif -%}
+                        {% endfor %}
+                        {% if app.security.getToken().getUser().username != activity.user.username %}
+                            to their favorites
+                        {% else %}
+                            to your favorites
+                        {% endif %}
+                    {% elseif activity.key == 'media.added' %}
                         added
                         {% for media in activity.value %}
                             {% set myMedia = getMediaById(media.mediaId) %}

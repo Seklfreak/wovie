@@ -62,8 +62,65 @@ class CreateActivityConsumer implements ConsumerInterface
         $value = unserialize($msg->body);
         switch ($value['key'])
         {
+            case 'favorite.added':
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
+                if ($value['value']['mediaId'] == null)
+                {
+                    echo ' => no mediaId, is invalid'."\n";
+                    return true;
+                }
+                $user = $this->usersRepo->findOneById($value['userId']);
+                $media = $this->mediasRepo->findOneById($value['value']['mediaId']);
+                if (!$user)
+                {
+                    echo ' => user #'.$value['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$media)
+                {
+                    echo ' => media #'.$value['value']['mediaId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                $activity = $this->getInTimerange($value['createdAt'], $value['key'], $user);
+                if ($activity == null)
+                {
+                    $activity = new Activity();
+                    $activity->setUser($user);
+                    $activity->setTime($value['createdAt']);
+                    $activity->setKey('favorite.added');
+                    $activity->setValue(array(
+                        array(
+                            'mediaId' => $value['value']['mediaId']
+                        )
+                    ));
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => created new activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                else
+                {
+                    $activityValue = $activity->getValue();
+                    foreach ($activityValue as $aValue)
+                    {
+                        if ($aValue['mediaId'] == $value['value']['mediaId'])
+                        {
+                            echo ' => already in activity: #'.$activity->getId().' => dropped'."\n";
+                            return true;
+                        }
+                    }
+                    $activityValue[] = array(
+                        'mediaId' => $value['value']['mediaId']
+                    );
+                    $activity->setValue($activityValue);
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => added media to activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                break;
             case 'media.added':
-                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
                 if ($value['value']['mediaId'] == null)
                 {
                     echo ' => no mediaId, is invalid'."\n";
@@ -112,7 +169,7 @@ class CreateActivityConsumer implements ConsumerInterface
                 }
                 break;
             case 'view.added':
-                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
                 $user = $this->usersRepo->findOneById($value['userId']);
                 $media = $this->mediasRepo->findOneById($value['value']['mediaId']);
                 if (!$user)
@@ -301,7 +358,7 @@ class CreateActivityConsumer implements ConsumerInterface
                 }
                 break;
             case 'follow.added':
-                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n"; // TODO: Add time
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
                 $user = $this->usersRepo->findOneById($value['userId']);
                 $followedUser = $this->usersRepo->findOneById($value['value']['userId']);
                 if (!$user)

@@ -3,6 +3,7 @@
 namespace SLMN\Wovie\MainBundle;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use SLMN\Wovie\MainBundle\Entity\Follow;
 use SLMN\Wovie\MainBundle\Entity\Media;
 use SLMN\Wovie\MainBundle\Entity\View;
@@ -14,6 +15,7 @@ class ActivityListener
      * - media.added -> when an media was added to an users library
      * - view.added -> when an view from an user was added to the database
      * - follow.added -> when an follow from an user was added to the database
+     * - favorite.added -> when an media was favorited
      */
 
     protected $container;
@@ -30,6 +32,26 @@ class ActivityListener
     protected function getUser()
     {
         return $this->container->get('security.context')->getToken()->getUser();
+    }
+
+    public function preUpdate(PreUpdateEventArgs $eventArgs)
+    {
+        $entity = $eventArgs->getEntity();
+        if ($entity instanceof Media)
+        {
+            if ($eventArgs->hasChangedField('favorite') && $eventArgs->getNewValue('favorite') == true)
+            {
+                $this->rabbitCreateActivity->publish(serialize(array(
+                    'key' => 'favorite.added',
+                    'userId' => $this->getUser()->getId(),
+                    'createdAt' => new \DateTime(),
+                    'value' => array(
+                        'mediaId' => $entity->getId()
+                    )
+                )));
+                $this->logger->info('Published activity "favorite.added" for user #'.$this->getUser()->getId());
+            }
+        }
     }
 
     public function postPersist(LifecycleEventArgs $args)
