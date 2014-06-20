@@ -698,6 +698,17 @@
         <div class="small-12 columns">
             <div class="panel activity-panel">
                 <p>
+                    <span class="activity-type">
+                    {% if activity.key == 'favorite.added' %}
+                        <i class="fa fa-heart-o"></i>
+                    {% elseif activity.key == 'media.added' %}
+                        <i class="fa fa-plus"></i>
+                    {% elseif activity.key == 'view.added' %}
+                        <i class="fa fa-eye"></i>
+                    {% elseif activity.key == 'follow.added' %}
+                        <i class="fa fa-user"></i>
+                    {% endif %}
+                    </span>
                     <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
                         <img
                                 class="avatar-30"
