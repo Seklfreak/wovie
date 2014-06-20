@@ -47,7 +47,17 @@
                     {{ form_start(generalSettingsForm) }}
                     {{ form_errors(generalSettingsForm) }}
                     {{ form_row(generalSettingsForm.language, { 'value': getUserOption('language', 'en') }) }}
-                    {{ form_row(generalSettingsForm.publicProfile, { 'checked': getUserOption('publicProfile', false) }) }}
+                    <div class="row">
+                        <div class="small-2 columns">
+                            <div class="switch">
+                                {{ form_widget(generalSettingsForm.publicProfile, { 'checked': getUserOption('publicProfile', false) }) }}
+                                <label for="generalSettings_publicProfile"></label>
+                            </div>
+                        </div>
+                        <div class="small-10 columns">
+                            <label for="generalSettings_publicProfile" class="switch-label">Enable public profile page?</label>
+                        </div>
+                    </div>
                     {{ form_row(generalSettingsForm.submit) }}
                     {{ form_end(generalSettingsForm) }}
                     {% if getUserOption('publicProfile', false) == true %}
