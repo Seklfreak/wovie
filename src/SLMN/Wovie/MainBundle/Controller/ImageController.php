@@ -90,25 +90,23 @@ class ImageController extends Controller
                         curl_close($curl_handle);
                     }
                 }
+            }
 
-                if ($image != null)
-                {
-                    $logger->info('Saved cover ('.$freebaseId.') to filecache: '.$path.$filename);
-                    file_put_contents($path.$filename, $image);
-                    $response->setMaxAge(2592000); # 1 Month
-                }
-                else
-                {
-                    $response->setMaxAge(86400); # 1 Day
-                }
+            if ($image != null)
+            {
+                $logger->info('Saved cover ('.$freebaseId.') to filecache: '.$path.$filename);
+                file_put_contents($path.$filename, $image);
             }
         }
+
+        $response->setMaxAge(2592000); # 1 Month
 
         # Fallback to placeholder
         if (empty($image))
         {
             $logger->info('Cover '.$freebaseId.' not found.');
             $image = file_get_contents($this->get('kernel')->locateResource('@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'));
+            $response->setMaxAge(86400); # 1 Day
         }
 
         $response->setPublic();
