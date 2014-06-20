@@ -198,6 +198,24 @@ $(function() {
         }
     });
     $(document).foundation('joyride', 'start');
+    // Replace vars
+    $('.ajax-replace-mediatime').each(function() {
+        var $span = $(this);
+        var userId = $span.data('user-id');
+        if (userId != null)
+        {
+            $span.html('<i class="fa fa-lg fa-spinner fa-spin"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_user_mediatime'),
+                type: "POST",
+                data: { user_id: userId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    $span.html('I ' + data);
+                });
+        }
+    });
     // Change add/edit form based on media type
     $('input[type=radio][id=media_mediaType_0]').click(function() {
         $('#media_finalYear').prop('disabled', true);

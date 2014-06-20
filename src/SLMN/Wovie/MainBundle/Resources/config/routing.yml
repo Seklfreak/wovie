@@ -173,6 +173,12 @@ slmn_wovie_actions_ajax_rate:
     methods: [POST]
     options:
       expose: true
+slmn_wovie_actions_ajax_user_mediatime:
+    pattern: /action/public/ajax/mediatime.html
+    defaults: { _controller: SLMNWovieMainBundle:Action:userMediaTime }
+    methods: [POST]
+    options:
+      expose: true
 
 # Frames
 slmn_wovie_action_frames_choose_episode:

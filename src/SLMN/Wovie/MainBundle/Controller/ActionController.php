@@ -493,4 +493,72 @@ class ActionController extends Controller
         }
         return $response;
     }
+
+    public function userMediaTimeAction(Request $request)
+    {
+        $response = new Response();
+        if (($userId = intval($request->get('user_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $usersRepo = $em->getRepository('SeklMainUserBundle:User');
+            if (($myUser = $usersRepo->findOneById(intval($userId))))
+            {
+                $totalTimeInMinutes = 0;
+                $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+                $viewsRepo = $em->getRepository('SLMNWovieMainBundle:View');
+                $batchSize = 20;
+                $i = 0;
+                $query = $mediaRepo->createQueryBuilder('media')
+                    ->where('media.createdBy = :user')
+                    ->andWhere('media.runtime IS NOT NULL')
+                    ->setParameters(array(
+                        'user' => $myUser
+                    ))
+                    ->getQuery();
+                $iterableResult = $query->iterate();
+                foreach($iterableResult AS $row)
+                {
+                    $media = $row[0];
+                    if (($views=$viewsRepo->findByMedia($media)))
+                    {
+                        $totalTimeInMinutes += ($media->getRuntime() * count($views));
+                    }
+                    if (($i % $batchSize) == 0) {
+                        $em->clear();
+                    }
+                    ++$i;
+                }
+                if ($totalTimeInMinutes <= 0)
+                {
+                    $response->setContent(' spent '.$totalTimeInMinutes.' minutes watching.');
+                }
+                else
+                {
+                    $dateStart = new \DateTime('@0');
+                    $dateEnd = new \DateTime('@'.($totalTimeInMinutes*60));
+                    $diff = $dateStart->diff($dateEnd);
+                    $responseString = 'spent <b>';
+                    $responseString .= ($diff->y > 0) ? $diff->y.' year'.(($diff->y == 1) ? null: 's').' ' : null;
+                    $responseString .= ($diff->m > 0) ? $diff->m.' month'.(($diff->m == 1) ? null: 's').' ' : null;
+                    $responseString .= ($diff->d > 0) ? $diff->d.' day'.(($diff->d == 1) ? null: 's').' ' : null;
+                    $responseString .= ($diff->h > 0) ? $diff->h.' hour'.(($diff->h == 1) ? null: 's').' ' : null;
+                    $responseString .= ($diff->i > 0) ? $diff->i.' minute'.(($diff->i == 1) ? null: 's').' ' : null;
+                    $responseString .= '</b>watching.';
+                    $response->setContent($responseString);
+                    // cache in redis: $redis = $this->container->get('snc_redis.default');
+                }
+            }
+            else
+            {
+
+                $response->setContent('<i class="fa fa-warning fa-lg"></i> Error');
+            }
+        }
+        else
+        {
+            $response->setContent('<i class="fa fa-warning fa-lg"></i> Error');
+        }
+
+        return $response;
+    }
 }
