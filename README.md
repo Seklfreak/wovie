@@ -3,11 +3,16 @@
 Keep control over your movie collection.
 
 ## Requires
+- NGINX (or another webserver)
 - PHP5 (+ apc)
 - MySQL
 - jpegoptim
 - RabbitMQ
 - redis
+- supervisor
+- External services
+    - Google API (Freebase API)
+    - Stripe
 
 ### supervisord wovie.conf
 ```ini
