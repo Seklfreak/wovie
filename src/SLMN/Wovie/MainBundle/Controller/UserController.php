@@ -418,14 +418,19 @@ class UserController extends Controller
             {
                 $customer->card = $stripeKey;
                 $customer->save();
+                $this->get('session')->getFlashBag()->add('success', 'Successfully saved new credit card.');
+            }
+            catch (\Stripe_CardError $e)
+            {
+                $body = $e->getJsonBody();
+                $err = $body['error'];
+                $this->get('session')->getFlashBag()->add('error', 'Your card were declined. ('.$err['code'].')');
             }
             catch (\Exception $e)
             {
                 $logger = $this->get('logger');
                 $logger->error('Stripe: '.$e->getMessage());
             }
-
-            $this->get('session')->getFlashBag()->add('success', 'Successfully saved new credit card.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_billing'));
         }
         if ($customer && $invoices && $request->get('payNowLastInvoice'))
