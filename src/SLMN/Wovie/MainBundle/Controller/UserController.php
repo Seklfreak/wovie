@@ -423,8 +423,7 @@ class UserController extends Controller
             catch (\Stripe_CardError $e)
             {
                 $body = $e->getJsonBody();
-                $err = $body['error'];
-                $this->get('session')->getFlashBag()->add('error', 'Your card were declined. ('.$err['code'].')');
+                $this->get('session')->getFlashBag()->add('error', 'Your card were declined.');
             }
             catch (\Exception $e)
             {
@@ -444,8 +443,7 @@ class UserController extends Controller
             catch(\Stripe_CardError $e)
             {
                 $body = $e->getJsonBody();
-                $err = $body['error'];
-                $this->get('session')->getFlashBag()->add('error', 'Your card were declined. ('.$err['code'].')');
+                $this->get('session')->getFlashBag()->add('error', 'Your card were declined.');
             }
             catch(\Stripe_Error $e)
             {

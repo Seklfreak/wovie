@@ -105,7 +105,7 @@ class WebhookController extends Controller
                 $stripeCustomer = $stripeCustomersRepo->findOneByCustomerId($charge->customer);
                 if ($stripeCustomer)
                 {
-                    $stripeCustomer->setChargeFailureMessage($charge->failure_code); // TODO: Translate
+                    $stripeCustomer->setChargeFailureMessage($charge->failure_message); // TODO: Translate
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($stripeCustomer);
                     $em->flush();
