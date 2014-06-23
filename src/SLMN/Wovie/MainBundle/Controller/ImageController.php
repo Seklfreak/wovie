@@ -100,13 +100,13 @@ class ImageController extends Controller
             }
         }
 
-        $response->setMaxAge(2592000); # 1 Month
+        $response->setMaxAge(2592000); # 1 month
         # Fallback to placeholder
         if (empty($image))
         {
             $logger->info('Cover '.$freebaseId.' not found.');
             $image = file_get_contents($this->get('kernel')->locateResource('@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'));
-            $response->setMaxAge(86400); # 1 Day
+            $response->setMaxAge(604800); # 1 week
         }
 
         $response->setPublic();
