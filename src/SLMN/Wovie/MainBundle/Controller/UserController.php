@@ -56,6 +56,7 @@ class UserController extends Controller
         $newMedia = new Media();
         $mediaCopiedFromId = false;
         $fbId = null;
+        $referrerU = $this->get('wovie.utility.referer_service');
 
         if (ctype_digit(trim($request->query->get('prefill'))))
         {
@@ -206,7 +207,11 @@ class UserController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');
-            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf').'#media-'.$newMedia->getId());
+            return $this->redirect($referrerU->getReferrer('slmn_wovie_user_movie_shelf', array('/search')).'#media-'.$newMedia->getId());
+        }
+        else
+        {
+            $referrerU->setReferrer();
         }
 
         return $this->render(

@@ -26,6 +26,15 @@ class Referrer
         return $this->request->getSession();
     }
 
+    protected function strposarray($haystack, $needle, $offset=0) {
+        if (!is_array($needle)) $needle = array($needle);
+        foreach($needle as $query)
+        {
+            if(strpos($haystack, $query, $offset) !== false) return true;
+        }
+        return false;
+    }
+
     public function setForm($name)
     {
         $this->form = $name;
@@ -37,12 +46,12 @@ class Referrer
         return true;
     }
 
-    public function getReferrer($fallbackRoute)
+    public function getReferrer($fallbackRoute, $blacklist=array())
     {
         $referrer = $this->getSession()->get('betterReferrer-'.$this->form);
         $lastPath = substr($referrer, strpos($referrer, $this->request->getBaseUrl()));
 
-        if (empty($lastPath))
+        if (empty($lastPath) || $this->strposarray($lastPath, $blacklist))
         {
             return $this->router->generate($fallbackRoute);
         }
