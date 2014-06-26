@@ -57,6 +57,7 @@ class UserController extends Controller
         $mediaCopiedFromId = false;
         $fbId = null;
         $referrerU = $this->get('wovie.utility.referer_service');
+        $referrerU->setForm('addMedia');
 
         if (ctype_digit(trim($request->query->get('prefill'))))
         {
@@ -501,6 +502,7 @@ class UserController extends Controller
     {
         $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
         $referrerU = $this->get('wovie.utility.referer_service');
+        $referrerU->setForm('editMedia');
         $media = $mediasRepo->findOneById($id);
 
         if (!$media || $media->getCreatedBy() != $this->getUser())
