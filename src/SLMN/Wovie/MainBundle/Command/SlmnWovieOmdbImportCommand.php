@@ -26,7 +26,7 @@ class SlmnWovieOmdbImportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $entityManager = $this->getContainer()->get('doctrine')->getManager();
         $em->getConnection()->getConfiguration()->setSQLLogger(null); // Disable SQL logger
         $repo = $em->getRepository('SLMNWovieMainBundle:Omdb');
         $path = $input->getArgument('path');
