@@ -495,6 +495,7 @@ class UserController extends Controller
     public function editMovieAction(Request $request, $id)
     {
         $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+        $referrerU = $this->get('wovie.utility.referer_service');
         $media = $mediasRepo->findOneById($id);
 
         if (!$media || $media->getCreatedBy() != $this->getUser())
@@ -592,7 +593,11 @@ class UserController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully edited the title '.$media->getTitle().'!');
-            return $this->redirect($this->generateUrl('slmn_wovie_user_movie_shelf'));
+            return $this->redirect($referrerU->getReferrer('slmn_wovie_user_movie_shelf'));
+        }
+        else
+        {
+            $referrerU->setReferrer();
         }
 
         return $this->render(

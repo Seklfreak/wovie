@@ -14,6 +14,7 @@ parameters:
     slmn_wovie_main.activity.listener.class: SLMN\Wovie\MainBundle\ActivityListener
     slmn_wovie_main.service.pdf_docs.class: SLMN\Wovie\MainBundle\PdfDocs
     wovie.create_activity_service.class: SLMN\Wovie\MainBundle\Consumer\CreateActivityConsumer
+    wovie.utility.referer_service.class: SLMN\Wovie\MainBundle\Utility\Referrer
 
 services:
     # System
@@ -52,6 +53,13 @@ services:
         arguments:
             em: @doctrine.orm.entity_manager
             mediaApi: @media_api
+    # Utility
+    wovie.utility.referer_service:
+        class: %wovie.utility.referer_service.class%
+        arguments:
+            router: @router
+        calls:
+            - [setRequest, [@request_stack]]
     # DB
     slmn_wovie_main.activity.listener:
         class: %slmn_wovie_main.activity.listener.class%
