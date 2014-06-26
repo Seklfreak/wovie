@@ -266,7 +266,7 @@ class UserController extends Controller
             );
 
             $this->get('session')->getFlashBag()->add('success', 'Feedback sent. Thank you!');
-            return $this->redirect($this->generateUrl('slmn_wovie_user_dashboard'));
+            return $this->redirect($this->generateUrl('slmn_wovie_user_feedback'));
         }
 
         return $this->render(
