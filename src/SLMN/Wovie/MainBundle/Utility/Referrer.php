@@ -55,7 +55,14 @@ class Referrer
             return $this->router->generate($fallbackRoute);
         }
 
-        $lastPath = substr($referrer, strpos($referrer, $this->request->getBaseUrl()));
+        if ($this->request->getBaseUrl())
+        {
+            $lastPath = substr($referrer, strpos($referrer, $this->request->getBaseUrl()));
+        }
+        else
+        {
+            $lastPath = $referrer;
+        }
 
         if (empty($lastPath) || $this->strposarray($lastPath, $blacklist))
         {
