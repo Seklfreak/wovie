@@ -49,6 +49,12 @@ class Referrer
     public function getReferrer($fallbackRoute, $blacklist=array())
     {
         $referrer = $this->getSession()->get('betterReferrer-'.$this->form);
+
+        if (empty($referrer))
+        {
+            return $this->router->generate($fallbackRoute);
+        }
+
         $lastPath = substr($referrer, strpos($referrer, $this->request->getBaseUrl()));
 
         if (empty($lastPath) || $this->strposarray($lastPath, $blacklist))
