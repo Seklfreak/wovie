@@ -95,6 +95,10 @@ slmn_wovie_user_settings_billing:
     pattern:  /settings/billing/
     defaults: { _controller: SLMNWovieMainBundle:User:settingsBilling }
     methods:  [GET, POST]
+slmn_wovie_user_settings_account_cancel:
+    pattern:  /settings/cancel_confirmation/
+    defaults: { _controller: SLMNWovieMainBundle:User:settingsAccountCancel }
+    methods:  [GET, POST]
 
 # Actions
 slmn_wovie_action_ajax_search_external:

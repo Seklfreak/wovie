@@ -24,7 +24,17 @@
                     {{ form_row(accountForm.password) }}
                     {{ form_row(accountForm.Submit, { 'label': 'Update account' }) }}
                     {{ form_end(accountForm) }}
-                    {# TODO: Delete account #}
+                    {% if stripeCustomer.cancelled == false %}
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <a href="{{ path('slmn_wovie_user_settings_account_cancel') }}" class="button alert expand">Cancel account</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ form_start(reactivateAccountForm) }}
+                        {{ form_row(reactivateAccountForm.reactivateAccount, {'attr': {'class': 'expand secondary'}}) }}
+                        {{ form_end(reactivateAccountForm) }}
+                    {% endif %}
                 </div>
                 <div class="large-6 columns">
                     <div class="row">

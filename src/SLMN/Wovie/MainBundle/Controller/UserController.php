@@ -320,11 +320,30 @@ class UserController extends Controller
             ->getRepository('SeklMainUserBundle:User');
         $profilesRepo = $this->getDoctrine()
             ->getRepository('SLMNWovieMainBundle:Profile');
+        $stripeCustomersRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:StripeCustomer');
         $myUser = $usersRepo->findOneByEmail($this->getUser()->getEmail());
         $myProfile = $profilesRepo->findOneByUser($myUser);
         if (!$myProfile)
         {
             $myProfile = new Profile();
+        }
+        $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
+        if ($stripeCustomer)
+        {
+            try
+            {
+                $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
+            }
+            catch (\Exception $e)
+            {
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
+            }
+        }
+        if (!$stripeCustomer || !$customer)
+        {
+            throw $this->createAccessDeniedException('User not found!');
         }
 
         $accountForm = $this->createForm('editUser', $myUser)
@@ -386,12 +405,37 @@ class UserController extends Controller
             $this->get('session')->getFlashBag()->add('success', 'Successfully updated your profile.');
             return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
         }
+        
+        $reactivateAccountForm = $this->createFormBuilder(array())
+            ->add('reactivateAccount', 'submit')
+            ->getForm();
+
+        $reactivateAccountForm->handleRequest($request);
+
+        if ($reactivateAccountForm->isValid()) {
+            try
+            {
+                $subscription = $customer->subscriptions->retrieve($customer->subscriptions->data[0]->id);
+                $subscription->plan = $subscription->plan;
+                $subscription->save();
+                $this->get('session')->getFlashBag()->add('success', 'Successfully reactivated your account.');
+            }
+            catch (\Exception $e)
+            {
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
+                $this->get('session')->getFlashBag()->add('error', 'Internal error!');
+            }
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
+        }
 
         return $this->render(
             'SLMNWovieMainBundle:html/user/settings:tab-profile.html.twig',
             array(
                 'accountForm' => $accountForm->createView(),
-                'profileForm' => $profileForm->createView()
+                'profileForm' => $profileForm->createView(),
+                'reactivateAccountForm' => $reactivateAccountForm->createView(),
+                'stripeCustomer' => $stripeCustomer
             )
         );
     }
@@ -405,12 +449,21 @@ class UserController extends Controller
         $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
         $invoices = $invoicesRepo->findBy(array('user' => $this->getUser()), array('date' => 'DESC'));
         $customer = null;
+        $upcomingInvoice = null;
         if ($stripeCustomer)
         {
             try
             {
                 $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
                 $upcomingInvoice = \Stripe_Invoice::upcoming(array('customer' => $stripeCustomer->getCustomerId()));
+            }
+            catch (\Stripe_Error $e)
+            {
+                $logger = $this->get('logger');
+                if (strpos($e->getMessage(), 'No upcoming invoices for customer') === false)
+                {
+                    $logger->error('Stripe: '.$e->getMessage());
+                }
             }
             catch (\Exception $e)
             {
@@ -494,6 +547,58 @@ class UserController extends Controller
                 'invoices' => $invoices,
                 'upcomingInvoice' => $upcomingInvoice,
                 'stripeCustomerForm' => $stripeCustomerForm->createView()
+            )
+        );
+    }
+
+    public function settingsAccountCancelAction(Request $request)
+    {
+        $stripeCustomersRepo = $this->getDoctrine()
+            ->getRepository('SLMNWovieMainBundle:StripeCustomer');
+        $stripeCustomer = $stripeCustomersRepo->findOneByUser($this->getUser());
+        $customer = null;
+        if ($stripeCustomer)
+        {
+            try
+            {
+                $customer = \Stripe_Customer::retrieve($stripeCustomer->getCustomerId());
+            }
+            catch (\Exception $e)
+            {
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
+            }
+        }
+        if (!$stripeCustomer || !$customer)
+        {
+            throw $this->createAccessDeniedException('User not found!');
+        }
+
+        $cancelAccountForm = $this->createFormBuilder(array())
+            ->add('cancelAccount', 'submit')
+            ->getForm();
+
+        $cancelAccountForm->handleRequest($request);
+
+        if ($cancelAccountForm->isValid()) {
+            try
+            {
+                $customer->subscriptions->data[0]->cancel(array('at_period_end' => true));
+                $this->get('session')->getFlashBag()->add('success', 'Successfully cancelled your account.');
+            }
+            catch (\Exception $e)
+            {
+                $logger = $this->get('logger');
+                $logger->error('Stripe: '.$e->getMessage());
+                $this->get('session')->getFlashBag()->add('error', 'Internal error!');
+            }
+            return $this->redirect($this->generateUrl('slmn_wovie_user_settings_profile'));
+        }
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/settings:tab-profile-cancelaccount.html.twig',
+            array(
+                'cancelAccountForm' => $cancelAccountForm->createView()
             )
         );
     }

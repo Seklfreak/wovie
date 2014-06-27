@@ -125,6 +125,7 @@ class WebhookController extends Controller
                     $paidUntil = new \DateTime();
                     $paidUntil->setTimestamp($subscription->current_period_end);
                     $stripeCustomer->setPaidUntil($paidUntil);
+                    $stripeCustomer->setCancelled($subscription->cancel_at_period_end);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($stripeCustomer);
                     $em->flush();
@@ -176,7 +177,6 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
-            // TODO: customer.subscription.trial_will_end -> three days before trial ends, warn and more
             default:
                 break;
         }

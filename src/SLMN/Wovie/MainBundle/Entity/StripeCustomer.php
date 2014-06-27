@@ -42,6 +42,27 @@ class StripeCustomer
     protected $receiptInfo;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $cancelled = false;
+
+    /**
+     * @return mixed
+     */
+    public function getCancelled()
+    {
+        return $this->cancelled;
+    }
+
+    /**
+     * @param mixed $cancelled
+     */
+    public function setCancelled($cancelled)
+    {
+        $this->cancelled = $cancelled;
+    }
+
+    /**
      * @return mixed
      */
     public function getReceiptInfo()

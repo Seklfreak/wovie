@@ -1,6 +1,6 @@
 {% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
 
-{% block pagetitle %}WOVIE - settings - billingt{% endblock pagetitle %}
+{% block pagetitle %}WOVIE - settings - billing{% endblock pagetitle %}
 
 {% block body %}
     <div class="row">
@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="small-12 columns">
                             <h4>Receipts
-                                {% if not customer.subscriptions.data[0].cancel_at_period_end %}
+                                {% if not stripeCustomer.cancelled %}
                                     <small>
                                         Next invoice at {{ upcomingInvoice.date|date('Y-m-d') }}
                                         {% if upcomingInvoice.total > 0 %}
@@ -22,6 +22,8 @@
                                             ($0.00)
                                         {% endif %}
                                     </small>
+                                {% else %}
+                                    <small>Next invoice <b>account cancelled</b></small>
                                 {% endif %}
                             </h4>
                         </div>
