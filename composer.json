@@ -1,8 +1,15 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "slmn/wovie",
+    "license": "GPL-3",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Keep control over your movie collection.",
+    "homepage": "http://wovieapp.com",
+    "authors": [
+        {
+            "name": "Sebastian Winkler",
+            "email": "sekl@slmn.de"
+        }
+    ],
     "autoload": {
         "psr-0": { "": "src/" }
     },
@@ -64,7 +71,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.4-dev"
+            "dev-master": "0.1-dev"
         }
     }
 }
