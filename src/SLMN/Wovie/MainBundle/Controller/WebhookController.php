@@ -80,18 +80,98 @@ class WebhookController extends Controller
                 $customer = $stripeCustomersRepo->findOneByCustomerId($subscription->customer);
                 if ($customer)
                 {
-                    /*
-                    $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                    $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                    $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                    $userOptionRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                    $viewRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
-                    // TODO: Remove all
                     $em = $this->getDoctrine()->getManager();
+                    $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
+                    $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
+                    $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Profile');
+                    $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOptions');
+
+                    $batchSize = 20;
+
+                    // Remove follows
+                    $i = 0;
+                    $q = $followsRepo->createQueryBuilder('follow')
+                        ->where('follow.user = :user')
+                        ->orWhere('follow.follow = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
+                    // Remove medias
+                    $i = 0;
+                    $q = $mediasRepo->createQueryBuilder('media')
+                        ->where('media.createdBy = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
+                    // remove profiles
+                    $i = 0;
+                    $q = $profilesRepo->createQueryBuilder('profile')
+                        ->where('profile.user = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
+                    // remove user options
+                    $i = 0;
+                    $q = $userOptionsRepo->createQueryBuilder('userOption')
+                        ->where('userOption.createdBy = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
                     $em->remove($customer);
                     $em->remove($customer->getUser());
                     $em->flush();
-                    */
                 }
                 else
                 {
