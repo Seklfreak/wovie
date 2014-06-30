@@ -558,7 +558,7 @@
     <ul class="title-area">
         <li class="name">
             <h1>
-                {% if is_granted('ROLE_USER') %}
+                {% if app.user is not null and is_granted('ROLE_USER') %}
                     <a href="{{ path('slmn_wovie_user_dashboard') }}">
                         WOVIE <span
                                 data-tooltip
@@ -576,7 +576,7 @@
                 {% endif %}
             </h1>
         </li>
-        {% if is_granted('ROLE_USER') %}
+        {% if app.user is not null and is_granted('ROLE_USER') %}
             <li class="toggle-topbar menu-icon">
                 <a href=""><span>Menu</span></a>
             </li>
@@ -585,7 +585,7 @@
 
     <section class="top-bar-section">
         <ul class="left">
-            {% if is_granted('ROLE_USER') %}
+            {% if app.user is not null and is_granted('ROLE_USER') %}
                 <li class="has-form">
                     <form type="get" action="{{ path('slmn_wovie_user_search') }}">
                         <div class="row collapse">
@@ -626,7 +626,7 @@
             {% endif %}
         </ul>
         <ul class="right">
-            {% if is_granted('ROLE_USER') %}
+            {% if app.user is not null and is_granted('ROLE_USER') %}
                 <li class="has-form">
                     <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">Alpha feedback</a>
                 </li>
