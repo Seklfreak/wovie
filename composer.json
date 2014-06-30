@@ -45,6 +45,9 @@
         "snc/redis-bundle": "~1.1",
         "predis/predis": "~0.8"
     },
+    "require-dev": {
+        "webfactory/exceptions-bundle": "~4.0"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

@@ -1,13 +1,13 @@
 {% extends "SLMNWovieMainBundle::html/layout_public.html.twig" %}
 
-{% block pagetitle %}WOVIE - {{ status_code }} error{% endblock pagetitle %}
+{% block pagetitle %}WOVIE - Page not found{% endblock pagetitle %}
 
 {% block body %}
     <div class="row" style="margin-top: 15px;">
         <div class="small-12 large-9 large-centered columns">
             <div class="panel">
-                <h4>{{ status_text }} ({{ status_code }})</h4>
-                <p>A error occured while generating the page. An admin has been contacted.</p>
+                <h4>Page not found (404)</h4>
+                <p>It appears that you followed a broken or outdated link.</p>
                 <b><a href="{{ path('slmn_wovie_public_imprint') }}">Contact us</a></b>
             </div>
         </div>
