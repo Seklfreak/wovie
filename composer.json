@@ -43,9 +43,7 @@
         "sekl/main/foundationbundle": "dev-master",
         "sekl/main/userbundle": "dev-master",
         "snc/redis-bundle": "~1.1",
-        "predis/predis": "~0.8"
-    },
-    "require-dev": {
+        "predis/predis": "~0.8",
         "webfactory/exceptions-bundle": "~4.0"
     },
     "scripts": {
