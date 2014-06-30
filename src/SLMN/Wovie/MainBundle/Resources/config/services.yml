@@ -15,6 +15,7 @@ parameters:
     slmn_wovie_main.service.pdf_docs.class: SLMN\Wovie\MainBundle\PdfDocs
     wovie.create_activity_service.class: SLMN\Wovie\MainBundle\Consumer\CreateActivityConsumer
     wovie.utility.referer_service.class: SLMN\Wovie\MainBundle\Utility\Referrer
+    wovie.locale_listener.class: SLMN\Wovie\MainBundle\LocaleListener
 
 services:
     # System
@@ -53,6 +54,19 @@ services:
         arguments:
             em: @doctrine.orm.entity_manager
             mediaApi: @media_api
+    # Locale
+    wovie.locale_listener_subscriber:
+        class: %wovie.locale_listener.class%
+        arguments:
+            userOption: @userOption
+        tags:
+            - { name: kernel.event_subscriber }
+    wovie.locale_listener_interactive_login:
+        class: %wovie.locale_listener.class%
+        arguments:
+            userOption: @userOption
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: setLocaleForAuthenticatedUser }
     # Utility
     wovie.utility.referer_service:
         class: %wovie.utility.referer_service.class%

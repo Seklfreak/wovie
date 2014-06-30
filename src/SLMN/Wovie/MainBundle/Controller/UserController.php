@@ -289,6 +289,15 @@ class UserController extends Controller
             foreach($generalSettingsForm->getData() as $key=>$value)
             {
                 $userOptions->set($key, $value);
+                switch ($key)
+                {
+                    case 'language':
+                        $request->getSession()->set('_locale', $value);
+                        $request->setLocale($value);
+                        break;
+                    default:
+                        break;
+                }
             }
             if ($userOptions->get('publicProfile', false) == false)
             {
