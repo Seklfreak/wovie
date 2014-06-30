@@ -658,7 +658,7 @@
                         <li><a href="{{ path('logout') }}"><i class="fa fa-power-off"></i> Logout</a></li>
                     </ul>
                 </li>
-            {% else %}
+            {% elif app.user is not null %}
                 <li class="has-form">
                     <a href="#" class="button secondary">Sign up!</a> {# TODO: Sign up #}
                 </li>
