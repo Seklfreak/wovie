@@ -202,20 +202,18 @@
 {% endmacro %}
 
 {% macro itemForList(item) %}
-    <ul class="inline-list" style="margin-bottom: 0;"> {# TODO: Move to grid #}
-        <li style="width: 8%;">
+    <div class="row">
+        <div class="medium-2 small-12 columns">
             <a href="{{ path('slmn_wovie_user_movie_details', { 'id': item.id }) }}">
                 {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
                 filter='?jpegoptim' output='images/placeholder.jpg' %}
-                    {% set placeholderImg = asset_url %}
+                {% set placeholderImg = asset_url %}
                 {% endimage %}
                 <img class="small-cover" src="{{ item.posterImage|default(placeholderImg) }}">
-                <div class="image-label">
-                    <i class="fa fa-search"></i> Details
-                </div>
+                <button class="expand really-tiny"><i class="fa fa-search"></i> Details</button>
             </a>
-        </li>
-        <li style="width: 87%;">
+        </div>
+        <div class="medium-10 small-12 columns search-result-container">
             <div class="row">
                 <ul class="result-inline-list">
                     <li>
@@ -297,8 +295,8 @@
                     </ul>
                 </div>
             {% endif %}
-        </li>
-    </ul>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro mediaDetails(media, public) %}
