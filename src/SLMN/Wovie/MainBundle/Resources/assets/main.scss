@@ -18,13 +18,13 @@
 }
 
 /* SEARCH */
-.image-label {
-  text-align: center;
-  margin-top: 3px;
-}
 @media #{$small-only} {
   .search-result-container {
     padding-left: 30px;
+    margin-bottom: 10px;
+  }
+  .details-button {
+    margin-bottom: 2px;
   }
 }
 .label.middle {

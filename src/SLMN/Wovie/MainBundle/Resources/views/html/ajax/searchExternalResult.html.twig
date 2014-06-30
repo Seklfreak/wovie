@@ -5,31 +5,28 @@
 {% else %}
     {# TODO: Suggest type mistakes (via search api) #}
     {% for item in media %}
-        {# dump(item)|raw #}
-        <ul class="inline-list" style="margin-bottom: 0;"> {# TODO: Move to grid #}
-            <li style="width: 8%;">
+        <div class="row">
+            <div class="medium-2 small-12 columns">
                 <a href="{{ path('slmn_wovie_user_movie_add', { 'prefill': item.mid }) }}">
                     <img class="small-cover" src="{{ url('slmn_wovie_image_coverImage', { freebaseId: item.mid }) }}">
-                    <div class="image-label">
-                            <i class="fa fa-plus"></i> Add
-                    </div>
+                    <button class="expand really-tiny details-button"><i class="fa fa-search"></i> Details</button>
                 </a>
-            </li>
-            <li style="width: 87%;">
+            </div>
+            <div class="medium-10 small-12 columns search-result-container">
                 <div class="row">
                     <ul class="result-inline-list">
                         <li>
                             <h5>{{ item.name }}
                                 {% if item.written_by is defined and item.written_by|length >= 1 %}
                                     <small>written by
-                                    {% for writer in item.written_by %}
-                                        <a
-                                                href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ writer|trim }) }}"
-                                                >
-                                            {{ writer }}
-                                        </a>
-                                        {% if not loop.last %}, {% endif %}
-                                    {% endfor %}
+                                        {% for writer in item.written_by %}
+                                            <a
+                                                    href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ writer|trim }) }}"
+                                                    >
+                                                {{ writer }}
+                                            </a>
+                                            {% if not loop.last %}, {% endif %}
+                                        {% endfor %}
                                     </small>
                                 {% endif %}
                             </h5>
@@ -94,23 +91,23 @@
                             </li>
                         {% endif %}
                         {% if item.imdbId is defined %}
-                        <li class="big-label-inlist">
+                            <li class="big-label-inlist">
                                 <span class="label secondary">
                                     <a href="http://www.imdb.com/title/{{ item.imdbId }}" target="_blank">
                                         <i class="fa fa-external-link"></i> imdb
                                     </a>
                                 </span>
-                        </li>
+                            </li>
                         {% endif %}
                         <li class="big-label-inlist">
                             <span class="label secondary">
                                 <a
                                         target="_blank"
-                                    {% if getUserOption('language', 'en') == 'de' %}
-                                        href="http://www.amazon.de/s/?url=search-alias%3Ddvd&field-keywords={{ item.name|escape }}{% if amazonAffiliateDe != null %}&tag={{ amazonAffiliateDe }}{% endif %}"
-                                    {% else %}
-                                        href="http://www.amazon.com/gp/search?index=dvd&keywords={{ item.name|escape }}{% if amazonAffiliateUs != null %}&tag={{ amazonAffiliateUs }}{% endif %}"
-                                    {% endif %}
+                                        {% if getUserOption('language', 'en') == 'de' %}
+                                            href="http://www.amazon.de/s/?url=search-alias%3Ddvd&field-keywords={{ item.name|escape }}{% if amazonAffiliateDe != null %}&tag={{ amazonAffiliateDe }}{% endif %}"
+                                        {% else %}
+                                            href="http://www.amazon.com/gp/search?index=dvd&keywords={{ item.name|escape }}{% if amazonAffiliateUs != null %}&tag={{ amazonAffiliateUs }}{% endif %}"
+                                        {% endif %}
                                         >
                                     <i class="fa fa-external-link"></i> amazon
                                 </a>
@@ -121,13 +118,6 @@
                 <div class="row ajax-fetchTopic" data-id="{{ item.mid }}">
                     <p class="result-plot"><i class="fa fa-spinner fa-spin fa-lg"></i></p>
                 </div>
-                {# {% if item.description is defined %}
-                    <div class="row">
-                        <p class="result-plot">{{ item.description }}</p>
-                    </div>
-                {% else %}
-                    <div class="row" style="margin-top: 5px;"></div>
-                {% endif %} #}
                 {% if item.genres is defined %}
                     <div class="row">
                         <ul class="result-inline-list">
@@ -143,21 +133,7 @@
                         </ul>
                     </div>
                 {% endif %}
-                {#
-                <div class="row">
-                    <ul class="result-inline-list">
-                        {% for actor in item.Actors|split(',') %}
-                            <li class="big-label-inlist">
-                                    <span class="label secondary">
-                                        <a href="{{ path('slmn_wovie_user_search', { 'q':'actor:' ~ actor|trim }) }}">
-                                            <i class="fa fa-user"></i> {{ actor|trim }}
-                                        </a>
-                                    </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>#}
-            </li>
-        </ul>
+            </div>
+        </div>
     {% endfor %}
 {% endif %}
