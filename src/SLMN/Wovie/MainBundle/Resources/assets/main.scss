@@ -150,7 +150,7 @@
   .small-cover:hover {
     position: absolute;
     z-index: 99;
-    @include transform(scale(3.0));
+    @include transform(scale(1.3));
   }
 }
 
