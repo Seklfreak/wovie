@@ -44,7 +44,8 @@
         "sekl/main/userbundle": "dev-master",
         "snc/redis-bundle": "~1.1",
         "predis/predis": "~0.8",
-        "webfactory/exceptions-bundle": "~4.0"
+        "webfactory/exceptions-bundle": "~4.0",
+        "friendsofsymfony/elastica-bundle": "~3.0@dev"
     },
     "scripts": {
         "post-install-cmd": [

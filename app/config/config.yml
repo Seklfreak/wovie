@@ -138,3 +138,37 @@ snc_redis:
         query_cache:
             client: cache
             entity_manager: default
+
+fos_elastica:
+    clients:
+        default: { host: %elasticsearch.host%, port: %elasticsearch.port% }
+    indexes:
+        wovie:
+            client: default
+            types:
+                Media:
+                    mappings:
+                        title: { boost: 10 }
+                        description: { boost: 5 }
+                        countries: ~
+                        createdAt: { type: date }
+                        lastUpdatedAt: { type: date }
+                        mediaType: ~
+                        releaseYear: ~
+                        finalYear: ~
+                        runtime: ~
+                        writtenBy: ~
+                        genres: ~
+                        numberOfEpisodes: ~
+                        rating: ~
+                        favorite: ~
+                        createdBy:
+                            type: "nested"
+                            properties:
+                                id: ~
+                    persistence:
+                        driver: orm
+                        model: SLMN\Wovie\MainBundle\Entity\Media
+                        provider: ~
+                        listener: ~ # Not working?
+                        finder: ~

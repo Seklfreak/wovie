@@ -21,7 +21,8 @@ class AppKernel extends Kernel
             new SLMN\Wovie\MainBundle\SLMNWovieMainBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
-            new Snc\RedisBundle\SncRedisBundle()
+            new Snc\RedisBundle\SncRedisBundle(),
+            new FOS\ElasticaBundle\FOSElasticaBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

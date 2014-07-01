@@ -14,6 +14,9 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
+    elasticsearch.host: localhost
+    elasticsearch.port: 9200
+
     slmn_main_userbundle.mail.sender.email: wovie@example.org
     slmn_main_userbundle.mail.sender.title: wovie
     slmn_main_userbundle.mail.subject: wovie

@@ -227,16 +227,26 @@ class UserController extends Controller
     {
         $queryString = trim($request->query->get('q'));
 
-        $moviesRepo = $this->getDoctrine()->getManager()->getRepository('SLMNWovieMainBundle:Media');
-        $query = $moviesRepo->createQueryBuilder('media')
-            ->where('media.title LIKE :query')
-            ->andWhere('media.createdBy = :user')
-            ->setParameters(array(
-                'query' => '%'.$queryString.'%',
-                'user' => $this->getUser()
-            ))
-            ->getQuery();
-        $result = $query->getResult();
+        $finder = $this->container->get('fos_elastica.finder.wovie.media');
+        $boolQuery = new \Elastica\Query\Bool();
+
+        $createdByQuery = new \Elastica\Query\Nested();
+        $createdByQuery->setQuery(new \Elastica\Query\Term(array('id' => array('value' => $this->getUser()->getId()))));
+        $createdByQuery->setPath('createdBy');
+        $boolQuery->addMust($createdByQuery);
+
+        $shouldQueries = new \Elastica\Query\Bool();
+
+        $fieldQuery = new \Elastica\Query\Fuzzy();
+        $fieldQuery->setField('title', $queryString);
+        $shouldQueries->addShould($fieldQuery);
+        $fieldQuery = new \Elastica\Query\Match();
+        $fieldQuery->setFieldQuery('description', $queryString);
+        $shouldQueries->addShould($fieldQuery);
+
+        $boolQuery->addMust($shouldQueries);
+
+        $result = $finder->find($boolQuery, 15);
 
         return $this->render(
             'SLMNWovieMainBundle:html/user:search.html.twig',
