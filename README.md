@@ -10,6 +10,7 @@ Keep control over your movie collection.
 - RabbitMQ
 - redis
 - supervisor
+- elasticsearch
 - External services
     - Google API (Freebase API)
     - Stripe
