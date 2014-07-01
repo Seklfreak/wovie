@@ -170,5 +170,5 @@ fos_elastica:
                         driver: orm
                         model: SLMN\Wovie\MainBundle\Entity\Media
                         provider: ~
-                        listener: ~ # Not working?
+                        listener: ~
                         finder: ~
