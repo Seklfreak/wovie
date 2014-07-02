@@ -20,7 +20,11 @@
 {% block templatebody %}
     {% include 'SLMNWovieMainBundle::html/modals.html.twig' %}
     <div id="root">
-        {{ wovie.navbar() }}
+        {% if query is defined %}
+            {{ wovie.navbar(query) }}
+        {% else %}
+            {{ wovie.navbar() }}
+        {% endif %}
         <div role="content">
             <div class="row">
                 <div class="large-12 columns">
