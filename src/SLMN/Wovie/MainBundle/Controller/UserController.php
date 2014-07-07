@@ -237,7 +237,8 @@ class UserController extends Controller
 
         $shouldQueries = new \Elastica\Query\Bool();
 
-        $fieldQuery = new \Elastica\Query\Fuzzy();
+        //$fieldQuery = new \Elastica\Query\Fuzzy();
+        $fieldQuery = new \Elastica\Query\Match();
         $fieldQuery->setField('title', $queryString);
         $shouldQueries->addShould($fieldQuery);
         $fieldQuery = new \Elastica\Query\Match();

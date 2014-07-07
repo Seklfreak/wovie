@@ -148,8 +148,8 @@ fos_elastica:
             types:
                 Media:
                     mappings:
-                        title: { boost: 10 }
-                        description: { boost: 5 }
+                        title: { boost: 10, analyzer: snowball }
+                        description: { boost: 5, analyzer: snowball }
                         countries: ~
                         createdAt: { type: date }
                         lastUpdatedAt: { type: date }
