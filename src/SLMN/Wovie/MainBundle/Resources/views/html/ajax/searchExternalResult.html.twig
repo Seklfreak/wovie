@@ -20,11 +20,7 @@
                                 {% if item.written_by is defined and item.written_by|length >= 1 %}
                                     <small>written by
                                         {% for writer in item.written_by %}
-                                            <a
-                                                    href="{{ path('slmn_wovie_user_search', { 'q':'writer:' ~ writer|trim }) }}"
-                                                    >
-                                                {{ writer }}
-                                            </a>
+                                            {{ writer }}
                                             {% if not loop.last %}, {% endif %}
                                         {% endfor %}
                                     </small>
@@ -124,9 +120,7 @@
                             {% for genre in item.genres %}
                                 <li class="big-label-inlist">
                                         <span class="label secondary">
-                                            <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
-                                                <i class="fa fa-tag"></i> {{ genre|trim }}
-                                            </a>
+                                            <i class="fa fa-tag"></i> {{ genre|trim }}
                                         </span>
                                 </li>
                             {% endfor %}

@@ -286,9 +286,7 @@
                         {% for genre in item.genres|split(',') %}
                             <li class="big-label-inlist">
                                         <span class="label secondary">
-                                            <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
-                                                <i class="fa fa-tag"></i> {{ genre|trim }}
-                                            </a>
+                                            <i class="fa fa-tag"></i> {{ genre|trim }}
                                         </span>
                             </li>
                         {% endfor %}
@@ -512,9 +510,7 @@
                         {% for genre in media.genres|split(',') %}
                             <li class="big-label-inlist">
                         <span class="label secondary">
-                            <a href="{{ path('slmn_wovie_user_search', { 'q':'genre:' ~ genre|trim }) }}">
-                                <i class="fa fa-tag"></i> {{ genre|trim }}
-                            </a>
+                            <i class="fa fa-tag"></i> {{ genre|trim }}
                         </span>
                             </li>
                         {% endfor %}
