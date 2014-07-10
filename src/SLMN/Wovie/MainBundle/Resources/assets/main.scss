@@ -371,6 +371,22 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+
+/* INDEX */
+@media #{$large-up} {
+  .hero {
+    background-image: url("/bundles/slmnwoviemain/images/cc0_camaras_500.jpg");
+    height: 500px;
+    padding: 100px 20px 0 20px;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    & h1, h2, h3, h4, h5, h6, small {
+      color: #fff;
+    }
+  }
+}
+
 /* GENERAL */
 .meta-header-small {
   font-size: 0.75rem;
