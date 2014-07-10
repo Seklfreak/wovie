@@ -61,7 +61,6 @@ class SlmnWovieMediaUpdateCommand extends ContainerAwareCommand
                         $media->setNumberOfEpisodes(count($episodes));
                     }
                 }
-                // TODO: Update other fields
             }
             $progress->display();
             $progress->advance();
