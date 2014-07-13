@@ -492,6 +492,11 @@
                             </span>
                         </li>
                     {% endif %}
+                    <li class="big-label-inlist">
+                        <span class="label secondary">
+                            added at {{ media.createdAt|date('Y-m-d') }}
+                        </span>
+                    </li>
                 </div>
             </div>
             {% if media.description %}
