@@ -522,6 +522,29 @@
                     </div>
                 </div>
             {% endif %}
+            {% set friendsThatHaveMedia = getFriendsThatHaveMedia(media) %}
+            {% if friendsThatHaveMedia|length > 0 %}
+                <div class="row">
+                    <div class="small-12 columns">
+                        {{ friendsThatHaveMedia|length }}
+                        {% if friendsThatHaveMedia|length < 2 %}
+                            friend
+                        {% else %}
+                            friends
+                        {% endif %}
+                        have this in their library
+                        {% for friend in friendsThatHaveMedia %}
+                            <a href="{{ path('slmn_wovie_public_profile', { 'username': friend.username }) }}">
+                                <img
+                                        class="avatar-30"
+                                        src="{{ getGravatarUrl(friend, 30) }}"
+                                        >
+                                {{ friend.username }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
     {# TODO: Add widget, more statistics, etc #}

@@ -46,8 +46,37 @@ class SlmnWovieExtension extends \Twig_Extension
             'isInMyLibrary' => new \Twig_Function_Method($this, 'isInMyLibraryFunction'),
             'getMediaById' => new \Twig_Function_Method($this, 'getMediaByIdFunction'),
             'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction'),
-            'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction')
+            'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction'),
+            'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction')
         );
+    }
+
+    public function getFriendsThatHaveMediaFunction($media, $user=null)
+    {
+        if ($media->getFreebaseId())
+        {
+            if (!$user)
+            {
+                $user = $this->context->getToken()->getUser();
+            }
+            $followsRepo = $this->em->getRepository('SLMNWovieMainBundle:Follow');
+            $mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+            $followings = $followsRepo->findBy(array('user' => $user), array('createdAt' => 'DESC'));
+
+            foreach ($followings as $key=>$following)
+            {
+                $followings[$key] = $following->getFollow();
+                if (!$mediasRepo->findOneBy(array('createdBy' => $followings[$key], 'freebaseId' => $media->getFreebaseId())))
+                {
+                    unset($followings[$key]);
+                }
+            }
+            return $followings;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public function timeAgoFunction($datetime, $fallback='Y-m-d H:i')
