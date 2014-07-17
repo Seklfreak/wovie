@@ -42,7 +42,7 @@ class SlmnWovieMediaUpdateCommand extends ContainerAwareCommand
                     'createdBy' => $media->getCreatedBy()
                 )
             );
-            if ($lang->getValue())
+            if ($lang && $lang->getValue())
             {
                 $mediaApi->setLang($lang->getValue());
             }
