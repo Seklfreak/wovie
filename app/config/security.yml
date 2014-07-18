@@ -47,6 +47,7 @@ security:
         - { path: ^/imprint, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/webhook, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/action/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/activate/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }

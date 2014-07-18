@@ -2,6 +2,8 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\PendingUserActivation;
+use Sekl\Main\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -10,7 +12,8 @@ use Sekl\Main\UserBundle\Utility\RandomString;
 
 class PublicController extends Controller
 {
-    public function requestNewPasswordAction(Request $request) {
+    public function requestNewPasswordAction(Request $request)
+    {
         $usersRepo = $this->getDoctrine()
             ->getRepository('SeklMainUserBundle:User');
 
@@ -54,7 +57,8 @@ class PublicController extends Controller
         ));
     }
 
-    public function redeemNewPasswordAction(Request $request, $token) {
+    public function redeemNewPasswordAction(Request $request, $token)
+    {
         $pendingPasswordChangesRepo = $this->getDoctrine()
             ->getRepository('SeklMainUserBundle:PendingPasswordChange');
         $pendingPasswordChange = $pendingPasswordChangesRepo->findOneByToken($token);
@@ -222,10 +226,54 @@ class PublicController extends Controller
         );
     }
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        // TODO: If logged in, redirect to dashboard. ? (If site is public)
-        return $this->render('SLMNWovieMainBundle:html/public:index.html.twig');
+        // New User
+        $newUser = new User();
+        $newUserForm = $this->createForm('createUser', $newUser);
+        $newUserForm->handleRequest($request);
+
+        if ($newUserForm->isValid()) {
+            $factory = $this->get('security.encoder_factory');
+            $em = $this->getDoctrine()->getManager();
+
+            $rolesRepo = $this->container->get('doctrine')->getRepository('SeklMainUserBundle:Role');
+            $roleUser = $rolesRepo->findOneByRole('ROLE_USER');
+
+            $encoder = $factory->getEncoder($newUser);
+            $password = $encoder->encodePassword($newUser->getPassword(), $newUser->getSalt());
+            $newUser->setPassword($password);
+            $newUser->setIsActive(false);
+            $newUser->setRoles(array($roleUser));
+            $em->persist($newUser);
+
+            $newPendingUserActivation = new PendingUserActivation();
+            $newPendingUserActivation->setUser($newUser);
+            $token = RandomString::randomString(50);
+            $newPendingUserActivation->setTokenHash(hash('sha256', $token));
+            $em->persist($newPendingUserActivation);
+
+            $this->get('templateMailer')->send(
+                $newUser->getEmail(),
+                'Activate account',
+                'SLMNWovieMainBundle:email:accountActivate.html.twig',
+                array(
+                    'activateUrl' => $this->generateUrl('slmn_wovie_public_activateAccount', array(
+                            'username' => $newUser->getUsername(),
+                            'token' => $token
+                        ), true)
+                )
+            );
+
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Thank you! We created your account. Please activate your account with the email we sent to you.');
+            return $this->redirect($this->generateUrl('slmn_wovie_public_index'));
+        }
+        // TODO: If logged in, redirect to dashboard. (If site is public)
+        return $this->render('SLMNWovieMainBundle:html/public:index.html.twig', array(
+            'newUserForm' => $newUserForm->createView()
+        ));
     }
 
     public function imprintAction(Request $request)
@@ -258,4 +306,34 @@ class PublicController extends Controller
             'newContactForm' => $newContactForm->createView()
         ));
     }
-} 
+
+    public function activateAccountAction($username, $token)
+    {
+        $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+        $pendingUserActivationsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:PendingUserActivation');
+        $user = $usersRepo->findOneByUsername($username);
+        if (!$user)
+        {
+            $this->get('session')->getFlashBag()->add('error', 'URL invalid!');
+            return $this->redirect($this->generateUrl('slmn_wovie_public_index'));
+        }
+        $pendingUserActivation = $pendingUserActivationsRepo->findOneBy(array(
+            'user' => $user,
+            'tokenHash' => hash('sha256', $token)
+        ));
+        if (!$pendingUserActivation)
+        {
+            $this->get('session')->getFlashBag()->add('error', 'URL invalid!');
+            return $this->redirect($this->generateUrl('slmn_wovie_public_index'));
+        }
+
+        $user->setIsActive(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($pendingUserActivation);
+        $em->persist($user);
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('error', 'Account activated! You can now login.');
+        return $this->redirect($this->generateUrl('login'));
+    }
+}

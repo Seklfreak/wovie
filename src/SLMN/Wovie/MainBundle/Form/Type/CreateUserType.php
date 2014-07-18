@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class EditUserType extends AbstractType
+class CreateUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,26 +23,13 @@ class EditUserType extends AbstractType
                     'placeholder' => 'email.placeholder',
                 )
             ))
-            ->add('password', 'repeated', array(
-                'type' => 'password',
-                'invalid_message' => 'password.repeat',
-                'options' => array(
-                    'attr' => array(
-                        'invalid_message' => 'password.invalid'
-                    )
-                ),
-                'required' => false,
-                'first_options'  => array('label' => 'password.new.input.first'),
-                'second_options' => array('label' => 'password.new.input.second'),
+            ->add('password', 'password', array(
+                'attr' => array(
+                    'invalid_message' => 'password.invalid',
+                    'placeholder' => 'password.placeholder'
+                )
             ))
-            ->add('roles', 'entity', array(
-                'class' => 'SeklMainUserBundle:Role',
-                'property'     => 'name',
-                'multiple'     => true,
-                'expanded'     => true,
-                'required'     => false
-            ))
-            ->add('Submit', 'submit', array(
+            ->add('createAccount', 'submit', array(
                 'attr' => array(
                     'class' => 'expand'
                 )
@@ -55,10 +42,6 @@ class EditUserType extends AbstractType
         $resolver
             ->setDefaults([
                 'validation_groups' => function(FormInterface $form) {
-                        if ($form->get('password')->getData() == '') {
-                            return 'changeProfile';
-                        }
-
                         return array('Default', 'changeProfile');
                     }
             ]);
@@ -66,6 +49,6 @@ class EditUserType extends AbstractType
 
     public function getName()
     {
-        return 'editUser';
+        return 'createUser';
     }
 }
