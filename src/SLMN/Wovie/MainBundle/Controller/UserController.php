@@ -514,8 +514,12 @@ class UserController extends Controller
         {
             try
             {
-                $invoice = \Stripe_Invoice::retrieve($invoices[0]->getInvoiceId());
-                $invoice->pay();
+                $lastInvoices = \Stripe_Invoice::all(array(
+                        "customer" => $stripeCustomer->getCustomerId(),
+                        "limit" => 1
+                    )
+                );
+                $lastInvoices->data[0]->pay();
                 $this->get('session')->getFlashBag()->add('success', 'Invoice paid.');
             }
             catch(\Stripe_CardError $e)
