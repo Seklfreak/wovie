@@ -42,7 +42,7 @@ services:
         arguments: [@kernel, @logger, @doctrine.orm.entity_manager, "%slmn_wovie_mainbundle.google_api_key%", @slmn_wovie_cache, @userOption]
     slmn_wovie_main.twig.slmn_wovie_extension:
         class: %slmn_wovie_main.twig.slmn_wovie_extension.class%
-        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption, @router]
+        arguments: [@doctrine.orm.entity_manager, @security.context, @slmn_wovie_cache, @userOption, @router, %kernel.root_dir%]
         tags:
             - { name: twig.extension }
     pdf_docs:

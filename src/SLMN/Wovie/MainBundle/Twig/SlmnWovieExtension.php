@@ -11,13 +11,15 @@ class SlmnWovieExtension extends \Twig_Extension
     protected $cacheHandler;
     protected $userOptions;
     protected $router;
+    protected $rootDir;
 
     public function __construct(
         \Doctrine\ORM\EntityManager $em,
         \Symfony\Component\Security\Core\SecurityContext $context,
         $cacheHandler,
         $userOptions,
-        UrlGeneratorInterface $router
+        UrlGeneratorInterface $router,
+        $rootDir
     )
     {
         $this->em = $em;
@@ -26,6 +28,7 @@ class SlmnWovieExtension extends \Twig_Extension
         $this->cacheHandler->setNamespace('slmn_wovie_main_twig_slmnwovieextension');
         $this->userOptions = $userOptions;
         $this->router = $router;
+        $this->rootDir = $rootDir;
     }
 
     public function getFunctions()
@@ -35,6 +38,7 @@ class SlmnWovieExtension extends \Twig_Extension
             'viewsOfId' => new \Twig_Function_Method($this, 'viewsOfId'),
             'viewsOfSeries' => new \Twig_Function_Method($this, 'viewsOfSeries'),
             'wovieRevision' => new \Twig_Function_Method($this, 'wovieRevisionFunction'),
+            'wovieVersion' => new \Twig_Function_Method($this, 'wovieVersionFunction'),
             'getUserOption' => new \Twig_Function_Method($this, 'getUserOptionFunction'),
             'setUserOption' => new \Twig_Function_Method($this, 'setUserOptionFunction'),
             'getGravatarUrl' => new \Twig_Function_Method($this, 'getGravatarUrlFunction', array('is_safe' => array('html'))),
@@ -255,11 +259,21 @@ class SlmnWovieExtension extends \Twig_Extension
         return $media;
     }
 
+    public function wovieVersionFunction()
+    {
+        if (false === ($version = $this->cacheHandler->fetch('wovieVersion'))) {
+            $version = file_get_contents($this->rootDir.'/../VERSION');
+            $this->cacheHandler->save('wovieVersion', $version, 86400); // 86400 seconds = 1 day
+        }
+
+        return $version;
+    }
+
     public function wovieRevisionFunction()
     {
-        if (false === ($revision = $this->cacheHandler->fetch('revision'))) {
+        if (false === ($revision = $this->cacheHandler->fetch('wovieRevision'))) {
             $revision = shell_exec('git log --pretty=format:%h -n 1');
-            $this->cacheHandler->save('revision', $revision, 86400); // 86400 seconds = 1 day
+            $this->cacheHandler->save('wovieRevision', $revision, 86400); // 86400 seconds = 1 day
         }
 
         return $revision;
