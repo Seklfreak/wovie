@@ -75,13 +75,24 @@ class ImageController extends Controller
         $filename = md5($freebaseId);
         $response = new Response();
 
+        $filecacheMaxAge = new \DateTime();
+        $filecacheMaxAge->modify('-1 week');
+
         # Try filecache
         if ($image == null)
         {
             if (file_exists($path.$filename) && is_readable($path.$filename))
             {
-                $image = file_get_contents($path.$filename);
-                $logger->info('Loaded cover ('.$freebaseId.') from filecache: '.$path.$filename);
+                if (filemtime($path.$filename) > $filecacheMaxAge->getTimestamp())
+                {
+                    $image = file_get_contents($path.$filename);
+                    $logger->info('Loaded cover ('.$freebaseId.') from filecache: '.$path.$filename);
+                }
+                else
+                {
+                    $image = file_get_contents($path.$filename);
+                    $logger->info('Found cover ('.$freebaseId.') in filecache but file is too old.');
+                }
             }
         }
 
