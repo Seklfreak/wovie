@@ -206,6 +206,14 @@ slmn_wovie_action_frames_choose_episode:
         id: \d+
 
 # Image
+slmn_wovie_image_gravatar:
+    pattern: /image/public/gravatar/{hash}.{size}.jpg
+    host: "{cdn}"
+    defaults: { _controller: SLMNWovieMainBundle:Image:gravatar, cdn: "%slmn_wovie_mainbundle.cdn%" }
+    methods: [GET]
+    requirements:
+        cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
+        size: \d+
 slmn_wovie_image_coverImage:
     pattern: /image/public/cover/{freebaseId}.jpg
     host: "{cdn}"

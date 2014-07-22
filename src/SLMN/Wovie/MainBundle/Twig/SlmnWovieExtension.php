@@ -187,11 +187,7 @@ class SlmnWovieExtension extends \Twig_Extension
     public function getGravatarUrlFunction($user, $size=200)
     {
         $hash = md5(strtolower(trim($user->getEmail())));
-        $url = 'https://secure.gravatar.com/avatar/'.$hash;
-        $url .= '?size='.intval($size);
-        $url .= '&default=retro';
-        return $url;
-        // TODO: Placeholder avatar ( default=<url> )
+        return $this->router->generate('slmn_wovie_image_gravatar', array('hash' => $hash, 'size' => intval($size)));
     }
 
     public function getUserOptionFunction($key, $default=null)

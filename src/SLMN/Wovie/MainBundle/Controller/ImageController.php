@@ -9,6 +9,63 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
+    public function gravatarAction(Request $request, $hash, $size)
+    {
+        $logger = $this->get('logger');
+        $image = null;
+        $path = $this->container->getParameter("kernel.cache_dir").'/wovie/gravatars/';
+        @mkdir($path, 0755, $recursive=true);
+        $filename = $hash.'.'.$size;
+        $response = new Response();
+
+        $filecacheMaxAge = new \DateTime();
+        $filecacheMaxAge->modify('-1 week');
+
+        # Try filecache
+        if ($image == null)
+        {
+            if (file_exists($path.$filename) && is_readable($path.$filename))
+            {
+                if (filemtime($path.$filename) > $filecacheMaxAge->getTimestamp())
+                {
+                    $image = file_get_contents($path.$filename);
+                    $logger->info('Loaded gravatar (hash: '.$hash.', size: '.$size.') from filecache: '.$path.$filename);
+                }
+                else
+                {
+                    $logger->info('Found gravatar (hash: '.$hash.', size: '.$size.') in filecache but file is too old.');
+                }
+            }
+        }
+
+        # Use gravatar
+        if ($image == null)
+        {
+            $url = 'https://secure.gravatar.com/avatar/'.$hash;
+            $url .= '?size='.intval($size);
+            $url .= '&default=retro'; // TODO: Own placeholder
+
+            $curl_handle = curl_init();
+            curl_setopt($curl_handle, CURLOPT_URL, $url);
+            curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 3);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl_handle, CURLOPT_USERAGENT, 'WOVIE/' . $this->container->get('kernel')->getEnvironment());
+            $image = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            $logger->info('Loaded gravatar (hash: '.$hash.', size: '.$size.') from url and saved to filecache: '.$path.$filename);
+            file_put_contents($path.$filename, $image);
+        }
+
+        $response->setMaxAge(2592000); # 1 month
+
+        $response->setPublic();
+        $response->setContent($image);
+        $response->headers->set('Content-Type', 'image/jpeg');
+        $response->setETag(md5($response->getContent()));
+        $response->isNotModified($request);
+        return $response;
+    }
+
     public function coverImageAction(Request $request, $freebaseId)
     {
         $logger = $this->get('logger');

@@ -3,7 +3,7 @@
 {% block pagetitle %}WOVIE - {{ user.username }}{% endblock pagetitle %}
 
 {% block favicon %}
-    <link rel="icon" href="{{ getGravatarUrl(user, 32) }}&t={{ 'now'|date('U') }}" type="image/jpeg">
+    <link rel="icon" href="{{ getGravatarUrl(user, 32) }}?t={{ 'now'|date('U') }}" type="image/jpeg">
 {% endblock %}
 
 {% block body %}
