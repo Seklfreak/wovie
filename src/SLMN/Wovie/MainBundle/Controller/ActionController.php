@@ -22,7 +22,7 @@ class ActionController extends Controller
         {
             foreach ($result as $key=>$item)
             {
-                if (array_key_exists('imdbId', $item))
+                if (array_key_exists('mid', $item))
                 {
                     $em = $this->getDoctrine()->getManager();
                     $moviesRepo = $em->getRepository('SLMNWovieMainBundle:Media');
@@ -30,21 +30,14 @@ class ActionController extends Controller
                     if (
                     $moviesRepo->findBy(array(
                         'createdBy' => $this->getUser(),
-                        'imdbId' => $item['imdbId']
-                    ))
-                        ||
-                    $moviesRepo->findBy(array(
-                        'createdBy' => $this->getUser(),
                         'freebaseId' => $item['mid']
                     ))
-                    )
-                    {
+                    ) {
                         unset($result[$key]);
                     }
                 }
             }
         }
-
         return $this->render(
             'SLMNWovieMainBundle:html/ajax:searchExternalResult.html.twig',
             array(
