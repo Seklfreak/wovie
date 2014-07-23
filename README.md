@@ -4,7 +4,7 @@ Keep control over your movie collection.
 
 ## Requires
 - NGINX (or another webserver)
-- PHP5 (+ apc)
+- PHP5 (+ APCu)
 - MySQL
 - jpegoptim
 - RabbitMQ
@@ -14,6 +14,9 @@ Keep control over your movie collection.
 - External services
     - Google API (Freebase API)
     - Stripe
+
+## Ubuntu LTS 14.04 Dependencies
+``apt-get install mysql-server php5-mysql php5-curl php5-apcu jpegoptim ruby ruby-compass nodejs npm``
 
 ### supervisord wovie.conf
 ```ini
@@ -32,7 +35,7 @@ process_name=%(program_name)s_%(process_num)s
 ```
 
 ### RabbitMQ
-vhost: /wovie user: guest:guest
+vhost: /wovie user: guest:guest (``rabbitmqctl add_vhost /wovie && rabbitmqctl set_permissions -p /wovie guest ".*" ".*" ".*"``)
 
 ## TODO
 - [ ] Advanced search (Actor, Length, …)
