@@ -348,6 +348,7 @@ class MediaApi
 
     protected function request($url)
     {
+        // TODO: Switch to redis cache
         $cacheKey = 'request_'.$this->lang.'_'.$this->limit.'_'.md5($url);
         if (false === ($result = $this->cacheHandler->fetch($cacheKey))) {
             $this->monolog->info('Running request: '.$url);

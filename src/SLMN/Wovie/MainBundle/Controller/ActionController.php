@@ -27,10 +27,17 @@ class ActionController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $moviesRepo = $em->getRepository('SLMNWovieMainBundle:Media');
 
-                    if ($moviesRepo->findBy(array(
+                    if (
+                    $moviesRepo->findBy(array(
                         'createdBy' => $this->getUser(),
                         'imdbId' => $item['imdbId']
-                    )))
+                    ))
+                        ||
+                    $moviesRepo->findBy(array(
+                        'createdBy' => $this->getUser(),
+                        'freebaseId' => $item['mid']
+                    ))
+                    )
                     {
                         unset($result[$key]);
                     }
