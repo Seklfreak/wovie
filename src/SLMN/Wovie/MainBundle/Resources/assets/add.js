@@ -178,6 +178,42 @@ function init()
                 });
         }
     });
+    // Cover image upload
+    if ($('.uploadCustomCoverBox').length > 0) {
+        var mediaId = $('.uploadCustomCoverBox').data('media-id');
+        var imgError = false;
+        if (mediaId) {
+            var customCoverDropzone = new Dropzone(".uploadCustomCoverBox .coverImg", {
+                paramName: "customCoverFile",
+                maxFilesize: 1, // MB
+                url: Routing.generate('slmn_wovie_actions_ajax_uploadCoverImage', {mediaId: mediaId}),
+                previewsContainer: ".uploadCustomCoverBox .coverImg",
+                thumbnailWidth: 300,
+                thumbnailHeight: 450,
+                maxFiles: 1,
+                acceptedFiles: "image/jpeg,image/png"
+            }); // TODO: Upload url
+            customCoverDropzone.on('addedfile', function(file) {
+                imgError = false;
+                $('.uploadCustomCoverBox .message').html('<i class="fa fa-spinner fa-spin"></i> Uploading…');
+                $('.uploadCustomCoverBox .message').attr('style', '');
+            });
+            customCoverDropzone.on('success', function(file) {
+                $('.uploadCustomCoverBox .message').html('');
+                $('.uploadCustomCoverBox .message').attr('style', 'display: none;');
+            });
+            customCoverDropzone.on('error', function(file, errorMessage) {
+                imgError = true;
+                $('.uploadCustomCoverBox .message').html('Error: ' + errorMessage);
+                $('.uploadCustomCoverBox .message').attr('style', '');
+            });
+            customCoverDropzone.on('thumbnail', function(file, dataUrl) {
+                if (imgError == false) {
+                    $('.uploadCustomCoverBox .coverImg').attr('src', dataUrl);
+                }
+            });
+        }
+    }
 }
 
 function resetFilter()
@@ -529,17 +565,4 @@ $(function() {
                 });
         }
     });
-    // Cover image upload
-    if ($('.uploadCustomCoverBox').length > 0) {
-        $(".uploadCustomCoverBox .coverImg").dropzone({
-            paramName: "customCoverFile",
-            maxFilesize: 1, // MB
-            url: "/file_upload",
-            previewsContainer: ".uploadCustomCoverBox .coverImg",
-            thumbnailWidth: 300,
-            thumbnailHeight: 450,
-            maxFiles: 1,
-            acceptedFiles: "image/jpeg,image/png"
-        }); // TODO: Upload url
-    }
 });

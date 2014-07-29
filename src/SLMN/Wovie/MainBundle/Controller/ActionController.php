@@ -572,4 +572,12 @@ class ActionController extends Controller
 
         return $response;
     }
+
+    function uploadCoverImageAction($mediaId)
+    {
+        sleep(3);
+        $response = new Response();
+        $response->setStatusCode(500);
+        return $response;
+    }
 }
