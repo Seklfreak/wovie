@@ -50,6 +50,8 @@ function init()
             scrollTop: $('#scroll-to').offset().top
         }, 2000);
     }
+    // Disable dropzone autodiscover
+    Dropzone.autoDiscover = false;
     // Shelf titles all same high
     // TODO: Calculate max high PER LINE
     boxes = $('.shelf-media-titles');
@@ -527,4 +529,17 @@ $(function() {
                 });
         }
     });
+    // Cover image upload
+    if ($('.uploadCustomCoverBox').length > 0) {
+        $(".uploadCustomCoverBox .coverImg").dropzone({
+            paramName: "customCoverFile",
+            maxFilesize: 1, // MB
+            url: "/file_upload",
+            previewsContainer: ".uploadCustomCoverBox .coverImg",
+            thumbnailWidth: 300,
+            thumbnailHeight: 450,
+            maxFiles: 1,
+            acceptedFiles: "image/jpeg,image/png"
+        }); // TODO: Upload url
+    }
 });

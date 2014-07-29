@@ -388,6 +388,36 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+/* COVER UPLOAD */
+.uploadCustomCoverBox {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  &:hover {
+    & .change {
+      display: block;
+    }
+  }
+  & .coverImg {
+    &.dz-drag-hover {
+      opacity: 0.8;
+    }
+  }
+  & .change {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    background: rgba(93, 93, 93, 0.9);
+    color: white;
+    padding: 4px 4px 3px 4px;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+  }
+}
+
 /* GENERAL */
 .meta-header-small {
   font-size: 0.75rem;

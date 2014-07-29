@@ -11,9 +11,11 @@
             filter='?jpegoptim' output='images/placeholder.jpg' %}
                 {% set placeholderImg = asset_url %}
             {% endimage %}
-            <img style="width: 100%;" src="{{ mediaForm.vars.value.posterImage|default(placeholderImg) }}">
+            <div class="uploadCustomCoverBox">
+                <img class="coverImg" style="width: 100%;" src="{{ mediaForm.vars.value.posterImage|default(placeholderImg) }}">
+                <div class="change">Click to change image</div>
+            </div>
             {{ form_row(mediaForm.posterImage, {'label': false}) }}
-            {# TODO: Upload field: HTML5 uploader, changes url, reload image preview #}
         </div>
         <div class="large-6 columns left">
             <h3>Add new media</h3>
