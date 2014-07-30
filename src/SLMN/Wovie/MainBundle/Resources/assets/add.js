@@ -191,7 +191,6 @@ function init()
                 previewsContainer: ".uploadCustomCoverBox .coverImg",
                 thumbnailWidth: 300,
                 thumbnailHeight: 450,
-                maxFiles: 1,
                 acceptedFiles: "image/jpeg,image/png"
             }); // TODO: Upload url
             customCoverDropzone.on('addedfile', function(file) {

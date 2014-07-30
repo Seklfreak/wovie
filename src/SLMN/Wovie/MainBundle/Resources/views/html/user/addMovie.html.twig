@@ -12,8 +12,6 @@
                 {% set placeholderImg = asset_url %}
             {% endimage %}
             <img style="width: 100%;" src="{{ newMediaForm.vars.value.posterImage|default(placeholderImg) }}">
-            {{ form_row(newMediaForm.posterImage, {'label': false}) }}
-            {# TODO: Upload field: HTML5 uploader, changes url, reload image preview #}
         </div>
         <div class="large-6 columns left">
             <h3>Add new media</h3>

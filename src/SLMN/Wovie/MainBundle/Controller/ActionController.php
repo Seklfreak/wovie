@@ -576,7 +576,6 @@ class ActionController extends Controller
     function uploadCoverImageAction(Request $request, $mediaId)
     {
         $response = new JsonResponse();
-        $logger = $this->get('logger');
 
         $uploadCoverForm = $this->createForm('uploadCover');
 
@@ -588,10 +587,29 @@ class ActionController extends Controller
 
         if ($uploadCoverForm->isValid())
         {
+            $em = $this->getDoctrine()->getManager();
+            $mediasRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediasRepo->findOneById(intval($mediaId));
+            if (!$media)
+            {
+                $response->setData(array(
+                    'error' => 'Media not found!'
+                ));
+            }
+            else
+            {
+                $path = $this->container->getParameter("kernel.cache_dir").'/wovie/customCoversTmp/';
+                @mkdir($path, 0755, $recursive=true);
+                $extension = $request->files->get('file')->guessExtension();
+                $filename = md5(microtime()).'_'.intval($mediaId).'.'.$extension;
+                $request->files->get('file')->move($path, $filename);
+
+                $customCoversHandle = $this->get('wovie.customCovers');
+                $customCoversHandle->save($media, $path.$filename);
+            }
         }
         else
         {
-            $logger->debug('Errors: '.$uploadCoverForm->getErrorsAsString());
             $response->setData(array(
                 'error' => $uploadCoverForm->getErrors(true, false)->getChildren()->getChildren()->getMessage()
             ));

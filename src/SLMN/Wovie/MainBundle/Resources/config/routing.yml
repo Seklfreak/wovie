@@ -222,6 +222,14 @@ slmn_wovie_image_gravatar:
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         size: \d+
+slmn_wovie_image_customCoverImage:
+    pattern: /image/public/usercover/{mediaId}_{hash}.{_format}
+    host: "{cdn}"
+    defaults: { _controller: SLMNWovieMainBundle:Image:customCoverImage, cdn: "%slmn_wovie_mainbundle.cdn%" }
+    methods: [GET]
+    requirements:
+        cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
+        mediaId: \d+
 slmn_wovie_image_coverImage:
     pattern: /image/public/cover/{freebaseId}.jpg
     host: "{cdn}"

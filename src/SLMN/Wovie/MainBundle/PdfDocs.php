@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: sekl
- * Date: 14.06.14
- * Time: 11:02
- */
 
 namespace SLMN\Wovie\MainBundle;
 

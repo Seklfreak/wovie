@@ -34,3 +34,7 @@ parameters:
     slmn_wovie_mainbundle.stripe.secret_key: sk_example_key
     slmn_wovie_mainbundle.stripe.plan_id.standard: standard
     slmn_wovie_mainbundle.billing-email: billing@example.org
+    slmn_wovie_mainbundle.aws.key: your_aws_key
+    slmn_wovie_mainbundle.aws.secret: your_aws_secret
+    slmn_wovie_mainbundle.aws.region: eu-west-1
+    slmn_wovie_mainbundle.aws.bucketName: mywoviebucket

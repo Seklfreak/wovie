@@ -14,6 +14,7 @@ Keep control over your movie collection.
 - External services
     - Google API (Freebase API)
     - Stripe
+- AWS S3 (stores custom covers)
 
 ## Ubuntu LTS 14.04 Dependencies
 `$ apt-get install mysql-server php5-mysql php5-curl php5-apcu php5-intl jpegoptim ruby ruby-compass nodejs npm`

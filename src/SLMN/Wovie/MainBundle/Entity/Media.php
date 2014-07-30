@@ -119,6 +119,27 @@ class Media
     protected $rating;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $customCoverKey;
+
+    /**
+     * @return mixed
+     */
+    public function getCustomCoverKey()
+    {
+        return $this->customCoverKey;
+    }
+
+    /**
+     * @param mixed $customCoverKey
+     */
+    public function setCustomCoverKey($customCoverKey)
+    {
+        $this->customCoverKey = $customCoverKey;
+    }
+
+    /**
      * @return mixed
      */
     public function getFavorite()

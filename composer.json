@@ -45,7 +45,8 @@
         "snc/redis-bundle": "~1.1",
         "predis/predis": "~0.8",
         "webfactory/exceptions-bundle": "~4.0",
-        "friendsofsymfony/elastica-bundle": "~3.0@dev"
+        "friendsofsymfony/elastica-bundle": "~3.0@dev",
+        "aws/aws-sdk-php": "2.*"
     },
     "scripts": {
         "post-install-cmd": [

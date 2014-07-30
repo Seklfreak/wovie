@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use finfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -9,6 +10,39 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
+    public function customCoverImageAction(Request $request, $mediaId)
+    {
+        $response = new Response();
+        $image = null;
+
+        $em = $this->getDoctrine()->getManager();
+        $mediasRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+        $media = $mediasRepo->findOneById(intval($mediaId));
+        if ($media)
+        {
+            $customCoversHandle = $this->get('wovie.customCovers');
+            $image = $customCoversHandle->get($media);
+        }
+
+        if (empty($image))
+        {
+            $image = file_get_contents(
+                $this->get('kernel')->locateResource('@SLMNWovieMainBundle/Resources/assets/placeholder.jpg')
+            );
+        }
+
+        $finfo = new finfo(FILEINFO_MIME);
+        $imageMime = $finfo->buffer($image);
+
+        $response->setMaxAge(2592000); # 1 month
+        $response->setPublic();
+        $response->setContent($image);
+        $response->headers->set('Content-Type', $imageMime);
+        $response->setETag(md5($response->getContent()));
+        $response->isNotModified($request);
+        return $response;
+    }
+
     public function gravatarAction(Request $request, $hash, $size)
     {
         $logger = $this->get('logger');
