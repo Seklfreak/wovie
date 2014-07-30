@@ -182,10 +182,11 @@ function init()
     if ($('.uploadCustomCoverBox').length > 0) {
         var mediaId = $('.uploadCustomCoverBox').data('media-id');
         var imgError = false;
+        var thumbnailImg = '';
         if (mediaId) {
             var customCoverDropzone = new Dropzone(".uploadCustomCoverBox .coverImg", {
-                paramName: "customCoverFile",
-                maxFilesize: 1, // MB
+                //paramName: "customCoverFile",
+                maxFilesize: 5, // MB
                 url: Routing.generate('slmn_wovie_actions_ajax_uploadCoverImage', {mediaId: mediaId}),
                 previewsContainer: ".uploadCustomCoverBox .coverImg",
                 thumbnailWidth: 300,
@@ -198,19 +199,26 @@ function init()
                 $('.uploadCustomCoverBox .message').html('<i class="fa fa-spinner fa-spin"></i> Uploading…');
                 $('.uploadCustomCoverBox .message').attr('style', '');
             });
-            customCoverDropzone.on('success', function(file) {
-                $('.uploadCustomCoverBox .message').html('');
-                $('.uploadCustomCoverBox .message').attr('style', 'display: none;');
+            customCoverDropzone.on('success', function(file, response) {
+                if (response.error != undefined) {
+                    customCoverDropzone.removeFile(file);
+                    imgError = true;
+                    $('.uploadCustomCoverBox .message').html('Error: ' + response.error);
+                    $('.uploadCustomCoverBox .message').attr('style', '');
+                } else if (imgError == false) {
+                    $('.uploadCustomCoverBox .message').html('');
+                    $('.uploadCustomCoverBox .message').attr('style', 'display: none;');
+                    $('.uploadCustomCoverBox .coverImg').attr('src', thumbnailImg);
+                }
             });
             customCoverDropzone.on('error', function(file, errorMessage) {
+                customCoverDropzone.removeFile(file);
                 imgError = true;
-                $('.uploadCustomCoverBox .message').html('Error: ' + errorMessage);
+                $('.uploadCustomCoverBox .message').html('Internal error!');
                 $('.uploadCustomCoverBox .message').attr('style', '');
             });
             customCoverDropzone.on('thumbnail', function(file, dataUrl) {
-                if (imgError == false) {
-                    $('.uploadCustomCoverBox .coverImg').attr('src', dataUrl);
-                }
+                thumbnailImg = dataUrl;
             });
         }
     }

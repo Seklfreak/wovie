@@ -4,7 +4,6 @@
 
 {% block body %}
     <div class="row">
-        {{ form_start(mediaForm) }}
         <div class="large-4 columns">
             <h3>Cover</h3>
             {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
@@ -16,10 +15,11 @@
                 <div class="change">Click to change image</div>
                 <div class="message" style="display: none;"></div>
             </div>
+            {{ form_start(mediaForm) }}
             {{ form_row(mediaForm.posterImage, {'label': false}) }}
         </div>
         <div class="large-6 columns left">
-            <h3>Add new media</h3>
+            <h3>Edit media</h3>
             <div class="row collapse"><div class="small-12 columns">{{ form_errors(mediaForm) }}</div></div>
             <div class="row collapse"><div class="small-12 columns">{{ form_row(mediaForm.mediaType) }}</div></div>
             <div class="row collapse">

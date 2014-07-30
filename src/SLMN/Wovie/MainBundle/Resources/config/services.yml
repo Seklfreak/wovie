@@ -6,6 +6,7 @@ parameters:
     slmn_wovie_main.form.type.contact.class: SLMN\Wovie\MainBundle\Form\Type\ContactType
     slmn_wovie_main.form.type.editUser.class: SLMN\Wovie\MainBundle\Form\Type\EditUserType
     slmn_wovie_main.form.type.generalSettings.class: SLMN\Wovie\MainBundle\Form\Type\GeneralSettingsType
+    slmn_wovie_main.form.type.uploadCover.class: SLMN\Wovie\MainBundle\Form\Type\UploadCoverType
     slmn_wovie_main.form.type.profile.class: SLMN\Wovie\MainBundle\Form\Type\ProfileType
     slmn_wovie_main.form.type.stripeCustomer.class: SLMN\Wovie\MainBundle\Form\Type\StripeCustomerType
     slmn_wovie_main.form.type.createUser.class: SLMN\Wovie\MainBundle\Form\Type\CreateUserType
@@ -116,6 +117,10 @@ services:
         class: %slmn_wovie_main.form.type.generalSettings.class%
         tags:
             - { name: form.type, alias: generalSettings }
+    slmn_wovie_main.form.type.uploadCover:
+        class: %slmn_wovie_main.form.type.uploadCover.class%
+        tags:
+            - { name: form.type, alias: uploadCover }
     slmn_wovie_main.form.type.profile:
         class: %slmn_wovie_main.form.type.profile.class%
         tags:

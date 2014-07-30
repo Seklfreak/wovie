@@ -573,11 +573,29 @@ class ActionController extends Controller
         return $response;
     }
 
-    function uploadCoverImageAction($mediaId)
+    function uploadCoverImageAction(Request $request, $mediaId)
     {
-        sleep(3);
-        $response = new Response();
-        $response->setStatusCode(500);
+        $response = new JsonResponse();
+        $logger = $this->get('logger');
+
+        $uploadCoverForm = $this->createForm('uploadCover');
+
+        $uploadCoverForm->handleRequest($request);
+        if ($request->files->has('file'))
+        {
+            $uploadCoverForm->submit(array('file' => $request->files->get('file')));
+        }
+
+        if ($uploadCoverForm->isValid())
+        {
+        }
+        else
+        {
+            $logger->debug('Errors: '.$uploadCoverForm->getErrorsAsString());
+            $response->setData(array(
+                'error' => $uploadCoverForm->getErrors(true, false)->getChildren()->getChildren()->getMessage()
+            ));
+        }
         return $response;
     }
 }
