@@ -78,7 +78,11 @@ class CustomCovers
         $this->s3client->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $fileKey,
-            'SourceFile' => $tmpFile
+            'SourceFile' => $tmpFile,
+            'Metadata'   => array(
+                'mediaId' => $media->getId(),
+                'userId' => $media->getCreatedBy()->getId()
+            )
         ));
 
         $this->s3client->waitUntil('ObjectExists', array(
