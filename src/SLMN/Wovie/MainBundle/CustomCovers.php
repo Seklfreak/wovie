@@ -3,6 +3,8 @@
 namespace SLMN\Wovie\MainBundle;
 
 use Aws\S3\S3Client;
+use finfo;
+use Imagick;
 
 class CustomCovers
 {
@@ -69,12 +71,35 @@ class CustomCovers
         }
     }
 
+    protected function compress($tmpFile)
+    {
+
+        $finfo = new finfo(FILEINFO_MIME);
+        $imageMime = $finfo->file($tmpFile);
+
+        $image = null;
+        if (strpos($imageMime, 'image/jpeg') !== false)
+        {
+            $image = imagecreatefromjpeg($tmpFile);
+        }
+        elseif (strpos($imageMime, 'image/png') !== false)
+        {
+            $image = imagecreatefrompng($tmpFile);
+        }
+
+        imagejpeg($image, $tmpFile, 85); // Quality: 85
+
+        return $tmpFile;
+    }
+
     function save($media, $tmpFile)
     {
         $this->delete($media); // Delete old cover (if exists)
+
+        $tmpFile = $this->compress($tmpFile);
+
         // TODO: resize image as dropzine.js and minify it
-        $pathInfo = pathinfo($tmpFile);
-        $fileKey = 'customCovers/'.md5(microtime()).'_'.intval($media->getId()).'.'.$pathInfo['extension'];
+        $fileKey = 'customCovers/'.md5(microtime()).'_'.intval($media->getId()).'.jpeg';
         $this->s3client->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $fileKey,
@@ -92,7 +117,7 @@ class CustomCovers
 
         $media->setPosterImage($this->router->generate(
             'slmn_wovie_image_customCoverImage',
-            array('mediaId' => $media->getId(), 'hash' => md5(microtime()), '_format' => $pathInfo['extension']),
+            array('mediaId' => $media->getId(), 'hash' => md5(microtime()), '_format' => 'jpeg'),
             true
         ));
         $media->setCustomCoverKey($fileKey);

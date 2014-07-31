@@ -4,7 +4,7 @@ Keep control over your movie collection.
 
 ## Requires
 - NGINX (or another webserver)
-- PHP5 (+ APCu)
+- PHP5 (+ APCu, GD)
 - MySQL
 - jpegoptim
 - RabbitMQ
