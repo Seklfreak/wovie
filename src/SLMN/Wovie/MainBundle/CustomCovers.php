@@ -48,7 +48,7 @@ class CustomCovers
         }
     }
 
-    function save($media, $tmpFile)
+    function delete($media)
     {
         if ($media->getCustomCoverKey())
         {
@@ -56,7 +56,22 @@ class CustomCovers
                 'Bucket' => $this->bucket,
                 'Key' => $media->getCustomCoverKey()
             ));
+            $media->setCustomCoverKey(null);
+            $media->setPosterImage(null);
+            if ($media->getFreebaseId())
+            {
+                $media->setPosterImage(
+                    $this->router->generate('slmn_wovie_image_coverImage', array('freebaseId' => $media->getFreebaseId()), true)
+                );
+            }
+            $this->em->persist($media);
+            $this->em->flush();
         }
+    }
+
+    function save($media, $tmpFile)
+    {
+        $this->delete($media); // Delete old cover (if exists)
         // TODO: resize image as dropzine.js and minify it
         $pathInfo = pathinfo($tmpFile);
         $fileKey = 'customCovers/'.md5(microtime()).'_'.intval($media->getId()).'.'.$pathInfo['extension'];

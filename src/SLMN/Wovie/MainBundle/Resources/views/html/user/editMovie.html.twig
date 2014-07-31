@@ -14,6 +14,12 @@
                 <img class="coverImg" style="width: 100%;" src="{{ mediaForm.vars.value.posterImage|default(placeholderImg) }}">
                 <div class="change">Click to change image</div>
                 <div class="message" style="display: none;"></div>
+                {% if mediaForm.vars.value.customCoverKey %}
+                    <div class="delete" data-media-id="{{ mediaForm.vars.value.id }}">
+                        <i class="fa fa-times fa-2x"></i>
+                    </div>
+                {% endif %}
+                {# TODO: Drag image here on drag #}
             </div>
             <p>Cover saves automatically.</p>
         </div>

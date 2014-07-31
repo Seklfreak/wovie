@@ -198,6 +198,12 @@ slmn_wovie_actions_ajax_uploadCoverImage:
         mediaId: \d+
     options:
       expose: true
+slmn_wovie_actions_ajax_deleteCoverImage:
+    pattern: /action/ajax/deleteCustomCover.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:deleteCoverImage }
+    methods: [POST]
+    options:
+      expose: true
 
 # Admin
 slmn_open_tracker_web_frontend_admin_emailpreview:

@@ -22,6 +22,7 @@ class ImageController extends Controller
         {
             $customCoversHandle = $this->get('wovie.customCovers');
             $image = $customCoversHandle->get($media);
+            // TODO: Filecache
         }
 
         if (empty($image))

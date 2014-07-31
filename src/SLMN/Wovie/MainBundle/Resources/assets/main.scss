@@ -394,7 +394,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   display: inline-block;
   cursor: pointer;
   &:hover {
-    & .change {
+    & .change, .delete {
       display: block;
     }
   }
@@ -402,6 +402,18 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
     &.dz-drag-hover {
       opacity: 0.8;
     }
+  }
+  & .delete {
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    left: auto;
+    right: 0;
+    display: none;
+    background: rgba(93, 93, 93, 0.9);
+    color: white;
+    padding: 1px 4px 1px 4px;
+    border-radius: 0 0 4px 4px;
   }
   & .message {
     position: absolute;
@@ -414,6 +426,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
     padding: 4px 3px 4px 4px;
     border-radius: 0 0 4px 4px;
     font-weight: bold;
+    pointer-events: none;
   }
   & .change {
     position: absolute;
@@ -427,6 +440,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
     padding: 4px 4px 3px 4px;
     border-radius: 4px 4px 0 0;
     font-weight: bold;
+    pointer-events: none;
   }
 }
 

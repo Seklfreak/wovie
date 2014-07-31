@@ -596,6 +596,12 @@ class ActionController extends Controller
                     'error' => 'Media not found!'
                 ));
             }
+            else if ($media->getCreatedBy() != $this->getUser())
+            {
+                $response->setData(array(
+                    'error' => 'You are not allowed to edit this media.'
+                ));
+            }
             else
             {
                 $path = $this->container->getParameter("kernel.cache_dir").'/wovie/customCoversTmp/';
@@ -614,6 +620,45 @@ class ActionController extends Controller
                 'error' => $uploadCoverForm->getErrors(true, false)->getChildren()->getChildren()->getMessage()
             ));
         }
+        return $response;
+    }
+
+    public function deleteCoverImageAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (
+            ($mediaId=intval($request->get('media_id'))) != null
+        )
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediaRepo->findOneById($mediaId);
+            if ($media != null && $media->getCreatedBy() == $this->getUser())
+            {
+                $customCoversHandle = $this->get('wovie.customCovers');
+                $customCoversHandle->delete($media);
+
+                $em->refresh($media);
+
+                $response->setData(array(
+                    'status' => 'success',
+                    'newPoster' => $media->getPosterImage()
+                ));
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+
         return $response;
     }
 }

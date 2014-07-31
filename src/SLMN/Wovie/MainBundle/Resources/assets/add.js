@@ -220,6 +220,31 @@ function init()
                 thumbnailImg = dataUrl;
             });
         }
+        $('.uploadCustomCoverBox .delete').unbind().click(function() {
+            var $button = $(this);
+            var mediaId = $button.data('media-id');
+            if (mediaId != null)
+            {
+                $button.html('<i class="fa fa-spinner fa-spin fa-2x"></i>');
+                $.ajax({
+                    url: Routing.generate('slmn_wovie_actions_ajax_deleteCoverImage'),
+                    type: "POST",
+                    data: { media_id: mediaId }
+                })
+                    // TODO: Error handling
+                    .success(function(data) {
+                        if (data.status == 'success')
+                        {
+                            $button.html('<i class="fa fa-check fa-2x"></i>');
+                            $('.uploadCustomCoverBox .coverImg').attr('src', data.newPoster);
+                        }
+                        else
+                        {
+                            $button.html('<i class="fa fa-warning fa-2x"></i>');
+                        }
+                    });
+            }
+        });
     }
 }
 
