@@ -14,6 +14,8 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
+    nodeBin:           /usr/bin/node
+
     elasticsearch.host: localhost
     elasticsearch.port: 9200
 
@@ -21,19 +23,24 @@ parameters:
     slmn_main_userbundle.mail.sender.title: wovie
     slmn_main_userbundle.mail.subject: wovie
 
-    slmn_main_userbundle.piwik.url: ~
-    slmn_main_userbundle.piwik.site_id: ~
     slmn_wovie_mainbundle.cache.type: ApcCache
     slmn_wovie_mainbundle.cdn: example.org
     slmn_wovie_mainbundle.domain: example.org
     slmn_wovie_mainbundle.admin_email: email@example.org
+    slmn_wovie_mainbundle.billing-email: billing@example.org
+
+    slmn_main_userbundle.piwik.url: ~
+    slmn_main_userbundle.piwik.site_id: ~
+
     slmn_wovie_mainbundle.google_api_key: yourkey
+
     slmn_wovie_mainbundle.amazon_affiliate_trackingid.us: example-20
     slmn_wovie_mainbundle.amazon_affiliate_trackingid.de: example-21
+
     slmn_wovie_mainbundle.stripe.publishable_key: pk_example_key
     slmn_wovie_mainbundle.stripe.secret_key: sk_example_key
     slmn_wovie_mainbundle.stripe.plan_id.standard: standard
-    slmn_wovie_mainbundle.billing-email: billing@example.org
+
     slmn_wovie_mainbundle.aws.key: your_aws_key
     slmn_wovie_mainbundle.aws.secret: your_aws_secret
     slmn_wovie_mainbundle.aws.region: eu-west-1

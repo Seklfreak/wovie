@@ -50,8 +50,10 @@ assetic:
         compass:
             apply_to: "\.sass"
         uglifyjs2:
+            node: "%nodeBin%"
             bin: "%kernel.root_dir%/Resources/node_modules/.bin/uglifyjs"
         uglifycss:
+            node: "%nodeBin%"
             bin: "%kernel.root_dir%/Resources/node_modules/.bin/uglifycss"
         cssrewrite: ~
         #closure:
