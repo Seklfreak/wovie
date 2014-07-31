@@ -87,7 +87,7 @@ class CustomCovers
             $image = imagecreatefrompng($tmpFile);
         }
 
-        imagejpeg($image, $tmpFile, 85); // Quality: 85
+        imagejpeg($image, $tmpFile, 95); // Quality: 85
 
         return $tmpFile;
     }
