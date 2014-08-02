@@ -612,6 +612,12 @@ class ActionController extends Controller
 
                 $customCoversHandle = $this->get('wovie.customCovers');
                 $customCoversHandle->save($media, $path.$filename);
+
+                $em->refresh($media);
+                $response->setData(array(
+                    'status' => 'success',
+                    'newPoster' => $media->getPosterImage()
+                ));
             }
         }
         else

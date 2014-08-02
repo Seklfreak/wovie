@@ -185,12 +185,10 @@ function init()
         var thumbnailImg = '';
         if (mediaId) {
             var customCoverDropzone = new Dropzone(".uploadCustomCoverBox .coverImg", {
-                //paramName: "customCoverFile",
-                maxFilesize: 5, // MB
+                maxFilesize: 1, // MB
                 url: Routing.generate('slmn_wovie_actions_ajax_uploadCoverImage', {mediaId: mediaId}),
                 previewsContainer: ".uploadCustomCoverBox .coverImg",
-                thumbnailWidth: 300,
-                thumbnailHeight: 450,
+                maxThumbnailFilesize: 0,
                 acceptedFiles: "image/jpeg,image/png"
             }); // TODO: Upload url
             customCoverDropzone.on('addedfile', function(file) {
@@ -205,9 +203,19 @@ function init()
                     $('.uploadCustomCoverBox .message').html('Error: ' + response.error);
                     $('.uploadCustomCoverBox .message').attr('style', '');
                 } else if (imgError == false) {
-                    $('.uploadCustomCoverBox .message').html('');
-                    $('.uploadCustomCoverBox .message').attr('style', 'display: none;');
-                    $('.uploadCustomCoverBox .coverImg').attr('src', thumbnailImg);
+                    if (response.status == 'success')
+                    {
+                        $('.uploadCustomCoverBox .message').html('');
+                        $('.uploadCustomCoverBox .message').attr('style', 'display: none;');
+                        $('.uploadCustomCoverBox .coverImg').attr('src', response.newPoster);
+                    }
+                    else
+                    {
+                        customCoverDropzone.removeFile(file);
+                        imgError = true;
+                        $('.uploadCustomCoverBox .message').html('Internal error!');
+                        $('.uploadCustomCoverBox .message').attr('style', '');
+                    }
                 }
             });
             customCoverDropzone.on('error', function(file, errorMessage) {
