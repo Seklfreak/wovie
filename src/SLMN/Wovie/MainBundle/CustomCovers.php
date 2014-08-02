@@ -71,9 +71,65 @@ class CustomCovers
         }
     }
 
+    function crop($tmpFile, $trgWidth, $trgHeight) {
+        $finfo = new finfo(FILEINFO_MIME);
+        $imageMime = $finfo->file($tmpFile);
+
+        $image = null;
+        if (strpos($imageMime, 'image/jpeg') !== false)
+        {
+            $image = imagecreatefromjpeg($tmpFile);
+        }
+        elseif (strpos($imageMime, 'image/png') !== false)
+        {
+            $image = imagecreatefrompng($tmpFile);
+        }
+
+        $srcImageWidth = imagesx($image);
+        $srcImageHeight = imagesy($image);
+
+        $srcAspectRatio = $srcImageWidth / $srcImageHeight;
+        $trgAspectRatio = $trgWidth / $trgHeight;
+
+        if ($srcAspectRatio > $trgAspectRatio)
+        {
+            $tmpHeight = $trgHeight;
+            $tmpWidth = $trgHeight * $srcAspectRatio;
+        }
+        else
+        {
+            $tmpHeight = $trgWidth / $srcAspectRatio;
+            $tmpWidth = $trgWidth;
+        }
+
+        $tmpImage = imagecreatetruecolor($tmpWidth, $tmpHeight);
+
+        imagecopyresampled(
+            $tmpImage,
+            $image,
+            0, 0,
+            0, 0,
+            $tmpWidth, $tmpHeight,
+            $srcImageWidth, $srcImageHeight
+        );
+
+        // Save centered
+        $image = imagecreatetruecolor($trgWidth, $trgHeight);
+        imagecopy(
+            $image,
+            $tmpImage,
+            0, 0,
+            ($tmpWidth - $trgWidth) / 2, ($tmpHeight - $trgHeight) / 2,
+            $trgWidth, $trgHeight
+        );
+
+        imagejpeg($image, $tmpFile, 100);
+
+        return $tmpFile;
+    }
+
     protected function compress($tmpFile)
     {
-
         $finfo = new finfo(FILEINFO_MIME);
         $imageMime = $finfo->file($tmpFile);
 
@@ -96,9 +152,9 @@ class CustomCovers
     {
         $this->delete($media); // Delete old cover (if exists)
 
+        $tmpFile = $this->crop($tmpFile, 300, 450);
         $tmpFile = $this->compress($tmpFile);
 
-        // TODO: resize image as dropzine.js and minify it
         $fileKey = 'customCovers/'.md5(microtime()).'_'.intval($media->getId()).'.jpeg';
         $this->s3client->putObject(array(
             'Bucket' => $this->bucket,

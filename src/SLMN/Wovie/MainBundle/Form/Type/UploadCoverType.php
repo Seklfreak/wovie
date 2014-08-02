@@ -24,10 +24,8 @@ class UploadCoverType extends AbstractType
         $collectionConstraint = new Collection(array(
             'file' => array(
                 new Assert\Image(array(
-                    'minWidth' => 250,
-                    'maxWidth' => 350,
-                    'minHeight' => 400,
-                    'maxHeight' => 500,
+                    'minWidth' => 100,
+                    'minHeight' => 150,
                     'allowLandscape' => false,
                     'allowPortrait' => true,
                     'mimeTypes' => array(
