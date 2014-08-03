@@ -20,6 +20,11 @@ monolog:
                 - ^/phpmyadmin
                 - ^/wordpress
                 - ^/wp-login.php
+                - ^/pma
+                - ^/myadmin
+                - ^/phpTest
+                - ^/manager
+                - ^/robots.txt
         grouped:
             type:               group
             members:            [streamed, buffered_swift]
