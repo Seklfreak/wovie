@@ -8,7 +8,7 @@ use SLMN\Wovie\MainBundle\Entity\Activity;
 
 class CreateActivityConsumer implements ConsumerInterface
 {
-    protected $timeRange = '10 minute';
+    protected $timeRange = '45 minute';
 
     protected $em;
     protected $mediaApi;
