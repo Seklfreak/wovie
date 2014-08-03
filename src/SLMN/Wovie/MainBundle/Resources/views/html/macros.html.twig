@@ -315,7 +315,6 @@
                     <div class="cover-progress-big">
                         <p class="right next-episode-p">
                             {% if public == false and views < media.numberOfEpisodes %}
-                                {# TODO: Query: join views of episode? (Also in frame/chooseEpisode) #}
                                 {% set hasUnwatched = false %}
                                 {% for key,episode in media.episodes %}
                                     {% if hasUnwatched == false  %}
@@ -329,6 +328,19 @@
                                             {% set hasUnwatched = true %}
                                             <button class="next-episode-watched watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ key }}"><i class="fa fa-eye"></i></button>
                                         {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% elseif views < media.numberOfEpisodes %}
+                                {% set foundLastSeen = false %}
+                                {% for key,episode in media.episodes %}
+                                    {% if foundLastSeen == false and viewsOfId(media.id, key) >= 1 and viewsOfId(media.id, key+1) < 1 %}
+                                        <span data-tooltip
+                                              class="has-tip"
+                                              style="color: #fff; font-weight: normal;"
+                                              title="{{ episode.name }}">
+                                                Last seen S{% if episode.season|length < 2 %}0{% endif %}{{ episode.season }}E{% if episode.episode|length < 2 %}0{% endif %}{{ episode.episode }}
+                                        </span>
+                                        {% set foundLastSeen = true %}
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
