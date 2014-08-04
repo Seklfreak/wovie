@@ -149,7 +149,10 @@ class UserController extends Controller
                     $newMedia->setGenres($genresString);
                 }
                 $newMedia->setNumberOfEpisodes(array_key_exists('number_of_episodes', $result) ? $result['number_of_episodes'] : $newMedia->getNumberOfEpisodes());
-                $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : $newMedia->getPosterImage());
+                if (!$newMedia->getPosterImage())
+                {
+                    $newMedia->setPosterImage(array_key_exists('mid', $result) ? $this->generateUrl('slmn_wovie_image_coverImage', array('freebaseId' => $result['mid']), true) : $newMedia->getPosterImage());
+                }
                 $newMedia->setImdbId(array_key_exists('imdbId', $result) ? $result['imdbId'] : $newMedia->getImdbId());
                 if (array_key_exists('type', $result))
                 {
@@ -194,8 +197,11 @@ class UserController extends Controller
             if ($mediaCopiedFromId == true)
             {
                 $newMedia->setFreebaseId($copyMedia->getFreebaseId());
-                $newMedia->setPosterImage($copyMedia->getPosterImage());
                 $newMedia->setImdbId($copyMedia->getImdbId());
+                if ($copyMedia->getCustomCoverKey())
+                {
+                    $newMedia->setPosterImage(null);
+                }
             }
             if ($newMedia->getMediaType() == 1) // if movie, reset series fields
             {
@@ -206,6 +212,12 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($newMedia);
             $em->flush();
+
+            if ($mediaCopiedFromId == true && $copyMedia->getCustomCoverKey())
+            {
+                $customCoversHandle = $this->get('wovie.customCovers');
+                $customCoversHandle->copy($copyMedia, $newMedia);
+            }
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully added the title '.$newMedia->getTitle().'!');
             return $this->redirect($referrerU->getReferrer('slmn_wovie_user_movie_shelf', array('/search')).'#media-'.$newMedia->getId());

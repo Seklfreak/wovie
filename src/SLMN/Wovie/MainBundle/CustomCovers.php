@@ -182,4 +182,38 @@ class CustomCovers
 
         @unlink($tmpFile);
     }
+
+    function copy($from, $to)
+    {
+        $this->delete($to); // Delete old cover (if exists)
+
+        if ($from->getCustomCoverKey()) {
+            $fileKey = 'customCovers/'.md5(microtime()).'_'.intval($to->getId()).'.jpeg';
+
+            $this->s3client->copyObject(array(
+                'Bucket' => $this->bucket,
+                'CopySource' => $this->bucket.'/'.$from->getCustomCoverKey(),
+                'Key' => $fileKey,
+                'Metadata' => array(
+                    'mediaId' => $to->getId(),
+                    'userId' => $to->getCreatedBy()->getId()
+                )
+            ));
+
+            $this->s3client->waitUntil('ObjectExists', array(
+                'Bucket' => $this->bucket,
+                'Key' => $fileKey,
+            ));
+
+            $to->setPosterImage($this->router->generate(
+                'slmn_wovie_image_customCoverImage',
+                array('mediaId' => $to->getId(), 'hash' => md5(microtime()), '_format' => 'jpeg'),
+                true
+            ));
+            $to->setCustomCoverKey($fileKey);
+
+            $this->em->persist($to);
+            $this->em->flush();
+        }
+    }
 }
