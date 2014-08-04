@@ -197,7 +197,8 @@ class CustomCovers
                 'Metadata' => array(
                     'mediaId' => $to->getId(),
                     'userId' => $to->getCreatedBy()->getId()
-                )
+                ),
+                'MetadataDirective' => 'REPLACE'
             ));
 
             $this->s3client->waitUntil('ObjectExists', array(
