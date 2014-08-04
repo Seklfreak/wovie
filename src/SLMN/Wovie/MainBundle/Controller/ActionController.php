@@ -232,6 +232,8 @@ class ActionController extends Controller
                     $em->remove($view);
                 }
                 $em->flush();
+                $customCoversHandle = $this->get('wovie.customCovers');
+                $customCoversHandle->delete($media);
                 $response->setData(array(
                     'status' => 'success'
                 ));
