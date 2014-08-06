@@ -21,7 +21,6 @@ class MediaApi
         $this->kernel = $kernel;
         $this->em = $em;
         $this->cacheHandler = $cacheHandler;
-        $this->cacheHandler->setNamespace('slmn_wovie_main_mediaapi_mediaapi');
         $this->userOptions = $userOptions;
         $this->lang = $userOptions->get('language', 'en');
     }
@@ -348,9 +347,13 @@ class MediaApi
 
     protected function request($url)
     {
-        // TODO: Switch to redis cache
-        $cacheKey = 'request_'.$this->lang.'_'.$this->limit.'_'.md5($url);
-        if (false === ($result = $this->cacheHandler->fetch($cacheKey))) {
+        $cacheKey = 'mediaApi:request:'.$this->lang.':'.$this->limit.':'.md5($url);
+        if (($result = $this->cacheHandler->get($cacheKey)))
+        {
+            $result = unserialize($result);
+        }
+        else
+        {
             $this->monolog->info('Running request: '.$url);
 
             $curl_handle = curl_init();
@@ -364,7 +367,8 @@ class MediaApi
 
             if (is_array($result) && !array_key_exists('error', $result)) // Do not cache error results
             {
-                $this->cacheHandler->save($cacheKey, $result, 86400); // 86400 seconds = 1 day
+                $this->cacheHandler->set($cacheKey, serialize($result));
+                $this->cacheHandler->expire($cacheKey, 86400); // 1 day
             }
         }
         return $result;

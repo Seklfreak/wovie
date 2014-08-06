@@ -25,7 +25,6 @@ class SlmnWovieExtension extends \Twig_Extension
         $this->em = $em;
         $this->context = $context;
         $this->cacheHandler = $cacheHandler;
-        $this->cacheHandler->setNamespace('slmn_wovie_main_twig_slmnwovieextension');
         $this->userOptions = $userOptions;
         $this->router = $router;
         $this->rootDir = $rootDir;
@@ -257,9 +256,10 @@ class SlmnWovieExtension extends \Twig_Extension
 
     public function wovieVersionFunction()
     {
-        if (false === ($version = $this->cacheHandler->fetch('wovieVersion'))) {
+        if (!($version = $this->cacheHandler->get('wovie:version:plain'))) {
             $version = file_get_contents($this->rootDir.'/../VERSION');
-            $this->cacheHandler->save('wovieVersion', $version, 86400); // 86400 seconds = 1 day
+            $this->cacheHandler->set('wovie:version:plain', $version); // 1 day
+            $this->cacheHandler->expire('wovie:version:plain', 86400);
         }
 
         return $version;
@@ -267,9 +267,10 @@ class SlmnWovieExtension extends \Twig_Extension
 
     public function wovieRevisionFunction()
     {
-        if (false === ($revision = $this->cacheHandler->fetch('wovieRevision'))) {
+        if (!($revision = $this->cacheHandler->get('wovie:revision:plain'))) {
             $revision = shell_exec('git log --pretty=format:%h -n 1');
-            $this->cacheHandler->save('wovieRevision', $revision, 86400); // 86400 seconds = 1 day
+            $this->cacheHandler->set('wovie:revision:plain', $revision); // 1 day
+            $this->cacheHandler->expire('wovie:revision:plain', 86400);
         }
 
         return $revision;

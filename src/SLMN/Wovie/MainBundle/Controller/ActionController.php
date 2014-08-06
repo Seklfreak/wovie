@@ -502,7 +502,7 @@ class ActionController extends Controller
         if (($userId = intval($request->get('user_id'))) != null)
         {
             $redis = $this->container->get('snc_redis.default');
-            if(($responseString=$redis->get('user:'.$userId.'-totalTimeWatching:html')))
+            if(($responseString=$redis->get('user:'.$userId.':totalTimeWatching:html')))
             {
                 $response->setContent($responseString);
                 $response->headers->set('X-Cache', 'HIT');
@@ -556,8 +556,8 @@ class ActionController extends Controller
                         $responseString .= ($diff->i > 0) ? $diff->i.' minute'.(($diff->i == 1) ? null: 's').' ' : null;
                         $responseString .= '</b>watching.';
                         $response->setContent($responseString);
-                        $redis->set('user:'.$userId.'-totalTimeWatching:html', $responseString);
-                        $redis->expire('user:'.$userId.'-totalTimeWatching:html', 3600); // 1 hour
+                        $redis->set('user:'.$userId.':totalTimeWatching:html', $responseString);
+                        $redis->expire('user:'.$userId.':totalTimeWatching:html', 3600); // 1 hour
                     }
                 }
                 else
