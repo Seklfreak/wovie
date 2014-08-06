@@ -12,7 +12,6 @@
             <div class="small-12 large-4 large-pull-1 columns">
                 <div class="row">
                     <div class="small-12 columns">
-                        {# TODO: Real form #}
                         <h4>Create an account<br><small>Already have an account? <a href="{{ path('login') }}">Log in.</a></small></h4>
                         {{ form_start(newUserForm) }}
                         {{ form_errors(newUserForm) }}
@@ -22,6 +21,7 @@
                         {{ form_row(newUserForm.createAccount, { 'label': 'free 30-day trial', 'attr': {'style': 'margin-bottom: 2px;'} }) }}
                         {{ form_end(newUserForm) }}
                         <h6 class="subheader">By signing up, you agree to WOVIEs <a href="{{ path('slmn_wovie_public_imprint') }}">terms and privacy policy.</a></h6>
+                        {# TODO: User email validation #}
                         {# TODO: terms and privacy policy #}
                     </div>
                 </div>

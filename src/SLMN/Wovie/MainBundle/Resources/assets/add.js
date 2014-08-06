@@ -190,7 +190,7 @@ function init()
                 previewsContainer: ".uploadCustomCoverBox .coverImg",
                 maxThumbnailFilesize: 0,
                 acceptedFiles: "image/jpeg,image/png"
-            }); // TODO: Upload url
+            });
             customCoverDropzone.on('addedfile', function(file) {
                 imgError = false;
                 $('.uploadCustomCoverBox .message').html('<i class="fa fa-spinner fa-spin"></i> Uploading…');
