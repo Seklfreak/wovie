@@ -257,6 +257,28 @@ class WebhookController extends Controller
                     $response->setStatusCode(500);
                 }
                 break;
+            case 'customer.subscription.trial_will_end':
+                $subscription = $event->data->object;
+                $stripeCustomersRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:StripeCustomer');
+                $stripeCustomer = $stripeCustomersRepo->findOneByCustomerId($subscription->customer);
+                if ($stripeCustomer)
+                {
+                    $this->get('templateMailer')->send(
+                        $stripeCustomer->getUser()->getEmail(),
+                        'Your WOVIE trial will end soon!',
+                        'SLMNWovieMainBundle:email:trialWillEndSoon.html.twig',
+                        array(
+                            'urlSettingsBilling' => $this->generateUrl('slmn_wovie_user_settings_billing'),
+                            'urlSettingsAccount' => $this->generateUrl('slmn_wovie_user_settings_profile')
+                        )
+                    );
+                }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                    $response->setStatusCode(500);
+                }
+                break;
             default:
                 break;
         }

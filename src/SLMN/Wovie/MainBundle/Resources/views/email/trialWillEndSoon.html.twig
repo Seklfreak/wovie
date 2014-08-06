@@ -1,0 +1,24 @@
+{% extends 'SLMNWovieMainBundle::email/layout.html.twig' %}
+
+{% block content %}
+    {{ email.tableRow('
+    <td>
+        <h4>Hello!</h4>
+        <p>We just wanted to inform you that your WOVIE trial will end soon!<br>
+            <br>If you like WOVIE please add your payment credentials <a href="' ~ urlSettingsBilling|default('#urlSettingsBilling') ~ '">here</a>. If not you can delete your account <a href="' ~ urlSettingsAccount|default('#urlSettingsAccount') ~ '">here</a>.<br>
+            <br>In case you have any questions just respond to this email, we would like to help you.
+            <br>As we are currently in the beta, we would like you to have this lifetime 50 % discount coupon. You can activate it in your billign settings.
+        </p>
+    </td>
+    ') }}
+    {{ email.tableRow('
+    <td class="panel">
+        <b>Your coupon: wovieBeta50</b>
+    </td>
+    ') }}
+    {{ email.tableRow('
+    <td>
+        <p>See you in WOVIE!</p>
+    </td>
+    ') }}
+{% endblock content %}
