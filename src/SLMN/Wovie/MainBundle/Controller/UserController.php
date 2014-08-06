@@ -2,6 +2,7 @@
 
 namespace SLMN\Wovie\MainBundle\Controller;
 
+use SLMN\Wovie\MainBundle\Entity\Follow;
 use SLMN\Wovie\MainBundle\Entity\Media;
 use SLMN\Wovie\MainBundle\Entity\Profile;
 use SLMN\Wovie\MainBundle\Entity\StripeCustomer;
@@ -774,7 +775,7 @@ class UserController extends Controller
         );
     }
 
-    public function activityAction($id)
+    public function activityAction(Request $request, $id)
     {
         if ($id > 0)
         {
@@ -783,6 +784,43 @@ class UserController extends Controller
             return $this->render('SLMNWovieMainBundle:html/user:activitySingle.html.twig', array(
                 'activity' => $activity
             ));
+        }
+
+        if (($username=trim($request->get('username'))))
+        {
+            $em = $this->getDoctrine()->getManager();
+            $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+            $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+            $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
+            $user = $usersRepo->findOneByUsername($username);
+            if (!$user)
+            {
+                $this->get('session')->getFlashBag()->add('error', 'User with the username "'.$username."' not found.");
+                return $this->redirect($this->generateUrl('slmn_wovie_user_activity'));
+            }
+            $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $user, 'key' => 'publicProfile'));
+            if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+            {
+                $this->get('session')->getFlashBag()->add('error', 'User with the username "'.$username."' not found.");
+                return $this->redirect($this->generateUrl('slmn_wovie_user_activity'));
+            }
+            $follow = $followsRepo->findOneBy(array(
+                    'user' => $this->getUser(),
+                    'follow' => $user
+            ));
+            if ($follow)
+            {
+                $this->get('session')->getFlashBag()->add('error', 'You already follow '.$username.'.');
+                return $this->redirect($this->generateUrl('slmn_wovie_user_activity'));
+            }
+
+            $follow = new Follow();
+            $follow->setUser($this->getUser());
+            $follow->setFollow($user);
+            $follow->setCreatedAt(new \DateTime());
+            $em->persist($follow);
+            $em->flush();
+            return $this->redirect($this->generateUrl('slmn_wovie_user_activity'));
         }
 
         return $this->render('SLMNWovieMainBundle:html/user:activity.html.twig');

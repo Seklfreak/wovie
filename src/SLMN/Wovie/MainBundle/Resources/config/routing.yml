@@ -79,7 +79,7 @@ slmn_wovie_user_movie_details:
 slmn_wovie_user_activity:
     pattern:  /activity/{id}
     defaults: { _controller: SLMNWovieMainBundle:User:activity, id: 0 }
-    methods:  [GET]
+    methods:  [GET, POST]
     requirements:
         id: \d+
 slmn_wovie_user_search:
