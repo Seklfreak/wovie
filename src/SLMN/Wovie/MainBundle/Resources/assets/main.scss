@@ -284,8 +284,8 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 
 /* ACTIVITES */
 .activities-row {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
   & p {
     margin-bottom: 0;
   }
@@ -444,7 +444,28 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+.friends-list {
+  list-style: none;
+  margin-left: 0.2rem;
+  margin-bottom: 0.2rem;
+  & li:not(:last-child) {
+    padding-bottom: 4px;
+  }
+}
+
 /* GENERAL */
+@media #{$small-only} {
+  .panel-collapse-fix {
+    margin-left: 0.95rem;
+    margin-right: 0.95rem;
+  }
+}
+@media #{$medium-only} {
+  .panel-collapse-fix {
+    margin-left: 0.95rem;
+    margin-right: 0.95rem;
+  }
+}
 .meta-header-small {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -455,6 +476,11 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   width: 30px;
   height: 30px;
   @include border-radius(5px);
+}
+.avatar-50 {
+  width: 50px;
+  height: 50px;
+  @include border-radius(4px);
 }
 .avatar-100 {
   @include border-radius(5px);

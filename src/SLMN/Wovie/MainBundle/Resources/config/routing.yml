@@ -37,7 +37,7 @@ slmn_wovie_public_profile_followers:
     requirements:
         username: "^[a-zA-Z0-9]+$"
 slmn_wovie_public_profile_followings:
-    path:   /u/{username}/follows
+    path:   /u/{username}/followings
     defaults: { _controller: SLMNWovieMainBundle:Public:profileFollowings }
     methods:  [GET]
     requirements:

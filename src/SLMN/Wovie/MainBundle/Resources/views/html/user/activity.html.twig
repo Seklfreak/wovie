@@ -3,13 +3,41 @@
 {% block pagetitle %}WOVIE - activity{% endblock pagetitle %}
 
 {% block body %}
-    <div id="activity-infinite-container">
-        <a class="hide infinite-more-link"
-           href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': 1}) }}"></a>
-    </div>
-    <div class="row hide" id="activity-infinite-spinner">
-        <div class="small-12 text-center columns">
-            <fa class="fa fa-spinner fa-spin fa-2x activity-spinner"></fa>
+    <div class="row collapse">
+        <div class="small-12 large-2 large-push-10 columns">
+            <div class="panel small-panel panel-collapse-fix" style="margin-top: 0.284rem;">
+                <div class="row">
+                    <div class="small-12 columns" style="padding-left: 0px; padding-right: 0px;">
+                        <h5>Friends</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns" style="padding-left: 0px; padding-right: 0px;">
+                        <ul class="friends-list">
+                            {% set followings = getFollowings(app.security.getToken().getUser()) %}
+                            {% for follower in followings %}
+                                <li>
+                                    <a href="{{ path('slmn_wovie_public_profile', { 'username': follower.follow.username }) }}">
+                                        <img class="avatar-30" src="{{ getGravatarUrl(follower.follow, 30) }}">
+                                        {{ follower.follow.username }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="small-12 large-10 large-pull-2 columns">
+            <div id="activity-infinite-container">
+                <a class="hide infinite-more-link"
+                   href="{{ path('slmn_wovie_actions_ajax_infinite_activity', {'page': 1}) }}"></a>
+            </div>
+            <div class="row hide" id="activity-infinite-spinner">
+                <div class="small-12 text-center columns">
+                    <fa class="fa fa-spinner fa-spin fa-2x activity-spinner"></fa>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock body %}
