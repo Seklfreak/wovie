@@ -37,6 +37,7 @@ services:
             router: @router
             apiKey: %slmn_wovie_mainbundle.stripe.secret_key%
             plan: %slmn_wovie_mainbundle.stripe.plan_id.standard%
+            logger: @logger
     media_api:
         class: %slmn_wovie_main.service.media_api.class%
         arguments: [@kernel, @logger, @doctrine.orm.entity_manager, "%slmn_wovie_mainbundle.google_api_key%", @snc_redis.default, @userOption]

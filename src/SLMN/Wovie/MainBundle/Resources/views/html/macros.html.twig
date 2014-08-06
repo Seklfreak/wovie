@@ -463,7 +463,6 @@
         <div class="small-12 large-6 pull-1 columns">
             <div class="row">
                 <div class="small-12 columns details-inline-list">
-                    {# TODO: IMDB Rating #}
                     {% if media.mediaType == 1 %}
                         <li class="big-label-inlist">
                             <span class="label secondary">movie</span>
@@ -694,7 +693,7 @@
                 </li>
             {% else %}
                 <li class="has-form">
-                    <a href="#" class="button secondary">Sign up!</a> {# TODO: Sign up #}
+                    <a href="{{ path('slmn_wovie_public_index') }}" class="button secondary">Sign up!</a>
                 </li>
                 <li>
                     <a href="{{ path('login') }}"><i class="fa"></i> Login</a>
@@ -716,7 +715,7 @@
                         <a class="logo" href="//slmn.de" target="_blank">SLMN</a>
                     </span>
                 <ul class="inline-list footer-first-list">
-                    {# <li><a href="#{# TODO: BLOG }">BLOG</a></li> #}
+                    {# <li><a href="#">BLOG</a></li> #}
                     <li><a href="{{ path('slmn_wovie_public_imprint') }}">CONTACT / IMPRESSUM</a></li>
                 </ul>
                 <p class="copyright">© {{ copyrightYear(2014) }} Sebastian Winkler</p>

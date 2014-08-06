@@ -41,7 +41,6 @@ vhost: /wovie user: guest:guest (`$ rabbitmqctl add_vhost /wovie && rabbitmqctl 
 
 ## TODO
 - [ ] Advanced search (Actor, Length, …)
-- [ ] Rating (Favorite, Rating(Points/Like+Dislike)…)
 - [ ] Chrome Extension using oAuth21
     -> https://github.com/FriendsOfSymfony/FOSOAuthServerBundle
     -> https://github.com/FriendsOfSymfony/FOSRestBundle

@@ -14,6 +14,7 @@ class BillingListener
     private $router;
     private $apiKey;
     private $plan;
+    private $logger;
 
     public function __construct(
         \Doctrine\ORM\EntityManager $em,
@@ -21,7 +22,8 @@ class BillingListener
         $session,
         $router,
         $apiKey,
-        $plan
+        $plan,
+        $logger
     )
     {
         $this->context = $context;
@@ -30,6 +32,7 @@ class BillingListener
         $this->router = $router;
         $this->apiKey = $apiKey;
         $this->plan = $plan;
+        $this->logger = $logger;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -39,9 +42,6 @@ class BillingListener
         if (!$event->isMasterRequest()) {
             return;
         }
-
-        //$usersRepo = $this->em->getRepository('SeklMainUserBundle:User');
-        //$customersRepo = $this->em->getRepository('SLMNWovieMainBundle:StripeCustomer');
 
         $isAuthenticatedRemembered = false;
         try
@@ -78,7 +78,7 @@ class BillingListener
                 }
                 catch (\Exception $e)
                 {
-                    // TODO: Log this error
+                    $this->logger->error('BillingListener - Stripe error: '.$e->getMessage());
                     $this->session->getFlashBag()->add('error', 'Error: '.$e->getMessage());
                 }
             }
@@ -102,17 +102,5 @@ class BillingListener
             }
         }
         return;
-        //$this->context->getToken()->getUser())
-        /*
-        $route = 'route_name';
-
-        if ($route === $event->getRequest()->get('_route')) {
-            return;
-        }
-
-        $url = $this->router->generate($route);
-        $response = new RedirectResponse($url);
-        $event->setResponse($response);
-        */
     }
 }
