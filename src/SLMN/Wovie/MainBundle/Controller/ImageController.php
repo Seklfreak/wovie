@@ -10,19 +10,36 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
-    public function customCoverImageAction(Request $request, $mediaId)
+    public function customCoverImageAction(Request $request, $mediaId, $hash)
     {
         $response = new Response();
         $image = null;
+        $path = $this->container->getParameter("kernel.cache_dir").'/wovie/customCovers/';
+        @mkdir($path, 0755, $recursive=true);
+        $filename = $hash.'_'.$mediaId.'.jpeg';
 
-        $em = $this->getDoctrine()->getManager();
-        $mediasRepo = $em->getRepository('SLMNWovieMainBundle:Media');
-        $media = $mediasRepo->findOneById(intval($mediaId));
-        if ($media)
+        if (empty($image))
         {
-            $customCoversHandle = $this->get('wovie.customCovers');
-            $image = $customCoversHandle->get($media);
-            // TODO: Filecache
+            if (file_exists($path.$filename) && is_readable($path.$filename))
+            {
+                $image = file_get_contents($path.$filename);
+            }
+        }
+
+        if (empty($image))
+        {
+            $em = $this->getDoctrine()->getManager();
+            $mediasRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $media = $mediasRepo->findOneById(intval($mediaId));
+            if ($media)
+            {
+                $customCoversHandle = $this->get('wovie.customCovers');
+                $image = $customCoversHandle->get($media);
+                if ($image)
+                {
+                    file_put_contents($path.$filename, $image);
+                }
+            }
         }
 
         if (empty($image))

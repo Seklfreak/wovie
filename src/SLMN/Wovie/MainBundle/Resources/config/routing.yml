@@ -236,6 +236,7 @@ slmn_wovie_image_customCoverImage:
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         mediaId: \d+
+        hash: "^([a-z0-9]){32}$"
 slmn_wovie_image_coverImage:
     pattern: /image/public/cover/{freebaseId}.jpg
     host: "{cdn}"

@@ -448,6 +448,7 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   list-style: none;
   margin-left: 0.2rem;
   margin-bottom: 0.2rem;
+  overflow: hidden;
   & li:not(:last-child) {
     padding-bottom: 4px;
   }
