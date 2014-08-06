@@ -383,6 +383,30 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+.screen {
+  & .orbit-slide-number {
+    background-color: rgba(51, 51, 51, 0.8);
+  }
+  & .orbit-timer {
+    & span {
+      border-left-color: rgba(0, 0, 0, 0.5);
+      border-right-color: rgba(0, 0, 0, 0.5);
+    }
+    & .orbit-progress {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    &.paused > span {
+      border-left-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  & .orbit-next span {
+    border-left-color: rgba(0, 0, 0, 0.5);
+  }
+  & .orbit-prev span {
+    border-right-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
 /* COVER UPLOAD */
 .uploadCustomCoverBox {
   position: relative;

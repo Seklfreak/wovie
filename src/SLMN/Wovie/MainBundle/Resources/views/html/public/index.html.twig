@@ -32,6 +32,53 @@
             <h3><b>WOVIE</b> is a webservice for your movie collection. Add movies or series to your libary and never forget what you watched.</h3>
         </div>
     </div>
+    {% image '@SLMNWovieMainBundle/Resources/public/images/screenshots/wovie_screenshot_1.jpg'
+    filter='jpegoptim' output='/images/screenshot1.jpg' %}
+        {% set screenshot1 = asset_url %}
+    {% endimage %}
+    {% image '@SLMNWovieMainBundle/Resources/public/images/screenshots/wovie_screenshot_2.jpg'
+    filter='jpegoptim' output='/images/screenshot2.jpg' %}
+    {% set screenshot2 = asset_url %}
+    {% endimage %}
+    {% image '@SLMNWovieMainBundle/Resources/public/images/screenshots/wovie_screenshot_3.jpg'
+    filter='jpegoptim' output='/images/screenshot3.jpg' %}
+    {% set screenshot3 = asset_url %}
+    {% endimage %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="device-mockup macbook portrait black">
+                <div class="device">
+                    <div class="screen">
+                        <ul data-orbit
+                            data-options="pause_on_hover:true;
+                                            resume_on_mouseout:true;
+                                            bullets:false;
+                                            timer_speed:5000;"
+                            >
+                            <li>
+                                <img src="{{ screenshot1 }}" alt="Manage all your movies and series." />
+                                <div class="orbit-caption">
+                                    Manage all your movies and series.
+                                </div>
+                            </li>
+                            <li class="active">
+                                <img src="{{ screenshot2 }}" alt="Big database with lots of movies and series." />
+                                <div class="orbit-caption">
+                                    Big database with lots of movies and series.
+                                </div>
+                            </li>
+                            <li>
+                                <img src="{{ screenshot3 }}" alt="See what your friends are watching." />
+                                <div class="orbit-caption">
+                                    See what your friends are watching.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {# <div class="row">
         <div class="small-12 large-4 columns">
             <h5><i class="fa fa-calendar"></i> Track what you're watching</h5>

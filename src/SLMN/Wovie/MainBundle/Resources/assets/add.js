@@ -37,7 +37,8 @@ function refreshMediaContainers(mediaId)
 function init()
 {
     // Foundation
-    $(document).foundation({});
+    $(document).foundation({
+    });
     // Zero Clipboard
     ZeroClipboard.config( {
         cacheBust: false,
