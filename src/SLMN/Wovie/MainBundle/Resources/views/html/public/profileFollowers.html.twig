@@ -35,7 +35,7 @@
                                         {% if follower.user == app.security.getToken().getUser() %}
                                             <a
                                                     href="{{ path('slmn_wovie_public_profile', { 'username': follower.user.username }) }}"
-                                                    class="button small radius secondary expand">
+                                                    class="button small radius secondary expand profile-button">
                                                 Profile
                                             </a>
                                         {% elseif isFollowing(follower.user) %}
