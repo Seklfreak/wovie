@@ -95,7 +95,7 @@ class ImageController extends Controller
         {
             $url = 'https://secure.gravatar.com/avatar/'.$hash;
             $url .= '?size='.intval($size);
-            $url .= '&default=retro'; // TODO: Own placeholder
+            $url .= '&default=mm';
 
             $curl_handle = curl_init();
             curl_setopt($curl_handle, CURLOPT_URL, $url);

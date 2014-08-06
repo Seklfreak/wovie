@@ -454,6 +454,10 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+.media-entry {
+  overflow: hidden;
+}
+
 /* GENERAL */
 @media #{$small-only} {
   .panel-collapse-fix {

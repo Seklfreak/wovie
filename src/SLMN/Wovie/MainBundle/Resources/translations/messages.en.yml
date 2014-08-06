@@ -22,3 +22,7 @@ integer:
   invalid: Please enter an valid integer.
 year:
   invalid: Please enter an valid year. (4 numbers)
+media:
+  title:
+    min_message: Title too short.
+    max_message: Title too long.

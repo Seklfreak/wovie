@@ -8,5 +8,5 @@ SLMN\Wovie\MainBundle\Entity\Media:
             - Length:
                 min: 1
                 max: 100
-                minMessage: "media.title.min_message" # TODO: Translation
-                maxMessage: "media.title.max_message" # TODO: Translation
+                minMessage: "media.title.min_message"
+                maxMessage: "media.title.max_message"
