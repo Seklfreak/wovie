@@ -228,7 +228,7 @@ class SlmnWovieExtension extends \Twig_Extension
         }
     }
 
-    public function getMyMoviesFunction()
+    public function getMyMoviesFunction($range=null)
     {
         $user = $this->context->getToken()->getUser();
         $moviesRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
@@ -239,7 +239,26 @@ class SlmnWovieExtension extends \Twig_Extension
         }
         else
         {
-            return $moviesRepo->findByCreatedBy($user, array('title' => 'ASC'));
+            if ($range == null)
+            {
+                return $moviesRepo->findByCreatedBy($user, array('title' => 'ASC'));
+            }
+            else
+            {
+                $timeStart = new \DateTime();
+                $timeStart->modify($range);
+
+                $query = $moviesRepo->createQueryBuilder('media')
+                    ->where('media.createdBy = :user')
+                    ->andWhere('media.lastUpdatedAt > :timeStart')
+                    ->setParameters(array(
+                        'user' => $user,
+                        'timeStart' => $timeStart
+                    ))
+                    ->orderBy('media.lastUpdatedAt', 'DESC')
+                    ->getQuery();
+                return $query->getResult();
+            }
         }
     }
 

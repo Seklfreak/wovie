@@ -9,24 +9,36 @@
         </div>
     </div>
     <div class="row">
+        <div class="small-12 columns">
+            <h4>Updated in the last week</h4>
+        </div>
+    </div>
+    <div class="row">
         <div class="large-12 columns">
-            {{ main.alertBox('Placeholder…', 'warning', 0) }}
+            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" id="media-entries">
+                {% for media in getMyMovies('-1 week') %}
+                    <li
+                            class="media-entry"
+                            data-media-type="{{ media.mediaType }}"
+                            data-views="{{ viewsOfId(media.id) }}"
+                            {% if media.mediaType == 2 %}
+                                data-numberofepisodes="{{ media.numberOfEpisodes }}"
+                            {% endif %}
+                            data-favorite="{{ media.favorite }}"
+                            >
+                        <div
+                                data-media-id="{{ media.id }}"
+                                data-src="{{ path('slmn_wovie_action_ajax_details_small', {'id': media.id}) }}"
+                                class="refresh-media">
+                            {{ wovie.mediaItem(media) }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     {% if getUserOption('didJoyrideDashboard', false) == false %}
         {% include "SLMNWovieMainBundle:html/joyride:dashboard.html.twig" %}
         {% set done = setUserOption('didJoyrideDashboard', true) %}
     {% endif %}
-    {#
-    {% set moviesCount = random(10..20) %}
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="row collapse">
-                <div class="large-12 small-12 columns">
-                    <h4>Updated in the last two weeks <small>{{ moviesCount }} added / {{ moviesCount-8 }} watched</small></h4>
-                </div>
-            </div>
-        </div>
-    </div>
-    #}
 {% endblock body %}

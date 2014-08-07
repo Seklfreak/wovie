@@ -281,6 +281,7 @@ $(function() {
     $('.ajax-replace-mediatime').each(function() {
         var $span = $(this);
         var userId = $span.data('user-id');
+        var prefix = $span.data('prefix');
         if (userId != null)
         {
             $span.html('<i class="fa fa-lg fa-spinner fa-spin"></i>');
@@ -291,7 +292,7 @@ $(function() {
             })
                 // TODO: Error handling
                 .success(function(data) {
-                    $span.html('I ' + data);
+                    $span.html(prefix + data);
                 });
         }
     });
