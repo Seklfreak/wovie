@@ -71,7 +71,7 @@ class ImageController extends Controller
         $response = new Response();
 
         $filecacheMaxAge = new \DateTime();
-        $filecacheMaxAge->modify('-1 week');
+        $filecacheMaxAge->modify('-1 day');
 
         # Try filecache
         if ($image == null)
@@ -108,7 +108,7 @@ class ImageController extends Controller
             file_put_contents($path.$filename, $image);
         }
 
-        $response->setMaxAge(2592000); # 1 month
+        $response->setMaxAge(86400); # 1 day
 
         $response->setPublic();
         $response->setContent($image);
