@@ -14,7 +14,7 @@ framework:
     validation:      { enable_annotations: true, api: 2.4 }
     templating:
         engines:         ['twig']
-        assets_version:  v70
+        assets_version:  v71
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
@@ -48,7 +48,7 @@ assetic:
         jpegoptim:
             bin: /usr/bin/jpegoptim
             strip_all: true
-            max: 95
+            max: 90
         compass:
             apply_to: "\.sass"
         uglifyjs2:
