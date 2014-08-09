@@ -258,7 +258,7 @@ slmn_wovie_js_zeroClipboardSwf:
     host: "{cdn}"
     defaults: { cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
- 	schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
+    schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
     options:
       expose: true
     requirements:
