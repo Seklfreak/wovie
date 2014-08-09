@@ -225,7 +225,6 @@ slmn_wovie_image_gravatar:
     host: "{cdn}"
     defaults: { _controller: SLMNWovieMainBundle:Image:gravatar, cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
-    schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         size: \d+
@@ -234,7 +233,6 @@ slmn_wovie_image_customCoverImage:
     host: "{cdn}"
     defaults: { _controller: SLMNWovieMainBundle:Image:customCoverImage, cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
-    schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         mediaId: \d+
@@ -244,7 +242,6 @@ slmn_wovie_image_coverImage:
     host: "{cdn}"
     defaults: { _controller: SLMNWovieMainBundle:Image:coverImage, cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
-    schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
     requirements:
         cdn: "%slmn_wovie_mainbundle.cdn%|%slmn_wovie_mainbundle.domain%"
         freebaseId: "^\/m\/[0-9a-z_]{2,10}$"
@@ -261,7 +258,6 @@ slmn_wovie_js_zeroClipboardSwf:
     host: "{cdn}"
     defaults: { cdn: "%slmn_wovie_mainbundle.cdn%" }
     methods: [GET]
-    schemes: ["%slmn_wovie_mainbundle.cdn_scheme%"]
     options:
       expose: true
     requirements:
