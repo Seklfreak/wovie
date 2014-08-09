@@ -23,6 +23,7 @@ parameters:
     slmn_main_userbundle.mail.sender.title: wovie
     slmn_main_userbundle.mail.subject: wovie
 
+    slmn_wovie_mainbundle.cdn_scheme: https
     slmn_wovie_mainbundle.cdn: example.org
     slmn_wovie_mainbundle.domain: example.org
     slmn_wovie_mainbundle.admin_email: email@example.org
