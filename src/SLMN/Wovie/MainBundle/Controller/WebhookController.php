@@ -81,19 +81,62 @@ class WebhookController extends Controller
                 if ($customer)
                 {
                     $em = $this->getDoctrine()->getManager();
+                    $activitiesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Activity');
                     $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
                     $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
                     $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Profile');
                     $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
                     $viewsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:View');
+                    $invoicesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Invoice');
+                    $pendingUserActivationsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:PendingUserActiviation');
 
                     $batchSize = 20;
+
+                    // Remove activity
+                    $i = 0;
+                    $q = $activitiesRepo->createQueryBuilder('activity')
+                        ->where('activity.user = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
 
                     // Remove follows
                     $i = 0;
                     $q = $followsRepo->createQueryBuilder('follow')
                         ->where('follow.user = :user')
                         ->orWhere('follow.follow = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
+                    // Remove invoices
+                    $i = 0;
+                    $q = $invoicesRepo->createQueryBuilder('invoice')
+                        ->where('invoice.user = :user')
                         ->setParameters(array(
                             'user' => $customer->getUser()
                         ))
@@ -151,6 +194,26 @@ class WebhookController extends Controller
                         ++$i;
                     }
 
+                    // Remove pending user activiations
+                    $i = 0;
+                    $q = $pendingUserActivationsRepo->createQueryBuilder('pua')
+                        ->where('pua.user = :user')
+                        ->setParameters(array(
+                            'user' => $customer->getUser()
+                        ))
+                        ->getQuery();
+                    $iterableResult = $q->iterate();
+                    while (($row = $iterableResult->next()) !== false)
+                    {
+                        $em->remove($row[0]);
+                        if (($i % $batchSize) == 0)
+                        {
+                            $em->flush();
+                            $em->clear();
+                        }
+                        ++$i;
+                    }
+
                     // remove profiles
                     $i = 0;
                     $q = $profilesRepo->createQueryBuilder('profile')
@@ -193,6 +256,7 @@ class WebhookController extends Controller
 
                     $customer = $stripeCustomersRepo->findOneByCustomerId($subscription->customer);
                     $em->remove($customer);
+                    $em->flush();
                     $em->remove($customer->getUser());
                     $em->flush();
                 }
