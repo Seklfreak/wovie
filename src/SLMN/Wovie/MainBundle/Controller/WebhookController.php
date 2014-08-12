@@ -84,7 +84,7 @@ class WebhookController extends Controller
                     $followsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Follow');
                     $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
                     $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Profile');
-                    $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOptions');
+                    $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
 
                     $batchSize = 20;
 
