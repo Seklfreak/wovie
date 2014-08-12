@@ -88,7 +88,7 @@ class WebhookController extends Controller
                     $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
                     $viewsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:View');
                     $invoicesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Invoice');
-                    $pendingUserActivationsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:PendingUserActiviation');
+                    $pendingUserActivationsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:PendingUserActivation');
 
                     $batchSize = 20;
 
