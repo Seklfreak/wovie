@@ -191,6 +191,7 @@ class WebhookController extends Controller
                         ++$i;
                     }
 
+                    $customer = $stripeCustomersRepo->findOneByCustomerId($subscription->customer);
                     $em->remove($customer);
                     $em->remove($customer->getUser());
                     $em->flush();
