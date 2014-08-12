@@ -85,6 +85,7 @@ class WebhookController extends Controller
                     $mediasRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Media');
                     $profilesRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:Profile');
                     $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+                    $viewsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:View');
 
                     $batchSize = 20;
 
@@ -120,6 +121,28 @@ class WebhookController extends Controller
                     $iterableResult = $q->iterate();
                     while (($row = $iterableResult->next()) !== false)
                     {
+                        // Remove views for media
+                        $iView = 0;
+                        $qView = $viewsRepo->createQueryBuilder('view')
+                                 ->where('view.media = :media')
+                                 ->setParameters(array(
+                                     'media' => $row[0]
+                                 ))
+                                 ->getQuery();
+                        $iterableResultView = $qView->iterate();
+                        while (($rowView = $iterableResultView->next()) !== false)
+                        {
+                            $em->remove($rowView[0]);
+                            if (($iView % $batchSize) == 0)
+                            {
+                                $em->flush();
+                                $em->clear();
+                            }
+                            ++$iView;
+                        }
+                        $em->flush();
+                        $em->clear();
+
                         $em->remove($row[0]);
                         if (($i % $batchSize) == 0)
                         {
