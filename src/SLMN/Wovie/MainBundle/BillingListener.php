@@ -43,7 +43,6 @@ class BillingListener
             return;
         }
 
-        $isAuthenticatedRemembered = false;
         try
         {
             $isAuthenticatedRemembered = $this->context->isGranted('IS_AUTHENTICATED_REMEMBERED');
@@ -87,17 +86,29 @@ class BillingListener
                 // Check if subscription is valid
                 if ($customer->getDelinquent() == true || new \DateTime() > $customer->getPaidUntil())
                 {
-                    $route = 'slmn_wovie_user_settings_billing';
+                    $routeWhitelist = array(
+                        'slmn_wovie_public_imprint',
+                        'slmn_wovie_user_settings_general',
+                        'slmn_wovie_user_settings_profile',
+                        'slmn_wovie_user_settings_billing',
+                        'slmn_wovie_user_settings_account_cancel',
+                        'slmn_wovie_user_feedback'
+                    );
 
-                    if ($route === $event->getRequest()->get('_route'))
+                    if (in_array($event->getRequest()->get('_route'), $routeWhitelist))
                     {
-                        $this->session->getFlashBag()->add('error', 'You subscription or trial ended please update your billing information.');
-                        return;
+                        if ($event->getRequest()->getMethod() == 'GET')
+                        {
+                            $this->session->getFlashBag()->add('error', 'You subscription or trial ended please update your billing information.');
+                        }
                     }
-
-                    $url = $this->router->generate($route);
-                    $response = new RedirectResponse($url);
-                    $event->setResponse($response);
+                    else
+                    {
+                        // If route not in whitelist, redirect to billing settings
+                        $url = $this->router->generate('slmn_wovie_user_settings_billing');
+                        $response = new RedirectResponse($url);
+                        $event->setResponse($response);
+                    }
                 }
             }
         }
