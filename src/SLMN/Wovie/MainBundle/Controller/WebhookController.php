@@ -184,6 +184,7 @@ class WebhookController extends Controller
                             ++$iView;
                         }
                         $em->flush();
+                        // TODO: Remove custom covers
 
                         $em->remove($row[0]);
                         if (($i % $batchSize) == 0)
@@ -259,6 +260,7 @@ class WebhookController extends Controller
                     $em->flush();
                     $em->remove($customer->getUser());
                     $em->flush();
+                    $customer->delete();
                 }
                 else
                 {
