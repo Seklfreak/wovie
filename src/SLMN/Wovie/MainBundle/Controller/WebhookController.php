@@ -179,7 +179,7 @@ class WebhookController extends Controller
                             if (($iView % $batchSize) == 0)
                             {
                                 $em->flush();
-                                $em->clear();
+                                $em->detach($rowView[0]);
                             }
                             ++$iView;
                         }
