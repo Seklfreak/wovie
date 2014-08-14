@@ -9,7 +9,7 @@ Keep control over your movie collection.
 - jpegoptim
 - RabbitMQ
 - redis
-- supervisor
+- supervisor (+ superlance)
 - elasticsearch
 - External services
     - Google API (Freebase API)
@@ -18,9 +18,19 @@ Keep control over your movie collection.
 
 ## Ubuntu LTS 14.04 Dependencies
 `$ apt-get install mysql-server php5-mysql php5-curl php5-apcu php5-intl jpegoptim ruby ruby-compass nodejs npm`
+`$ easy_install superlance`
 Check your configuration with `$ php -f app/check.php`
 
-### supervisord wovie.conf
+### supervisord config
+
+#### supervisord.conf
+```ini
+[eventlistener:crashmail]
+command=/usr/local/bin/crashmail --any --email=<your@email.com>
+events=PROCESS_STATE
+```
+
+#### wovie.conf
 ```ini
 [program:wovie-rabbitmq-consumer-create-activity]
 command=/usr/bin/php /path/to/wovie/app/console rabbitmq:consumer -w -l 128 create_activity
