@@ -618,8 +618,16 @@ class UserController extends Controller
         if ($cancelAccountForm->isValid()) {
             try
             {
-                $customer->subscriptions->data[0]->cancel(array('at_period_end' => true));
-                $this->get('session')->getFlashBag()->add('success', 'Successfully cancelled your account.');
+                if ($customer->subscriptions->data[0]->status == 'unpaid')
+                {
+                    $customer->subscriptions->data[0]->cancel(array());
+                    $this->get('session')->getFlashBag()->add('success', 'Successfully cancelled your account.');
+                }
+                else
+                {
+                    $customer->subscriptions->data[0]->cancel(array('at_period_end' => true));
+                    $this->get('session')->getFlashBag()->add('success', 'Successfully cancelled your account. It will be deleted at the end of your current period.');
+                }
             }
             catch (\Exception $e)
             {
