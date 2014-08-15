@@ -622,21 +622,16 @@
                 <li class="has-form">
                     <form type="get" action="{{ path('slmn_wovie_user_search') }}">
                         <div class="row collapse">
-                            <div class="small-10 columns">
+                            <div class="small-12 columns">
                                 <input
                                         class="top-bar-search"
                                         name="q"
                                         type="text"
-                                        placeholder="search…"
+                                        placeholder="Search"
                                         required=""
                                         id="search"
                                         {% if query is defined %}value="{{ query }}"{% endif %}
                                         >
-                            </div>
-                            <div class="small-2 columns">
-                                <button type="submit" class="button secondary postfix topbar-postfix">
-                                    <i class="fa fa-search"></i>
-                                </button>
                             </div>
                         </div>
                     </form>

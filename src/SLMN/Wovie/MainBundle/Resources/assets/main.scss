@@ -1,15 +1,71 @@
 /* TOPBAR */
+.top-bar-section .has-form {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 .topbar-postfix {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   line-height: 1.85rem !important;
   height: 1.8rem;
 }
-.top-bar-search:focus {
-  @include transition-property(width);
-  @include transition-duration(0.1s);
-  width: 350px;
+.top-bar-search {
+  padding-top: 6px;
+  &:not(:focus) {
+    background: none;
+    border: 0px;
+    box-shadow: none;
+    color: #fff;
+    width: 80px;
+    &::-webkit-input-placeholder {
+      color: #fff;
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f002  ';
+        color: #fff;
+      }
+    }
+    &:-moz-placeholder {
+      color: #fff;
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f002  ';
+        color: #fff;
+      }
+    }
+    &::-moz-placeholder {
+      color: #fff;
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f002  ';
+        color: #fff;
+      }
+    }
+    &:-ms-input-placeholder {
+      color: #fff;
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f002  ';
+        color: #fff;
+      }
+    }
+  }
+  &:focus {
+    :focus {
+      @include transition-property(width);
+      @include transition-duration(0.1s);
+      width: 350px;
+    }
+  }
 }
+/*
+input#search::-webkit-input-placeholder,
+input#search:-moz-placeholder,
+input#search::-moz-placeholder,
+input#search:-ms-input-placeholder {
+  color: #fff;
+}*/
+
 .top-bar-avatar {
   width: 30px;
   height: 30px;
