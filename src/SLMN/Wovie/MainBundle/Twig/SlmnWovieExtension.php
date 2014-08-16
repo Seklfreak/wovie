@@ -228,7 +228,7 @@ class SlmnWovieExtension extends \Twig_Extension
         }
     }
 
-    public function getMyMoviesFunction($range=null)
+    public function getMyMoviesFunction($range=null, $limit=5)
     {
         $user = $this->context->getToken()->getUser();
         $moviesRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
@@ -249,15 +249,36 @@ class SlmnWovieExtension extends \Twig_Extension
                 $timeStart->modify($range);
 
                 $query = $moviesRepo->createQueryBuilder('media')
+                    ->select('media.id')
                     ->where('media.createdBy = :user')
-                    ->andWhere('media.lastUpdatedAt > :timeStart')
                     ->setParameters(array(
-                        'user' => $user,
+                        'user' => $user
+                    ))
+                    ->getQuery();
+                $myMedias = $query->getResult();
+                $viewsRepo = $this->em->getRepository('SLMNWovieMainBundle:View');
+
+                $query = $viewsRepo->createQueryBuilder('view')
+                    ->where('view.media IN (:myMedias)')
+                    ->andWhere('view.createdAt > :timeStart')
+                    ->setParameters(array(
+                        'myMedias' => $myMedias,
                         'timeStart' => $timeStart
                     ))
-                    ->orderBy('media.lastUpdatedAt', 'DESC')
+                    ->orderBy('view.createdAt', 'DESC')
+                    ->setMaxResults($limit)
                     ->getQuery();
-                return $query->getResult();
+                $result = $query->getResult();
+                $lastSeen = array();
+                foreach ($result as $view)
+                {
+                    if (in_array($view->getMedia(), $lastSeen))
+                    {
+                        break;
+                    }
+                    $lastSeen[] = $view->getMedia();
+                }
+                return $lastSeen;
             }
         }
     }
