@@ -1,70 +1,55 @@
 /* TOPBAR */
-.top-bar-section .has-form {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-.topbar-postfix {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  line-height: 1.85rem !important;
-  height: 1.8rem;
-}
-.top-bar-search {
-  padding-top: 6px;
-  &:not(:focus) {
-    background: none;
-    border: 0px;
-    box-shadow: none;
-    color: #fff;
-    width: 80px;
-    &::-webkit-input-placeholder {
+@media #{$medium-up} {
+  .search-wrapper {
+    &:before {
+      position: absolute;
+      font-family: 'FontAwesome';
       color: #fff;
-      &:before {
-        font-family: 'FontAwesome';
-        content: '\f002  ';
+      top: 9px;
+      left: 108px;
+      content: '\f002  ';
+    }
+  }
+  .top-bar-section .has-form {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 1px;
+  }
+  input#search {
+    display: inline;
+  }
+  .top-bar-search {
+    position: relative;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: normal;
+    text-transform: none;
+    &:focus {
+      width: 150px;
+      margin-left: 26px;
+    }
+    &:not(:focus) {
+      margin-left: 18px;
+      background: none;
+      border: 0px;
+      box-shadow: none;
+      color: #fff;
+      width: 60px;
+      &::-webkit-input-placeholder {
         color: #fff;
       }
-    }
-    &:-moz-placeholder {
-      color: #fff;
-      &:before {
-        font-family: 'FontAwesome';
-        content: '\f002  ';
+      &:-moz-placeholder {
         color: #fff;
       }
-    }
-    &::-moz-placeholder {
-      color: #fff;
-      &:before {
-        font-family: 'FontAwesome';
-        content: '\f002  ';
+      &::-moz-placeholder {
         color: #fff;
       }
-    }
-    &:-ms-input-placeholder {
-      color: #fff;
-      &:before {
-        font-family: 'FontAwesome';
-        content: '\f002  ';
+      &:-ms-input-placeholder {
         color: #fff;
       }
     }
   }
-  &:focus {
-    :focus {
-      @include transition-property(width);
-      @include transition-duration(0.1s);
-      width: 350px;
-    }
-  }
 }
-/*
-input#search::-webkit-input-placeholder,
-input#search:-moz-placeholder,
-input#search::-moz-placeholder,
-input#search:-ms-input-placeholder {
-  color: #fff;
-}*/
 
 .top-bar-avatar {
   width: 30px;

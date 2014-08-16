@@ -621,18 +621,16 @@
             {% if app.user is not null and is_granted('ROLE_USER') %}
                 <li class="has-form">
                     <form type="get" action="{{ path('slmn_wovie_user_search') }}">
-                        <div class="row collapse">
-                            <div class="small-12 columns">
-                                <input
-                                        class="top-bar-search"
-                                        name="q"
-                                        type="text"
-                                        placeholder="Search"
-                                        required=""
-                                        id="search"
-                                        {% if query is defined %}value="{{ query }}"{% endif %}
-                                        >
-                            </div>
+                        <div class="search-wrapper">
+                            <input
+                                    class="top-bar-search"
+                                    name="q"
+                                    type="text"
+                                    placeholder="Search"
+                                    required=""
+                                    id="search"
+                                    {% if query is defined %}value="{{ query }}"{% endif %}
+                                    >
                         </div>
                     </form>
                 </li>
