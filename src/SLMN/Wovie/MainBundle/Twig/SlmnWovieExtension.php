@@ -266,16 +266,13 @@ class SlmnWovieExtension extends \Twig_Extension
                         'timeStart' => $timeStart
                     ))
                     ->orderBy('view.createdAt', 'DESC')
+                    ->groupBy('view.media')
                     ->setMaxResults($limit)
                     ->getQuery();
                 $result = $query->getResult();
                 $lastSeen = array();
                 foreach ($result as $view)
                 {
-                    if (in_array($view->getMedia(), $lastSeen))
-                    {
-                        break;
-                    }
                     $lastSeen[] = $view->getMedia();
                 }
                 return $lastSeen;
