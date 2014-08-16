@@ -228,7 +228,7 @@ class SlmnWovieExtension extends \Twig_Extension
         }
     }
 
-    public function getMyMoviesFunction($range=null, $limit=8)
+    public function getMyMoviesFunction($range=null, $limit=4)
     {
         $user = $this->context->getToken()->getUser();
         $moviesRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
