@@ -17,6 +17,7 @@
   }
   input#search {
     display: inline;
+    @include border-radius(15px, 15px);
   }
   .top-bar-search {
     position: relative;
@@ -29,12 +30,13 @@
       margin-left: 26px;
     }
     &:not(:focus) {
-      margin-left: 18px;
+      margin-left: 26px;
       background: none;
       border: 0px;
       box-shadow: none;
       color: #fff;
       width: 60px;
+      background-color: #27857b;
       &::-webkit-input-placeholder {
         color: #fff;
       }
