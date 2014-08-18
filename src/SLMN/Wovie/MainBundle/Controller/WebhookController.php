@@ -262,6 +262,11 @@ class WebhookController extends Controller
                     $em->flush();
                     $customer->delete();
                 }
+                else
+                {
+                    $response->setContent('Customer not found!');
+                }
+                break;
             case 'charge.succeeded':
             case 'charge.failed':
                 $charge = $event->data->object;
