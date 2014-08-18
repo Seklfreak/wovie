@@ -265,7 +265,7 @@ class WebhookController extends Controller
                 else
                 {
                     $response->setContent('Customer not found!');
-                    $response->setStatusCode(500);
+                    $response->setStatusCode(200);
                 }
             case 'charge.succeeded':
             case 'charge.failed':
