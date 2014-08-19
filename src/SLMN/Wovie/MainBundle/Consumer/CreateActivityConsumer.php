@@ -10,6 +10,7 @@ class CreateActivityConsumer implements ConsumerInterface
 {
     protected $timeRange = '45 minute';
 
+    protected $doctrine;
     protected $em;
     protected $mediaApi;
 
@@ -17,13 +18,10 @@ class CreateActivityConsumer implements ConsumerInterface
     protected $usersRepo;
     protected $mediasRepo;
 
-    public function __construct($em, $mediaApi)
+    public function __construct($doctrine, $mediaApi)
     {
-        $this->em = $em;
+        $this->doctrine = $doctrine;
         $this->mediaApi = $mediaApi;
-        $this->activitiesRepo = $this->em->getRepository('SLMNWovieMainBundle:Activity');
-        $this->usersRepo = $this->em->getRepository('SeklMainUserBundle:User');
-        $this->mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
     }
 
     protected function getInTimerange($time, $key, $user)
@@ -56,8 +54,19 @@ class CreateActivityConsumer implements ConsumerInterface
         }
     }
 
+    protected function newSqlConnection()
+    {
+        $this->em = $this->doctrine->getManager();
+        $this->doctrine->resetManager();
+
+        $this->activitiesRepo = $this->em->getRepository('SLMNWovieMainBundle:Activity');
+        $this->usersRepo = $this->em->getRepository('SeklMainUserBundle:User');
+        $this->mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+    }
+
     public function execute(AMQPMessage $msg)
     {
+        $this->newSqlConnection();
         $now = new \DateTime();
         $value = unserialize($msg->body);
         switch ($value['key'])

@@ -63,7 +63,7 @@ services:
     wovie.create_activity_service:
         class: %wovie.create_activity_service.class%
         arguments:
-            em: @doctrine.orm.entity_manager
+            doctrine: @doctrine
             mediaApi: @media_api
     # Locale
     wovie.locale_listener_subscriber:
