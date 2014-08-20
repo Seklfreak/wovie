@@ -21,6 +21,12 @@ Keep control over your movie collection.
 `$ easy_install superlance`
 Check your configuration with `$ php -f app/check.php`
 
+### php.ini
+```ini
+cgi.fix_pathinfo = 0
+session.cookie_httponly = 1
+```
+
 ### supervisord config
 
 #### supervisord.conf
