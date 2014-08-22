@@ -12,7 +12,10 @@
             <div class="small-12 large-4 large-pull-1 columns">
                 <div class="row">
                     <div class="small-12 columns">
-                        <h4>Create an account<br><small>Already have an account? <a href="{{ path('login') }}">Log in.</a></small></h4>
+                        <h4 class="index-create-account-header">
+                            Create an account<br>
+                            <small>Already have an account? <a href="{{ path('login') }}">Log in.</a></small>
+                        </h4>
                         {{ form_start(newUserForm) }}
                         {{ form_errors(newUserForm) }}
                         {{ form_row(newUserForm.username, { 'label': false }) }}
