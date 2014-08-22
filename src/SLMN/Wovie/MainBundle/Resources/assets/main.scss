@@ -282,6 +282,11 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
 /* PUBLIC PAGE */
 .index-create-account-header > small {
   font-size: 70%;
+  & > a {
+    @include button();
+    padding: 0.3rem 0.3rem 0.3rem 0.3rem;
+    margin-bottom: 0;
+  }
 }
 .profile-breadcrumbs {
   display: inline-block;
