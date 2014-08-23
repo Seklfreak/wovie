@@ -656,6 +656,26 @@
                 <li class="has-form">
                     <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">Alpha feedback</a>
                 </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="has-dropdown">
+                        <a href="{{ path('slmn_wovie_admin_dashboard') }}">
+                            <i class="fa fa-cogs"></i>
+                            <b>Admin</b>
+                        </a>
+                        <ul class="dropdown">
+                            <li>
+                                <a href="{{ path('slmn_wovie_admin_broadcasts') }}">
+                                    <i class="fa fa-bullhorn"></i> Broadcasts
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('slmn_wovie_admin_emailTemplates') }}">
+                                    <i class="fa fa-envelope"></i> EMails
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
                 <li class="has-dropdown">
                     {% set profileUrl = '#' %}
                     {% if getUserOption('publicProfile', false) == true %}

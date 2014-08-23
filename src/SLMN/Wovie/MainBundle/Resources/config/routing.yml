@@ -206,8 +206,20 @@ slmn_wovie_actions_ajax_deleteCoverImage:
       expose: true
 
 # Admin
-slmn_open_tracker_web_frontend_admin_emailpreview:
-    pattern: /admin/emailpreview/{template}/{inlined}
+slmn_wovie_admin_dashboard:
+    pattern:  /admin/dashboard/
+    defaults: { _controller: SLMNWovieMainBundle:Admin:dashboard }
+    methods:  [GET]
+slmn_wovie_admin_broadcasts:
+    pattern:  /admin/broadcasts/
+    defaults: { _controller: SLMNWovieMainBundle:Admin:broadcasts }
+    methods:  [GET]
+slmn_wovie_admin_emailTemplates:
+    pattern:  /admin/emailTemplates/
+    defaults: { _controller: SLMNWovieMainBundle:Admin:emailTemplates }
+    methods:  [GET]
+slmn_wovie_admin_emailpreview:
+    pattern: /admin/emailTemplates/preview/{template}/{inlined}
     defaults: { _controller: SLMNWovieMainBundle:Admin:emailPreview, inlined: 0 }
     methods:  [GET]
 

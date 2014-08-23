@@ -1,0 +1,12 @@
+<ul class="side-nav">
+    <li class="heading">Admin</li>
+    <li{% if app.request.get('_route') == 'slmn_wovie_admin_dashboard' %} class="active"{% endif %}>
+        <a href="{{ path('slmn_wovie_admin_dashboard') }}">Dashboard</a>
+    </li>
+    <li{% if app.request.get('_route') == 'slmn_wovie_admin_broadcasts' %} class="active"{% endif %}>
+        <a href="{{ path('slmn_wovie_admin_broadcasts') }}">Broadcasts</a>
+    </li>
+    <li{% if app.request.get('_route') == 'slmn_wovie_admin_emailTemplates' %} class="active"{% endif %}>
+        <a href="{{ path('slmn_wovie_admin_emailTemplates') }}">EMails</a>
+    </li>
+</ul>
