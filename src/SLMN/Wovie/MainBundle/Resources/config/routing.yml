@@ -213,7 +213,21 @@ slmn_wovie_admin_dashboard:
 slmn_wovie_admin_broadcasts:
     pattern:  /admin/broadcasts/
     defaults: { _controller: SLMNWovieMainBundle:Admin:broadcasts }
-    methods:  [GET]
+    methods:  [GET, POST]
+    options:
+        expose: true
+slmn_wovie_admin_broadcasts_edit:
+    pattern:  /admin/broadcasts/{broadcastId}
+    defaults: { _controller: SLMNWovieMainBundle:Admin:editBroadcast }
+    methods:  [GET, POST]
+    requirements:
+        broadcastId: \d+
+slmn_wovie_admin_broadcasts_action_ajax_delete:
+    pattern:  /admin/action/ajax/broadcast/delete/
+    defaults: { _controller: SLMNWovieMainBundle:Admin:deleteBroadcastAjax }
+    methods:  [POST]
+    options:
+        expose: true
 slmn_wovie_admin_emailTemplates:
     pattern:  /admin/emailTemplates/
     defaults: { _controller: SLMNWovieMainBundle:Admin:emailTemplates }

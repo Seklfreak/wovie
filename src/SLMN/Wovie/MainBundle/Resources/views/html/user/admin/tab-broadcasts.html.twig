@@ -10,13 +10,87 @@
         </div>
         <div class="large-10 columns">
             <div class="row">
-                <div class="large-12 columns">
-                    <h4>Broadcasts</h4>
+                <div class="small-12 columns">
+                <h4>Broadcasts <small>{{ broadcasts|length }} total</small></h4>
                 </div>
             </div>
             <div class="row">
-                <div class="large-12 columns">
-                    <h4>{{ main.alertBox('In working', 'warning', 0) }}</h4>
+                <div class="small-12 columns">
+                    {% if broadcasts|length > 0 %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Message</th>
+                                <th width="50">Icon</th>
+                                <th width="75">Enabled</th>
+                                <th width="70"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for broadcast in broadcasts %}
+                                <tr>
+                                  <td>{{ broadcast.message|raw }}</td>
+                                  <td><i class="fa fa-{{ broadcast.icon }}"></i></td>
+                                  <td style="
+                                  color: {% if broadcast.enabled == 1 %}green{% else %}red{% endif %};
+                                  ">
+                                    {% if broadcast.enabled == 1 %}yes{% else %}no{% endif %}
+                                  </td>
+                                  <td>
+                                      <a
+                                      href="{{ path('slmn_wovie_admin_broadcasts_edit', {'broadcastId': broadcast.id}) }}"
+                                      class="button tiny"
+                                      style="margin-bottom: 0;"
+                                      ><i class="fa fa-pencil"></i>
+                                      </a>
+                                  </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {{ main.alertBox('No broadcasts yet', '', 0) }}
+                    {% endif %}
+                </div>
+            </div>
+            {{ form_start(newBroadcastForm) }}
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_errors(newBroadcastForm) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 small-12 columns">
+                    {{ form_row(newBroadcastForm.message) }}
+                </div>
+                <div class="large-3 small-12 columns">
+                    {{ form_label(newBroadcastForm.icon) }}
+                    <div class="row collapse">
+                        <div class="small-3 large-2 columns">
+                            <span class="prefix">fa-</span>
+                        </div>
+                        <div class="small-9 large-10 columns">
+                            {{ form_widget(newBroadcastForm.icon) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="large-1 small-6 columns">
+                    <label for="broadcast_enabled">Enabled</label>
+                    <div class="switch">
+                        {{ form_widget(newBroadcastForm.enabled) }}
+                        <label for="broadcast_enabled"></label>
+                    </div>
+                </div>
+                <div class="large-2 small-6 columns">
+                    {{ form_row(
+                    newBroadcastForm.submit,
+                    {'label': 'Add', 'attr': {'class': 'tiny', 'style': 'margin-top: 20px;'}}
+                    ) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_end(newBroadcastForm) }}
                 </div>
             </div>
         </div>

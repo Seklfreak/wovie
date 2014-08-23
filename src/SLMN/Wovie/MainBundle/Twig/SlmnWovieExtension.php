@@ -50,8 +50,16 @@ class SlmnWovieExtension extends \Twig_Extension
             'getMediaById' => new \Twig_Function_Method($this, 'getMediaByIdFunction'),
             'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction'),
             'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction'),
-            'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction')
+            'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction'),
+            'getEnabledBroadcasts' => new \Twig_Function_Method($this, 'getEnabledBroadcastsFunction')
         );
+    }
+
+    public function getEnabledBroadcastsFunction()
+    {
+        $broadcastsRepo = $this->em->getRepository('SLMNWovieMainBundle:Broadcast');
+        $broadcasts = $broadcastsRepo->findBy(array('enabled' => true));
+        return $broadcasts;
     }
 
     public function getFriendsThatHaveMediaFunction($media, $user=null)

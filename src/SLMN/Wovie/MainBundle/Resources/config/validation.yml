@@ -10,3 +10,18 @@ SLMN\Wovie\MainBundle\Entity\Media:
                 max: 100
                 minMessage: "media.title.min_message"
                 maxMessage: "media.title.max_message"
+
+SLMN\Wovie\MainBundle\Entity\Broadcast:
+    properties:
+        message:
+            - NotBlank:
+                message: "not_blank"
+            - Length:
+                min: 1
+                max: 500
+        icon:
+            - NotBlank:
+                message: "not_blank"
+            - Length:
+                min: 1
+                max: 50

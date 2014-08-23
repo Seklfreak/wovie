@@ -1,3 +1,17 @@
+/* BROADCAST */
+.broadcast {
+  background: #1A7E73;
+  text-align: center;
+  color: #fff;
+  line-height: 30px;
+  & a {
+    color: #DDDDDD;
+    &:hover {
+      color: #BEBEBE;
+    }
+  }
+}
+
 /* TOPBAR */
 @media #{$medium-up} {
   .search-wrapper {

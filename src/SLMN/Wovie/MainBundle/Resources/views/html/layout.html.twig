@@ -21,6 +21,7 @@
 {% block templatebody %}
     {% include 'SLMNWovieMainBundle::html/modals.html.twig' %}
     <div id="root">
+        {{ wovie.broadcasts() }}
         {% if query is defined %}
             {{ wovie.navbar(query) }}
         {% else %}

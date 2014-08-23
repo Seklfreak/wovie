@@ -21,6 +21,7 @@
 {% block templatebody %}
     {% include 'SLMNWovieMainBundle::html/modals.html.twig' %}
     <div id="root">
+        {{ wovie.broadcasts() }}
         {{ wovie.navbar() }}
         <div role="content">
             <div class="row">

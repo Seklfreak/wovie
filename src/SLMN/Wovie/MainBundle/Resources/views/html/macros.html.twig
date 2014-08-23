@@ -1,3 +1,17 @@
+{% macro broadcasts() %}
+    {% import _self as wovie %}
+    {% for broadcast in getEnabledBroadcasts() %}
+        {{ wovie.broadcast(broadcast) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro broadcast(broadcast) %}
+    <div class="broadcast">
+        <i class="fa fa-{{ broadcast.icon }}"></i>
+        {{ broadcast.message|raw }}
+    </div>
+{% endmacro %}
+
 {% macro resetFreebaseButton(value, for) %}
     <a
             for="{{ for }}"

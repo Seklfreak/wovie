@@ -1,0 +1,69 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - admin - edit broadcast{% endblock pagetitle %}
+
+{% block body %}
+    {% include 'SLMNWovieMainBundle:html/user/admin:modals.html.twig' %}
+    <div class="row">
+        <div class="large-2 columns">
+            {% include 'SLMNWovieMainBundle:html/user/admin:menu.html.twig' %}
+        </div>
+        <div class="large-10 columns">
+            <div class="row">
+                <div class="small-12 columns">
+                <h4>Broadcasts <small>#{{ editBroadcastForm.vars.value.id }}</small></h4>
+                </div>
+            </div>
+            {{ form_start(editBroadcastForm) }}
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_errors(editBroadcastForm) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_row(editBroadcastForm.message) }}
+                </div>
+                <div class="small-12 columns">
+                    {{ form_label(editBroadcastForm.icon) }}
+                    <div class="row collapse">
+                        <div class="small-3 large-2 columns">
+                            <span class="prefix">fa-</span>
+                        </div>
+                        <div class="small-9 large-10 columns">
+                            {{ form_widget(editBroadcastForm.icon) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="small-9 columns">
+                    <label for="broadcast_enabled">Enabled</label>
+                    <div class="switch">
+                        {{ form_widget(editBroadcastForm.enabled) }}
+                        <label for="broadcast_enabled"></label>
+                    </div>
+                </div>
+                <div class="small-3 columns">
+                    <div class="row collapse">
+                        <div class="small-4 columns">
+                        <a
+                        data-broadcast-id="{{ editBroadcastForm.vars.value.id }}"
+                        class="action-broadcast-delete button alert expand"
+                        ><i class="fa fa-trash-o"></i></a>
+                        </div>
+                        <div class="small-8 columns">
+                            {{ form_row(
+                            editBroadcastForm.submit,
+                            {'label': 'Save'}
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    {{ form_end(editBroadcastForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
