@@ -330,12 +330,12 @@
 {% macro mediaDetails(media, public) %}
     {% set views = viewsOfId(media.id) %}
     <div class="row">
-        <div class="small-12 push-1 columns small-only-text-center">
+        <div class="small-12 large-push-1 columns small-only-text-center">
             <h3>{{ media.title }}{% if media.writtenBy %} <small>written by {{ media.writtenBy|linkList2search('writer') }}</small>{% endif %}</h3>
         </div>
     </div>
     <div class="row">
-        <div class="small-12 large-4 push-1 columns" style="position: relative;">
+        <div class="small-12 large-4 large-push-1 columns" style="position: relative;">
             {% image '@SLMNWovieMainBundle/Resources/assets/placeholder.jpg'
             filter='?jpegoptim' output='images/placeholder.jpg' %}
             {% set placeholderImg = asset_url %}
@@ -490,7 +490,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="small-12 large-6 pull-1 columns">
+        <div class="small-12 large-6 large-pull-1 columns">
             <div class="row">
                 <div class="small-12 columns details-inline-list">
                     {% if media.mediaType == 1 %}
@@ -565,7 +565,7 @@
             {% endif %}
             {% set friendsThatHaveMedia = getFriendsThatHaveMedia(media) %}
             {% if friendsThatHaveMedia|length > 0 %}
-                <div class="row">
+                <div class="row" style="margin-bottom: 10px;">
                     <div class="small-12 columns">
                         {{ friendsThatHaveMedia|length }}
                         {% if friendsThatHaveMedia|length < 2 %}
