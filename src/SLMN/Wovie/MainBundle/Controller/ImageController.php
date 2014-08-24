@@ -15,7 +15,10 @@ class ImageController extends Controller
         $response = new Response();
         $image = null;
         $path = $this->container->getParameter("kernel.cache_dir").'/wovie/customCovers/';
-        @mkdir($path, 0755, $recursive=true);
+        if (!file_exists($path))
+        {
+            @mkdir($path, 0755, $recursive=true);
+        }
         $filename = $hash.'_'.$mediaId.'.jpeg';
 
         if (empty($image))
@@ -66,7 +69,10 @@ class ImageController extends Controller
         $logger = $this->get('logger');
         $image = null;
         $path = $this->container->getParameter("kernel.cache_dir").'/wovie/gravatars/';
-        @mkdir($path, 0755, $recursive=true);
+        if (!file_exists($path))
+        {
+            @mkdir($path, 0755, $recursive=true);
+        }
         $filename = $hash.'.'.$size;
         $response = new Response();
 
@@ -123,7 +129,10 @@ class ImageController extends Controller
         $logger = $this->get('logger');
         $image = null;
         $path = $this->container->getParameter("kernel.cache_dir").'/wovie/covers/';
-        @mkdir($path, 0755, $recursive=true);
+        if (!file_exists($path))
+        {
+            @mkdir($path, 0755, $recursive=true);
+        }
         $filename = md5($freebaseId);
         $response = new Response();
 
