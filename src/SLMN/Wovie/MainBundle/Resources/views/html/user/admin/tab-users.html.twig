@@ -1,0 +1,91 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - admin - users{% endblock pagetitle %}
+
+{% block body %}
+    {% include 'SLMNWovieMainBundle:html/user/admin:modals.html.twig' %}
+    <div class="row">
+        <div class="large-2 columns">
+            {% include 'SLMNWovieMainBundle:html/user/admin:menu.html.twig' %}
+        </div>
+        <div class="large-10 columns">
+            <div class="row">
+                <div class="small-12 columns">
+                <h4>Users <small>{{ totalUsers }} total</small></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>EMail</th>
+                                <th width="135">Created at</th>
+                                <th width="172">Roles</th>
+                                <th width="64">Active</th>
+                                <th width="72">Locked</th>
+                                <th width="115"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.createdat|date('Y-m-d H:i') }}</td>
+                                    <td style="font-size: 0.7em; padding: 3px;">
+                                        {% for role in user.roles %}
+                                            {{ role.name }} ({{ role.role }})<br>
+                                        {% endfor %}
+                                    </td>
+                                    <td style="
+                                    color: {% if user.isactive == 1 %}green{% else %}red{% endif %};
+                                    ">
+                                        {% if user.isactive == 1 %}yes{% else %}no{% endif %}
+                                    </td>
+                                    <td style="
+                                    color: {% if user.isnonlocked == 1 %}green{% else %}red{% endif %};
+                                    ">
+                                        {% if user.isnonlocked == 1 %}no{% else %}yes{% endif %}
+                                    </td>
+                                    <td>
+                                        <ul class="button-group">
+                                            <li>
+                                                <a
+                                                href="
+                                                {% if user.id == app.user.id %}#{% else %}
+                                                {{ path(
+                                                'slmn_wovie_user_dashboard',
+                                                { '_switch_to_user': user.username }
+                                                ) }}
+                                                {% endif %}"
+                                                class="button tiny
+                                                {% if user.id == app.user.id %}disabled{% endif %}"
+                                                style="margin-bottom: 0;"
+                                                title="impersonate user"
+                                                >
+                                                    <i class="fa fa-sign-in"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                href="#"
+                                                class="button tiny"
+                                                style="margin-bottom: 0;"
+                                                title="edit user"
+                                                >
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

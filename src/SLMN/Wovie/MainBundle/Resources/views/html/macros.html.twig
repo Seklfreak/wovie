@@ -7,6 +7,15 @@
             {% endif %}
         {% endif %}
     {% endfor %}
+    {% if app.user is not null and is_granted('ROLE_PREVIOUS_ADMIN') %}
+        <div class="broadcast">
+            <i class="fa fa-warning"></i>
+            You are impersonating another user.
+            <a class="button" href="{{ path('slmn_wovie_user_dashboard', {'_switch_to_user': '_exit'}) }}">
+                <i class="fa fa-sign-out"></i> exit impersonation
+            </a>
+        </div>
+    {% endif %}
 {% endmacro %}
 
 {% macro broadcast(broadcast) %}
@@ -675,7 +684,7 @@
         <ul class="right">
             {% if app.user is not null and is_granted('ROLE_USER') %}
                 <li class="has-form">
-                    <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">Alpha feedback</a>
+                    <a href="{{ path('slmn_wovie_user_feedback') }}" class="button secondary">feedback</a>
                 </li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="has-dropdown">
@@ -684,6 +693,11 @@
                             <b>Admin</b>
                         </a>
                         <ul class="dropdown">
+                            <li>
+                                <a href="{{ path('slmn_wovie_admin_users') }}">
+                                    <i class="fa fa-users"></i> Users
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ path('slmn_wovie_admin_broadcasts') }}">
                                     <i class="fa fa-bullhorn"></i> Broadcasts

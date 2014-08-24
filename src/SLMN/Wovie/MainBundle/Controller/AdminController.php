@@ -41,6 +41,27 @@ class AdminController extends Controller
             );
     }
 
+    public function usersAction()
+    {
+        $usersRepo = $this->getDoctrine()
+            ->getRepository('SeklMainUserBundle:User');
+        $mediasRepo = $this->getDoctrine();
+
+        $totalUsers = $usersRepo->createQueryBuilder('object')
+                ->select('count(object.id)')
+                ->getQuery()->getSingleScalarResult();
+
+        $users = $usersRepo->findAll();
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/admin:tab-users.html.twig',
+            array(
+                'users' => $users,
+                'totalUsers' => $totalUsers
+                )
+            );
+    }
+
     public function broadcastsAction(Request $request)
     {
         $broadcastsRepo = $this->getDoctrine()

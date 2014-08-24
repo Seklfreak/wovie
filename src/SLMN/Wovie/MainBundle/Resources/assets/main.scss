@@ -10,7 +10,7 @@
       color: #BEBEBE;
     }
   }
-  & .action-broadcast-close {
+  & .action-broadcast-close, a.button {
     @include button;
     font-size: 0.6875rem;
     padding: 3px 5px 3px 5px;

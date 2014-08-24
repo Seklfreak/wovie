@@ -95,7 +95,10 @@ class BillingListener
                         'slmn_wovie_user_feedback'
                     );
 
-                    if (in_array($event->getRequest()->get('_route'), $routeWhitelist))
+                    if (
+                        in_array($event->getRequest()->get('_route'), $routeWhitelist)
+                        || $this->context->isGranted('ROLE_PREVIOUS_ADMIN')
+                        )
                     {
                         if ($event->getRequest()->getMethod() == 'GET')
                         {

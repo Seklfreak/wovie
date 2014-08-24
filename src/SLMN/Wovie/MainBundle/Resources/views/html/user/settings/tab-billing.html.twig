@@ -92,7 +92,7 @@
                                                 {% endif %}
                                             </p>
                                             {% set invoice = invoices|first %}
-                                            {% if invoice.amount > 0 %}
+                                            {% if invoice and invoice.amount > 0 %}
                                                 <form action="" method="POST">
                                                     <button type="submit" name="payNowLastInvoice" value="1" class="really-tiny" style="margin-bottom: 0;">Pay now USD ${{ invoice.amount[:-2] }}.{{ invoice.amount[-2:] }}</button>
                                                 </form>

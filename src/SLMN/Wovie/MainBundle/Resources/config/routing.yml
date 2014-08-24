@@ -216,6 +216,10 @@ slmn_wovie_admin_dashboard:
     pattern:  /admin/dashboard/
     defaults: { _controller: SLMNWovieMainBundle:Admin:dashboard }
     methods:  [GET]
+slmn_wovie_admin_users:
+    pattern:  /admin/users/
+    defaults: { _controller: SLMNWovieMainBundle:Admin:users }
+    methods:  [GET]
 slmn_wovie_admin_broadcasts:
     pattern:  /admin/broadcasts/
     defaults: { _controller: SLMNWovieMainBundle:Admin:broadcasts }
