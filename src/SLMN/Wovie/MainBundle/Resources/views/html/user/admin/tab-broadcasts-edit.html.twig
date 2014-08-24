@@ -27,34 +27,40 @@
                 <div class="small-12 columns">
                     {{ form_label(editBroadcastForm.icon) }}
                     <div class="row collapse">
-                        <div class="small-3 large-2 columns">
+                        <div class="small-1 large-2 columns">
                             <span class="prefix">fa-</span>
                         </div>
-                        <div class="small-9 large-10 columns">
+                        <div class="small-11 large-10 columns">
                             {{ form_widget(editBroadcastForm.icon) }}
                         </div>
                     </div>
                 </div>
-                <div class="small-9 columns">
+                <div class="small-8 columns">
                     <div class="row collapse">
-                        <div class="small-2 columns">
+                        <div class="small-4 large-2 columns">
+                            <label for="broadcast_public">Public</label>
+                            <div class="switch">
+                                {{ form_widget(editBroadcastForm.public) }}
+                                <label for="broadcast_public"></label>
+                            </div>
+                        </div>
+                        <div class="small-4 large-2 columns">
                             <label for="broadcast_closeable">Closeable</label>
                             <div class="switch">
                                 {{ form_widget(editBroadcastForm.closeable) }}
                                 <label for="broadcast_closeable"></label>
                             </div>
                         </div>
-                        <div class="small-2 columns">
+                        <div class="small-4 large-2 end columns">
                             <label for="broadcast_enabled">Enabled</label>
                             <div class="switch">
                                 {{ form_widget(editBroadcastForm.enabled) }}
                                 <label for="broadcast_enabled"></label>
                             </div>
                         </div>
-                        <div class="small-8 columns"></div>
                     </div>
                 </div>
-                <div class="small-3 columns">
+                <div class="small-4 columns">
                     <div class="row collapse">
                         <div class="small-4 columns">
                         <a

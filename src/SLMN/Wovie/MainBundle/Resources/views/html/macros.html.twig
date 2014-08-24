@@ -1,8 +1,10 @@
 {% macro broadcasts() %}
     {% import _self as wovie %}
     {% for broadcast in getEnabledBroadcasts() %}
-        {% if not broadcast.closeable or not hasSeenBroadcast(broadcast) %}
-            {{ wovie.broadcast(broadcast) }}
+        {% if broadcast.public or (app.user is not null and is_granted('ROLE_USER')) %}
+            {% if not broadcast.closeable or not hasSeenBroadcast(broadcast) %}
+                {{ wovie.broadcast(broadcast) }}
+            {% endif %}
         {% endif %}
     {% endfor %}
 {% endmacro %}

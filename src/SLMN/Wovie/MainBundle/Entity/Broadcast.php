@@ -43,6 +43,11 @@ class Broadcast
     protected $closeable = true;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $public = true;
+
+    /**
      * Gets the value of id.
      *
      * @return mixed
@@ -182,6 +187,30 @@ class Broadcast
     public function setCloseable($closeable)
     {
         $this->closeable = $closeable;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of public.
+     *
+     * @return mixed
+     */
+    public function getPublic()
+    {
+        return $this->public;
+    }
+    
+    /**
+     * Sets the value of public.
+     *
+     * @param mixed $public the public 
+     *
+     * @return self
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
 
         return $this;
     }

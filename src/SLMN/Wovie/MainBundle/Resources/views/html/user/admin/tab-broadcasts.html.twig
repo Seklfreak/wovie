@@ -22,7 +22,8 @@
                             <tr>
                                 <th>Message</th>
                                 <th width="50">Icon</th>
-                                <th width="75">Closeable</th>
+                                <th width="64">Public</th>
+                                <th width="87">Closeable</th>
                                 <th width="75">Enabled</th>
                                 <th width="70"></th>
                             </tr>
@@ -32,6 +33,11 @@
                                 <tr>
                                     <td>{{ broadcast.message|raw }}</td>
                                     <td><i class="fa fa-{{ broadcast.icon }}"></i></td>
+                                    <td style="
+                                    color: {% if broadcast.public == 1 %}green{% else %}red{% endif %};
+                                    ">
+                                        {% if broadcast.public == 1 %}yes{% else %}no{% endif %}
+                                    </td>
                                     <td>
                                         <span
                                         style="
@@ -82,15 +88,22 @@
                 <div class="large-5 small-12 columns">
                     {{ form_row(newBroadcastForm.message) }}
                 </div>
-                <div class="large-3 small-12 columns">
+                <div class="large-2 small-12 columns">
                     {{ form_label(newBroadcastForm.icon) }}
                     <div class="row collapse">
-                        <div class="small-3 large-2 columns">
+                        <div class="small-1 large-3 columns">
                             <span class="prefix">fa-</span>
                         </div>
-                        <div class="small-9 large-10 columns">
+                        <div class="small-11 large-9 columns">
                             {{ form_widget(newBroadcastForm.icon) }}
                         </div>
+                    </div>
+                </div>
+                <div class="large-1 small-3 columns">
+                    <label for="broadcast_public">Public</label>
+                    <div class="switch">
+                        {{ form_widget(newBroadcastForm.public) }}
+                        <label for="broadcast_public"></label>
                     </div>
                 </div>
                 <div class="large-1 small-3 columns">
@@ -107,7 +120,7 @@
                         <label for="broadcast_enabled"></label>
                     </div>
                 </div>
-                <div class="large-2 small-6 columns">
+                <div class="large-2 small-3 columns">
                     {{ form_row(
                     newBroadcastForm.submit,
                     {'label': 'Add', 'attr': {'class': 'tiny', 'style': 'margin-top: 20px;'}}
