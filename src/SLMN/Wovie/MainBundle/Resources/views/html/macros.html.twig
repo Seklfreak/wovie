@@ -1,14 +1,19 @@
 {% macro broadcasts() %}
     {% import _self as wovie %}
     {% for broadcast in getEnabledBroadcasts() %}
-        {{ wovie.broadcast(broadcast) }}
+        {% if not hasSeenBroadcast(broadcast) %}
+            {{ wovie.broadcast(broadcast) }}
+        {% endif %}
     {% endfor %}
 {% endmacro %}
 
 {% macro broadcast(broadcast) %}
-    <div class="broadcast">
+    <div class="broadcast" data-broadcast-id="{{ broadcast.id }}">
         <i class="fa fa-{{ broadcast.icon }}"></i>
         {{ broadcast.message|raw }}
+        {% if broadcast.closeable == true %}
+            <button class="action-broadcast-close">OK</button>
+        {% endif %}
     </div>
 {% endmacro %}
 

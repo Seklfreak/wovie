@@ -607,32 +607,47 @@ $(function() {
                 });
         }
     });
+    /* BROADCAST */
+    $('.action-broadcast-close').unbind().click(function () {
+        var button = $(this);
+        var broadcast = $(this).parent();
+        var broadcastId = broadcast.data('broadcast-id');
+        if (broadcastId != null)
+        {
+            broadcast.remove();
+            $.ajax({
+                url: Routing.generate('slmn_wovie_action_ajax_broadcast_markAsSeen'),
+                type: "POST",
+                data: { broadcast_id: broadcastId }
+            });
+        }
+    });
     /* ADMIN */
     $('.action-broadcast-delete').unbind().click(function() {
-    var button = $(this);
-    var broadcastId = $(this).data('broadcast-id');
-    if (broadcastId != null)
-    {
-        button.prop('disabled', true);
-        button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
-        $.ajax({
-            url: Routing.generate('slmn_wovie_admin_broadcasts_action_ajax_delete'),
-            type: "POST",
-            data: { broadcast_id: broadcastId }
-        })
-            .success(function(data) {
-                if (data.status == 'success')
-                {
-                    $(button).addClass('success');
-                    $(button).html('<i class="fa fa-check fa-lg"></i>');
-                    window.location.replace(Routing.generate('slmn_wovie_admin_broadcasts'));
-                }
-                else
-                {
-                    $(button).addClass('alert');
-                    $(button).html('Error!');
-                }
-            });
-    }
+        var button = $(this);
+        var broadcastId = $(this).data('broadcast-id');
+        if (broadcastId != null)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_admin_broadcasts_action_ajax_delete'),
+                type: "POST",
+                data: { broadcast_id: broadcastId }
+            })
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('success');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
+                        window.location.replace(Routing.generate('slmn_wovie_admin_broadcasts'));
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
     });
 });

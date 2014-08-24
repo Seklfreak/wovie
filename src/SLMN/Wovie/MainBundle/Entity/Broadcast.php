@@ -38,6 +38,11 @@ class Broadcast
     protected $enabled = true;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $closeable = true;
+
+    /**
      * Gets the value of id.
      *
      * @return mixed
@@ -153,6 +158,30 @@ class Broadcast
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of closeable.
+     *
+     * @return mixed
+     */
+    public function getCloseable()
+    {
+        return $this->closeable;
+    }
+    
+    /**
+     * Sets the value of closeable.
+     *
+     * @param mixed $closeable the closeable 
+     *
+     * @return self
+     */
+    public function setCloseable($closeable)
+    {
+        $this->closeable = $closeable;
 
         return $this;
     }

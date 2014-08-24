@@ -204,6 +204,12 @@ slmn_wovie_actions_ajax_deleteCoverImage:
     methods: [POST]
     options:
       expose: true
+slmn_wovie_action_ajax_broadcast_markAsSeen:
+    pattern:  /action/ajax/broadcast/mark_as_seen.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:markAsSeenBroadcast }
+    methods:  [POST]
+    options:
+        expose: true
 
 # Admin
 slmn_wovie_admin_dashboard:
@@ -223,7 +229,7 @@ slmn_wovie_admin_broadcasts_edit:
     requirements:
         broadcastId: \d+
 slmn_wovie_admin_broadcasts_action_ajax_delete:
-    pattern:  /admin/action/ajax/broadcast/delete/
+    pattern:  /admin/action/ajax/broadcast/delete.json
     defaults: { _controller: SLMNWovieMainBundle:Admin:deleteBroadcastAjax }
     methods:  [POST]
     options:

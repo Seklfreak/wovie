@@ -51,8 +51,27 @@ class SlmnWovieExtension extends \Twig_Extension
             'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction'),
             'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction'),
             'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction'),
-            'getEnabledBroadcasts' => new \Twig_Function_Method($this, 'getEnabledBroadcastsFunction')
+            'getEnabledBroadcasts' => new \Twig_Function_Method($this, 'getEnabledBroadcastsFunction'),
+            'hasSeenBroadcast' => new \Twig_Function_Method($this, 'hasSeenBroadcastFunction')
         );
+    }
+
+    public function hasSeenBroadcastFunction($broadcast, $user=null)
+    {
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+
+        $redisKey = 'broadcast:'.$broadcast->getId().':seenBy:user:'.$user->getId();
+        if($this->cacheHandler->get($redisKey))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function getEnabledBroadcastsFunction()

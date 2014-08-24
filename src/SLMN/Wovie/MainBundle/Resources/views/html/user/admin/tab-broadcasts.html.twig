@@ -22,6 +22,7 @@
                             <tr>
                                 <th>Message</th>
                                 <th width="50">Icon</th>
+                                <th width="75">Closeable</th>
                                 <th width="75">Enabled</th>
                                 <th width="70"></th>
                             </tr>
@@ -29,21 +30,39 @@
                         <tbody>
                             {% for broadcast in broadcasts %}
                                 <tr>
-                                  <td>{{ broadcast.message|raw }}</td>
-                                  <td><i class="fa fa-{{ broadcast.icon }}"></i></td>
-                                  <td style="
-                                  color: {% if broadcast.enabled == 1 %}green{% else %}red{% endif %};
-                                  ">
-                                    {% if broadcast.enabled == 1 %}yes{% else %}no{% endif %}
-                                  </td>
-                                  <td>
-                                      <a
-                                      href="{{ path('slmn_wovie_admin_broadcasts_edit', {'broadcastId': broadcast.id}) }}"
-                                      class="button tiny"
-                                      style="margin-bottom: 0;"
-                                      ><i class="fa fa-pencil"></i>
-                                      </a>
-                                  </td>
+                                    <td>{{ broadcast.message|raw }}</td>
+                                    <td><i class="fa fa-{{ broadcast.icon }}"></i></td>
+                                    <td>
+                                        <span
+                                        style="
+                                        color: {% if broadcast.closeable == 1 %}green{% else %}red{% endif %};
+                                        ">
+                                            {% if broadcast.closeable == 1 %}yes{% else %}no{% endif %}
+                                        </span>
+                                        {% if broadcast.closeable == 1 %}
+                                            <span
+                                            data-tooltip
+                                            aria-haspopup="true"
+                                            class="has-tip"
+                                            title="Marked as seen by users"
+                                            >
+                                                ({{ broadcastsTotalSeenBy[broadcast.id] }})
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="
+                                    color: {% if broadcast.enabled == 1 %}green{% else %}red{% endif %};
+                                    ">
+                                        {% if broadcast.enabled == 1 %}yes{% else %}no{% endif %}
+                                    </td>
+                                    <td>
+                                        <a
+                                        href="{{ path('slmn_wovie_admin_broadcasts_edit', {'broadcastId': broadcast.id}) }}"
+                                        class="button tiny"
+                                        style="margin-bottom: 0;"
+                                        ><i class="fa fa-pencil"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -60,7 +79,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="large-6 small-12 columns">
+                <div class="large-5 small-12 columns">
                     {{ form_row(newBroadcastForm.message) }}
                 </div>
                 <div class="large-3 small-12 columns">
@@ -74,7 +93,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="large-1 small-6 columns">
+                <div class="large-1 small-3 columns">
+                    <label for="broadcast_closeable">Closeable</label>
+                    <div class="switch">
+                        {{ form_widget(newBroadcastForm.closeable) }}
+                        <label for="broadcast_closeable"></label>
+                    </div>
+                </div>
+                <div class="large-1 small-3 columns">
                     <label for="broadcast_enabled">Enabled</label>
                     <div class="switch">
                         {{ form_widget(newBroadcastForm.enabled) }}

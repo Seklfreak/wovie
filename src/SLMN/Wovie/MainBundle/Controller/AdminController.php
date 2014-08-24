@@ -63,12 +63,21 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('slmn_wovie_admin_broadcasts'));
         }
 
+        $broadcastsTotalSeenBy = array();
+        foreach ($broadcasts as $broadcast)
+        {
+            $redis = $this->container->get('snc_redis.default');
+            $broadcastsTotalSeenBy[$broadcast->getId()] = count($redis->keys(
+                'broadcast:'.$broadcast->getId().':seenBy:*'
+                ));
+        }
 
         return $this->render(
             'SLMNWovieMainBundle:html/user/admin:tab-broadcasts.html.twig',
             array(
                 'broadcasts' => $broadcasts,
-                'newBroadcastForm' => $newBroadcastForm->createView()
+                'newBroadcastForm' => $newBroadcastForm->createView(),
+                'broadcastsTotalSeenBy' => $broadcastsTotalSeenBy
                 )
             );
     }

@@ -669,4 +669,40 @@ class ActionController extends Controller
 
         return $response;
     }
+
+    public function markAsSeenBroadcastAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($broadcastId=intval($request->get('broadcast_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $broadcastRepo = $em->getRepository('SLMNWovieMainBundle:Broadcast');
+            $broadcast = $broadcastRepo->findOneById($broadcastId);
+            if ($broadcast != null)
+            {
+                $redis = $this->container->get('snc_redis.default');
+                $redisKey = 'broadcast:'.$broadcast->getId().':seenBy:user:'.$this->getUser()->getId();
+                if(!$redis->get($redisKey))
+                {
+                    $redis->set($redisKey, true);
+                    $response->setData(array(
+                        'status' => 'success'
+                    ));
+                }
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
 }

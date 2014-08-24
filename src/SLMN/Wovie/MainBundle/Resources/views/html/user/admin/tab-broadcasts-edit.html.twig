@@ -36,10 +36,22 @@
                     </div>
                 </div>
                 <div class="small-9 columns">
-                    <label for="broadcast_enabled">Enabled</label>
-                    <div class="switch">
-                        {{ form_widget(editBroadcastForm.enabled) }}
-                        <label for="broadcast_enabled"></label>
+                    <div class="row collapse">
+                        <div class="small-2 columns">
+                            <label for="broadcast_closeable">Closeable</label>
+                            <div class="switch">
+                                {{ form_widget(editBroadcastForm.closeable) }}
+                                <label for="broadcast_closeable"></label>
+                            </div>
+                        </div>
+                        <div class="small-2 columns">
+                            <label for="broadcast_enabled">Enabled</label>
+                            <div class="switch">
+                                {{ form_widget(editBroadcastForm.enabled) }}
+                                <label for="broadcast_enabled"></label>
+                            </div>
+                        </div>
+                        <div class="small-8 columns"></div>
                     </div>
                 </div>
                 <div class="small-3 columns">

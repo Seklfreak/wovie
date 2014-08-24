@@ -21,6 +21,9 @@ class BroadcastType extends AbstractType
                     'invalid_message' => 'not_blank'
                 )
             ))
+            ->add('closeable', 'checkbox', array(
+                'required' => false
+            ))
             ->add('enabled', 'checkbox', array(
                 'required' => false
             ))
