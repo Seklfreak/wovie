@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Username</th>
                                 <th>EMail</th>
-                                <th width="135">Created at</th>
+                                <th width="95">Created at</th>
                                 <th width="95">Roles</th>
                                 <th width="64">Active</th>
                                 <th width="72">Locked</th>
@@ -33,7 +33,10 @@
                                 <tr>
                                     <td>{{ user.username }}</td>
                                     <td>{{ user.email }}</td>
-                                    <td>{{ user.createdat|date('Y-m-d H:i') }}</td>
+                                    <td>
+                                        {{ user.createdat|date('Y-m-d') }}<br>
+                                        {{ user.createdat|date('H:i') }}
+                                    </td>
                                     <td>
                                         {% for role in user.roles %}
                                             <span
