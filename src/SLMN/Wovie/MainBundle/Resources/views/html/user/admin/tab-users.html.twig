@@ -16,13 +16,13 @@
             </div>
             <div class="row">
                 <div class="small-12 columns">
-                    <table>
+                    <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Username</th>
                                 <th>EMail</th>
                                 <th width="135">Created at</th>
-                                <th width="172">Roles</th>
+                                <th width="95">Roles</th>
                                 <th width="64">Active</th>
                                 <th width="72">Locked</th>
                                 <th width="115"></th>
@@ -34,9 +34,17 @@
                                     <td>{{ user.username }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.createdat|date('Y-m-d H:i') }}</td>
-                                    <td style="font-size: 0.7em; padding: 3px;">
+                                    <td>
                                         {% for role in user.roles %}
-                                            {{ role.name }} ({{ role.role }})<br>
+                                            <span
+                                            data-tooltip
+                                            aria-haspopup="true"
+                                            class="has-tip"
+                                            title="{{ role.role }}"
+                                            style="font-weight: normal;"
+                                            >
+                                                {{ role.name }}<br>
+                                            </span>
                                         {% endfor %}
                                     </td>
                                     <td style="
