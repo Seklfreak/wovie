@@ -58,6 +58,11 @@ class SlmnWovieExtension extends \Twig_Extension
 
     public function hasSeenBroadcastFunction($broadcast, $user=null)
     {
+        if (!$this->context->isGranted('IS_AUTHENTICATED_REMEMBERED'))
+        {
+            return false;
+        }
+
         if (!$user)
         {
             $user = $this->context->getToken()->getUser();

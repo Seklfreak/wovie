@@ -11,7 +11,7 @@
     <div class="broadcast" data-broadcast-id="{{ broadcast.id }}">
         <i class="fa fa-{{ broadcast.icon }}"></i>
         {{ broadcast.message|raw }}
-        {% if broadcast.closeable == true %}
+        {% if app.user is not null and is_granted('ROLE_USER') and broadcast.closeable == true %}
             <button class="action-broadcast-close">OK</button>
         {% endif %}
     </div>
