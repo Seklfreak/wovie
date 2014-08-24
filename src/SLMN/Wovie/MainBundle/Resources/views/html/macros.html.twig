@@ -12,7 +12,7 @@
         <i class="fa fa-{{ broadcast.icon }}"></i>
         {{ broadcast.message|raw }}
         {% if app.user is not null and is_granted('ROLE_USER') and broadcast.closeable == true %}
-            <button class="action-broadcast-close">OK</button>
+            <button class="action-broadcast-close"><i class="fa fa-times"></i></button>
         {% endif %}
     </div>
 {% endmacro %}
