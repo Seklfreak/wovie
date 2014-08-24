@@ -1,7 +1,7 @@
 {% macro broadcasts() %}
     {% import _self as wovie %}
     {% for broadcast in getEnabledBroadcasts() %}
-        {% if not hasSeenBroadcast(broadcast) %}
+        {% if not broadcast.closeable or not hasSeenBroadcast(broadcast) %}
             {{ wovie.broadcast(broadcast) }}
         {% endif %}
     {% endfor %}
