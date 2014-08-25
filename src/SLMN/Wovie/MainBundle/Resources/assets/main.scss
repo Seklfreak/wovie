@@ -19,6 +19,10 @@
 }
 
 /* TOPBAR */
+.top-bar.expanded .toggle-topbar a {
+  color: #E0E0E0 !important;
+}
+
 @media #{$medium-up} {
   .search-wrapper {
     &:before {

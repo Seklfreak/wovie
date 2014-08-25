@@ -81,7 +81,10 @@
                                             </li>
                                             <li>
                                                 <a
-                                                href="#"
+                                                href="{{ path(
+                                                'slmn_wovie_admin_users_edit',
+                                                {'userId': user.id}
+                                                ) }}"
                                                 class="button tiny"
                                                 style="margin-bottom: 0;"
                                                 title="edit user"

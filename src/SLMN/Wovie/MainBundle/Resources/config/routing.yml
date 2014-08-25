@@ -220,6 +220,10 @@ slmn_wovie_admin_users:
     pattern:  /admin/users/
     defaults: { _controller: SLMNWovieMainBundle:Admin:users }
     methods:  [GET]
+slmn_wovie_admin_users_edit:
+    pattern:  /admin/users/{userId}
+    defaults: { _controller: SLMNWovieMainBundle:Admin:editUser }
+    methods:  [GET, POST]
 slmn_wovie_admin_broadcasts:
     pattern:  /admin/broadcasts/
     defaults: { _controller: SLMNWovieMainBundle:Admin:broadcasts }

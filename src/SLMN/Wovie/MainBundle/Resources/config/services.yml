@@ -11,6 +11,7 @@ parameters:
     slmn_wovie_main.form.type.stripeCustomer.class: SLMN\Wovie\MainBundle\Form\Type\StripeCustomerType
     slmn_wovie_main.form.type.createUser.class: SLMN\Wovie\MainBundle\Form\Type\CreateUserType
     slmn_wovie_main.form.type.broadcast.class: SLMN\Wovie\MainBundle\Form\Type\BroadcastType
+    slmn_wovie_main.form.type.editUserAdmin.class: SLMN\Wovie\MainBundle\Form\Type\EditUserAdminType
     slmn_wovie_main.userOption.class: SLMN\Wovie\MainBundle\UserOption
     slmn_wovie_main.session_fix.class: SLMN\Wovie\MainBundle\SessionFix
     slmn_wovie_main.billing_listener.class: SLMN\Wovie\MainBundle\BillingListener
@@ -142,4 +143,8 @@ services:
         class: %slmn_wovie_main.form.type.broadcast.class%
         tags:
             - { name: form.type, alias: broadcast }
+    slmn_wovie_main.form.type.editUserAdmin:
+        class: %slmn_wovie_main.form.type.editUserAdmin.class%
+        tags:
+            - { name: form.type, alias: editUserAdmin }
 

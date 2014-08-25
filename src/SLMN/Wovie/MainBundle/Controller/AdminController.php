@@ -62,6 +62,56 @@ class AdminController extends Controller
             );
     }
 
+    public function editUserAction(Request $request, $userId)
+    {
+        $usersRepo = $this->getDoctrine()
+            ->getRepository('SeklMainUserBundle:User');
+        $em = $this->getDoctrine()->getManager();
+
+        $editUser = $usersRepo->findOneById($userId);
+
+        if (!$editUser)
+        {
+            $this->get('session')->getFlashBag()->add('error', 'User not found.');
+            return $this->redirect($this->generateUrl('slmn_wovie_admin_users'));
+        }
+
+        $editUserForm = $this->createForm('editUserAdmin', $editUser);
+        $oldPassword = $editUser->getPassword();
+        $editUserForm->handleRequest($request);
+        if ($editUserForm->isValid())
+        {
+            if ($editUser->getPassword() != '')
+            {
+                $editUser->setSalt(md5(uniqid(null, true)));
+
+                $factory = $this->get('security.encoder_factory');
+
+                $encoder = $factory->getEncoder($editUser);
+                $password = $encoder->encodePassword($editUser->getPassword(), $editUser->getSalt());
+                $editUser->setPassword($password);
+            }
+            else
+            {
+                $editUser->setPassword($oldPassword);
+            }
+
+            $em->persist($editUser);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'User successfully edited.');
+            return $this->redirect($this->generateUrl('slmn_wovie_admin_users'));
+        }
+
+
+        return $this->render(
+            'SLMNWovieMainBundle:html/user/admin:tab-users-edit.html.twig',
+            array(
+                'editUserForm' => $editUserForm->createView()
+                )
+            );
+    }
+
     public function broadcastsAction(Request $request)
     {
         $broadcastsRepo = $this->getDoctrine()
