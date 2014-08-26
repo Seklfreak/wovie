@@ -22,7 +22,7 @@
                             Share <a href="{{ profileUrl }}" target="_blank">your profile</a> with your friends.
                         </label>
                         <div class="row collapse">
-                            <div class="small-11 columns">
+                            <div class="large-11 small-10 columns">
                                 <input
                                         id="public-profile-url"
                                         type="text"
@@ -30,7 +30,7 @@
                                         value="{{ profileUrl }}"
                                         >
                             </div>
-                            <div class="small-1 columns">
+                            <div class="large-1 small-2 columns">
                                 <a
                                         class="button postfix clipboard"
                                         title="Click to copy"
@@ -48,14 +48,14 @@
                     {{ form_errors(generalSettingsForm) }}
                     {{ form_row(generalSettingsForm.language, { 'value': getUserOption('language', 'en') }) }}
                     <div class="row">
-                        <div class="small-2 columns">
+                        <div class="large-2 small-3 columns">
                             <div class="switch">
                                 {{ form_widget(generalSettingsForm.publicProfile, { 'checked': getUserOption('publicProfile', false) }) }}
                                 <label for="generalSettings_publicProfile"></label>
                             </div>
                         </div>
-                        <div class="small-10 columns">
-                            <label for="generalSettings_publicProfile" class="switch-label">Enable public profile page?</label>
+                        <div class="large-10 small-9 columns">
+                            <label for="generalSettings_publicProfile" class="switch-label">Public profile</label>
                         </div>
                     </div>
                     {{ form_row(generalSettingsForm.submit) }}

@@ -3,40 +3,51 @@
 {% block pagetitle %}WOVIE - dashboard{% endblock pagetitle %}
 
 {% block body %}
-    <div class="row">
-        <div class="large-12 columns" style="margin-bottom: 0; margin-top: 10px;">
-            {{ main.alertBox('Try the search above to add movies and series.', 'secondary') }}
+    {% set recentlySeenMovies = getMyMovies('-1 week') %}
+    {% if  recentlySeenMovies|length <= 0 %}
+        <div class="row">
+            <div class="large-12 columns" style="margin-bottom: 0; margin-top: 10px;">
+                {{ main.alertBox('Try the search above to add movies and series.', 'secondary') }}
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div class="row">
         <div class="small-12 columns">
             <h4>Recently seen</h4>
         </div>
     </div>
-    <div class="row">
-        <div class="large-12 columns">
-            <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-4" id="media-entries">
-                {% for media in getMyMovies('-1 week') %}
-                    <li
-                            class="media-entry"
-                            data-media-type="{{ media.mediaType }}"
-                            data-views="{{ viewsOfId(media.id) }}"
-                            {% if media.mediaType == 2 %}
-                                data-numberofepisodes="{{ media.numberOfEpisodes }}"
-                            {% endif %}
-                            data-favorite="{{ media.favorite }}"
-                            >
-                        <div
-                                data-media-id="{{ media.id }}"
-                                data-src="{{ path('slmn_wovie_action_ajax_details_small', {'id': media.id}) }}"
-                                class="refresh-media">
-                            {{ wovie.mediaItem(media) }}
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+    {% if recentlySeenMovies|length > 0 %}
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-4" id="media-entries">
+                    {% for media in recentlySeenMovies %}
+                        <li
+                                class="media-entry"
+                                data-media-type="{{ media.mediaType }}"
+                                data-views="{{ viewsOfId(media.id) }}"
+                                {% if media.mediaType == 2 %}
+                                    data-numberofepisodes="{{ media.numberOfEpisodes }}"
+                                {% endif %}
+                                data-favorite="{{ media.favorite }}"
+                                >
+                            <div
+                                    data-media-id="{{ media.id }}"
+                                    data-src="{{ path('slmn_wovie_action_ajax_details_small', {'id': media.id}) }}"
+                                    class="refresh-media">
+                                {{ wovie.mediaItem(media) }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="row">
+            <div class="large-12 columns">
+                {{ main.alertBox('You haven\'t seen anything in the last week. :(', '', 0) }}
+            </div>
+        </div>
+    {% endif %}
     {% if getUserOption('didJoyrideDashboard', false) == false %}
         {% include "SLMNWovieMainBundle:html/joyride:dashboard.html.twig" %}
         {% set done = setUserOption('didJoyrideDashboard', true) %}
