@@ -15,6 +15,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     nodeBin:           /usr/bin/node
+    compassBin:        /usr/bin/compass
 
     elasticsearch.host: localhost
     elasticsearch.port: 9200

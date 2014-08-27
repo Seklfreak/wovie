@@ -23,9 +23,6 @@
             "url": "http://git.slmn.de/Seklfreak/seklmainfoundationbundle.git"
         }
     ],
-    "provide": {
-        "ext-bcmath": "1.0"
-        },
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.5",

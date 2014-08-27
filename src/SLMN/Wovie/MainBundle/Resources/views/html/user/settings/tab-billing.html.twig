@@ -135,7 +135,14 @@
                                             <div class="small-12 columns">
                                                 <label>
                                                     <span>Card Number</span>
-                                                    <input type="text" size="20" id="cc-number" data-stripe="number"/>
+                                                    <div class="row collapse">
+                                                        <div class="large-12 columns">
+                                                            <input type="text" size="20" id="cc-number" data-stripe="number"/>
+                                                        </div>
+                                                        <div class="large-2 hide columns">
+                                                            <span class="postfix" id="cc-label"></span>
+                                                        </div>
+                                                    </div>
                                                 </label>
                                             </div>
                                         </div>
@@ -271,6 +278,20 @@
                 $form.get(0).submit();
             }
         };
+        function resetCcLabel($input, $label) {
+            $input.parent().removeClass('large-10');
+            $input.parent().removeClass('large-12');
+            $label.parent().removeClass('hide');
+        }
+        function showCcLabel($input, $label) {
+            resetCcLabel($input, $label);
+            $input.parent().addClass('large-10');
+        }
+        function hideCcLabel($input, $label) {
+            resetCcLabel($input, $label);
+            $input.parent().addClass('large-12');
+            $label.parent().addClass('hide');
+        }
         $(function($) {
             $('#payment-form').submit(function(event) {
                 var $form = $(this);
@@ -284,27 +305,30 @@
             $('#cc-number').validateCreditCard(function(result)
             {
                 var $input = $('#cc-number');
+                var $label = $('#cc-label');
                 if (result.card_type)
                 {
                     switch(result.card_type.name)
                     {
                         case 'visa':
-                            $input.addClass('visa');
+                            $label.html('<i class="fa fa-cc-visa fa-2x"></i>');
+                            showCcLabel($input, $label);
                             break;
                         case 'amex':
-                            $input.addClass('american-express');
+                            $label.html('<i class="fa fa-cc-amex fa-2x"></i>');
+                            showCcLabel($input, $label);
                             break;
                         case 'discover':
-                            $input.addClass('discover');
+                            $label.html('<i class="fa fa-cc-discover fa-2x"></i>');
+                            showCcLabel($input, $label);
                             break;
                         case 'mastercard':
-                            $input.addClass('mastercard');
+                            $label.html('<i class="fa fa-cc-mastercard fa-2x"></i>');
+                            showCcLabel($input, $label);
                             break;
                         default:
-                            $input.removeClass('visa');
-                            $input.removeClass('american-express');
-                            $input.removeClass('discover');
-                            $input.removeClass('mastercard');
+                            hideCcLabel($input, $label);
+                            $label.empty();
                             break;
                     }
                 }

@@ -14,7 +14,7 @@ framework:
     validation:      { enable_annotations: true, api: 2.4 }
     templating:
         engines:         ['twig']
-        assets_version:  v85
+        assets_version:  v86
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
@@ -49,7 +49,8 @@ assetic:
             bin: /usr/bin/jpegoptim
             strip_all: true
             max: 90
-        compass:
+        compass: # gem install compass -v 0.12.7
+            bin: "%compassBin%"
             apply_to: "\.sass"
         uglifyjs2:
             node: "%nodeBin%"
