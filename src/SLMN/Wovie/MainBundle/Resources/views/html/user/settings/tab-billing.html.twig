@@ -139,7 +139,7 @@
                                                         <div class="large-12 columns">
                                                             <input type="text" size="20" id="cc-number" data-stripe="number"/>
                                                         </div>
-                                                        <div class="large-2 hide columns">
+                                                        <div class="large-2 medium-1 small-2 hide columns">
                                                             <span class="postfix" id="cc-label"></span>
                                                         </div>
                                                     </div>
@@ -280,16 +280,24 @@
         };
         function resetCcLabel($input, $label) {
             $input.parent().removeClass('large-10');
+            $input.parent().removeClass('medium-11');
+            $input.parent().removeClass('small-10');
             $input.parent().removeClass('large-12');
+            $input.parent().removeClass('medium-12');
+            $input.parent().removeClass('small-12');
             $label.parent().removeClass('hide');
         }
         function showCcLabel($input, $label) {
             resetCcLabel($input, $label);
             $input.parent().addClass('large-10');
+            $input.parent().addClass('medium-11');
+            $input.parent().addClass('small-10');
         }
         function hideCcLabel($input, $label) {
             resetCcLabel($input, $label);
             $input.parent().addClass('large-12');
+            $input.parent().addClass('medium-12');
+            $input.parent().addClass('small-12');
             $label.parent().addClass('hide');
         }
         $(function($) {
