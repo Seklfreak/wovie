@@ -225,6 +225,9 @@
 }
 
 /* CHOOSE EPISODE */
+.choose-episode-group li > button {
+  margin-bottom: 15px;
+}
 // original: http://codepen.io/bbodine1/pen/novBm
 .choose-episode-checkbox {
   height: 33px;
@@ -233,6 +236,8 @@
   margin: 20px auto;
   padding-top: 7px !important;
   padding-right: 16px !important;
+  margin-top: 0;
+  margin-bottom: 0;
   label {
     margin-top: 6px;
     width: 20px;
