@@ -358,7 +358,7 @@
                                                 Next S{% if episode.season|length < 2 %}0{% endif %}{{ episode.season }}E{% if episode.episode|length < 2 %}0{% endif %}{{ episode.episode }}
                                                   </span>
                                             {% set hasUnwatched = true %}
-                                            <button class="next-episode-watched watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ key }}"><i class="fa fa-eye"></i></button>
+                                            <button id="mark-next-episode" class="next-episode-watched watched_it" data-media-id="{{ media.id }}" data-episode-id="{{ key }}"><i class="fa fa-eye"></i></button>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -410,11 +410,11 @@
                 <div class="row collapse">
                     <div class="{% if views > 0 and media.mediaType == 1 %}small-8{% else %}small-10{% endif %} columns">
                         {% if media.mediaType == 1 %}
-                            <button id="watched-it-button" class="button expand tiny watched_it_cover" data-media-id="{{ media.id }}" style="margin-bottom: 0;">Mark as seen
+                            <button id="mark-as-seen" class="button expand tiny watched_it_cover" data-media-id="{{ media.id }}" style="margin-bottom: 0;">Mark as seen
                             </button>
                         {% else %}
                             <button
-                                    id="watched-it-button"
+                                    id="mark-as-seen"
                                     class="button expand tiny"
                                     data-reveal-id="modal-frame-choose-episode"
                                     onclick="$('#modal-frame-choose-episode > iframe').attr('src', '{{ path('slmn_wovie_action_frames_choose_episode', {'id': media.id}) }}')"

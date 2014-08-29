@@ -78,9 +78,11 @@
     '@SLMNWovieMainBundle/Resources/assets/lib/waypoints.js'
     '@SLMNWovieMainBundle/Resources/assets/lib/waypoints-infinite.js'
     '@SLMNWovieMainBundle/Resources/assets/lib/dropzone.js'
+    '@SLMNWovieMainBundle/Resources/assets/lib/mousetrap.js'
     'bundles/fosjsrouting/js/router.js'
     'js/fos_js_routes.js'
     '@SLMNWovieMainBundle/Resources/assets/add.js'
+    '@SLMNWovieMainBundle/Resources/assets/keyboard.js'
     output='js/main.js' filter='?uglifyjs2'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -103,6 +105,9 @@
             })();
         </script>
     {% endif %}
+    <script type="text/javascript">
+        loggedIn = {% if app.user is not null and is_granted('ROLE_USER') %}true{% else %}false{% endif %};
+    </script>
     {% block customJavascript %}{% endblock customJavascript %}
     {% include "SLMNWovieMainBundle::html/customJs.html.twig" %}
 {% endblock endbody %}

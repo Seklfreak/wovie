@@ -82,6 +82,8 @@ slmn_wovie_user_activity:
     methods:  [GET, POST]
     requirements:
         id: \d+
+    options:
+      expose: true
 slmn_wovie_user_search:
     pattern:  /search
     defaults: { _controller: SLMNWovieMainBundle:User:search }
