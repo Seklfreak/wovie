@@ -14,6 +14,8 @@ $(function() {
             Mousetrap.bind('g l', function () { window.location.href = Routing.generate('slmn_wovie_user_movie_shelf') });
             // g a => go to activity
             Mousetrap.bind('g a', function () { window.location.href = Routing.generate('slmn_wovie_user_activity') });
+            // g d => go to dashboard
+            Mousetrap.bind('g d', function () { window.location.href = Routing.generate('slmn_wovie_user_dashboard') });
             // d n => mark next episode as watched
             if ($('#mark-next-episode').length > 0)
             {
