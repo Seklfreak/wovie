@@ -264,20 +264,31 @@ class ActionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $followsRepo = $em->getRepository('SLMNWovieMainBundle:Follow');
                 $usersRepo = $em->getRepository('SeklMainUserBundle:User');
+            $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
                 if (($doFollow=$usersRepo->findOneById(intval($userId))))
                 {
                     if (!$followsRepo->findOneBy(array('user' => $this->getUser(), 'follow' => $doFollow)))
                     {
-                        $follow = new Follow();
-                        $follow->setUser($this->getUser());
-                        $follow->setFollow($doFollow);
-                        $follow->setCreatedAt(new \DateTime());
-                        $em->persist($follow);
-                        $em->flush();
+                        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $doFollow, 'key' => 'publicProfile'));
+                        if ($publicProfileBool && $publicProfileBool->getValue() == true)
+                        {
+                            $follow = new Follow();
+                            $follow->setUser($this->getUser());
+                            $follow->setFollow($doFollow);
+                            $follow->setCreatedAt(new \DateTime());
+                            $em->persist($follow);
+                            $em->flush();
 
-                        $response->setData(array(
-                            'status' => 'success'
-                        ));
+                            $response->setData(array(
+                                'status' => 'success'
+                            ));
+                        }
+                        else
+                        {
+                            $response->setData(array(
+                                'status' => 'error'
+                            ));
+                        }
                     }
                     else
                     {

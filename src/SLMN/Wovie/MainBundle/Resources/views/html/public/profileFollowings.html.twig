@@ -25,7 +25,7 @@
                                 <div class="small-12 columns">
                                     <a href="{{ path('slmn_wovie_public_profile', { 'username': follower.follow.username }) }}">
                                         <img class="avatar-50" src="{{ getGravatarUrl(follower.follow, 50) }}">
-                                        {{ follower.follow.username }}
+                                        <br>{{ follower.follow.username }}
                                     </a>
                                 </div>
                             </div>
@@ -38,6 +38,13 @@
                                                     class="button small radius secondary expand profile-button">
                                                 Profile
                                             </a>
+                                        {% elseif not hasPublicProfile(follower.follow) %}
+                                            <button
+                                                    autocomplete="off"
+                                                    class="small radius secondary expand profile-button disabled"
+                                                    style="width: 100% !important">
+                                                Private profile
+                                            </button>
                                         {% elseif isFollowing(follower.follow) %}
                                             <button
                                                     autocomplete="off"

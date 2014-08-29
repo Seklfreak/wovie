@@ -52,8 +52,33 @@ class SlmnWovieExtension extends \Twig_Extension
             'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction'),
             'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction'),
             'getEnabledBroadcasts' => new \Twig_Function_Method($this, 'getEnabledBroadcastsFunction'),
-            'hasSeenBroadcast' => new \Twig_Function_Method($this, 'hasSeenBroadcastFunction')
+            'hasSeenBroadcast' => new \Twig_Function_Method($this, 'hasSeenBroadcastFunction'),
+            'hasPublicProfile' => new \Twig_Function_Method($this, 'hasPublicProfileFunction')
         );
+    }
+
+    public function hasPublicProfileFunction($user=null)
+    {
+        $userOptionsRepo = $this->em->getRepository('SLMNWovieMainBundle:UserOption');
+
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+
+        $publicProfileBool = $userOptionsRepo->findOneBy(array(
+            'createdBy' => $user,
+            'key' => 'publicProfile'
+            ));
+
+        if ($publicProfileBool && $publicProfileBool->getValue() == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function hasSeenBroadcastFunction($broadcast, $user=null)

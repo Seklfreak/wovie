@@ -809,7 +809,7 @@ class UserController extends Controller
             $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $user, 'key' => 'publicProfile'));
             if (!$publicProfileBool || $publicProfileBool->getValue() == false)
             {
-                $this->get('session')->getFlashBag()->add('error', 'User with the username "'.$username."' not found.");
+                $this->get('session')->getFlashBag()->add('error', 'User with the username "'.$username."' has no public profile.");
                 return $this->redirect($this->generateUrl('slmn_wovie_user_activity'));
             }
             $follow = $followsRepo->findOneBy(array(
