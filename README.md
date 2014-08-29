@@ -56,6 +56,9 @@ process_name=%(program_name)s_%(process_num)s
 vhost: /wovie user: guest:guest (`$ rabbitmqctl add_vhost /wovie && rabbitmqctl set_permissions -p /wovie guest ".*" ".*" ".*"`)
 
 ## TODO
+- [ ] Lists (Like "Best Sci-Fi-Movies")
+	- Anyone can create lists
+	- Public lists are followable
 - [ ] Advanced search (Actor, Length, …)
 - [ ] API
     -> https://github.com/FriendsOfSymfony/FOSOAuthServerBundle

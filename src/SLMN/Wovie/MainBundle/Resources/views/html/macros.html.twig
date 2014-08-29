@@ -349,10 +349,12 @@
                                 {% for key,episode in media.episodes %}
                                     {% if hasUnwatched == false  %}
                                         {% if viewsOfId(media.id, key) <= 0 %}
-                                            <span data-tooltip
-                                                  class="has-tip"
-                                                  style="color: #fff; font-weight: normal;"
-                                                  title="{{ episode.name }}">
+                                            <span {% if episode.name %}
+                                                    data-tooltip
+                                                    class="has-tip"
+                                                    title="{{ episode.name }}"
+                                                  {% endif %}
+                                                  style="color: #fff; font-weight: normal;">
                                                 Next S{% if episode.season|length < 2 %}0{% endif %}{{ episode.season }}E{% if episode.episode|length < 2 %}0{% endif %}{{ episode.episode }}
                                                   </span>
                                             {% set hasUnwatched = true %}
