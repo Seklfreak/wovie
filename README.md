@@ -57,8 +57,9 @@ vhost: /wovie user: guest:guest (`$ rabbitmqctl add_vhost /wovie && rabbitmqctl 
 
 ## TODO
 - [ ] Lists (Like "Best Sci-Fi-Movies")
-	- Anyone can create lists
+	- Created list events
 	- Public lists are followable
+        - added to list events
 - [ ] Advanced search (Actor, Length, …)
 - [ ] API
     -> https://github.com/FriendsOfSymfony/FOSOAuthServerBundle

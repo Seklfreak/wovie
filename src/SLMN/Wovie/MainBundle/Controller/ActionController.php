@@ -777,8 +777,6 @@ class ActionController extends Controller
             {
                 $value = false;
             }
-            $logger = $this->get('logger');
-            $logger->debug('value: '.$value);
             $em = $this->getDoctrine()->getManager();
             $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
             $listsRepo = $em->getRepository('SLMNWovieMainBundle:MediaList');
@@ -803,6 +801,40 @@ class ActionController extends Controller
                 $myList->setItems($items);
 
                 $em->persist($myList);
+                $em->flush();
+
+                $response->setData(array(
+                    'status' => 'success'
+                ));
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
+
+    public function listsDeleteAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($listId=intval($request->get('list_id'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $listsRepo = $em->getRepository('SLMNWovieMainBundle:MediaList');
+
+            $myList = $listsRepo->findOneById($listId);
+            if ($myList != null && $myList->getCreatedBy() == $this->getUser())
+            {
+                $em->remove($myList);
                 $em->flush();
 
                 $response->setData(array(

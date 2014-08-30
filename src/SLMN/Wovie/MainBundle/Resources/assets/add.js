@@ -659,6 +659,35 @@ $(function() {
                 });
         }
     });
+    // LISTS
+    $('.action-list-delete').unbind().click(function() {
+        var button = $(this);
+        var listId = $(this).data('list-id');
+        if (listId != null)
+        {
+            button.prop('disabled', true);
+            button.html('<i class="fa fa-spinner fa-spin fa-lg"></i>');
+            $.ajax({
+                url: Routing.generate('slmn_wovie_actions_ajax_lists_delete'),
+                type: "POST",
+                data: { list_id: listId }
+            })
+                // TODO: Error handling
+                .success(function(data) {
+                    if (data.status == 'success')
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('<i class="fa fa-check fa-lg"></i>');
+                        window.location.replace(Routing.generate('slmn_wovie_user_lists'));
+                    }
+                    else
+                    {
+                        $(button).addClass('alert');
+                        $(button).html('Error!');
+                    }
+                });
+        }
+    });
     /* BROADCAST */
     $('.action-broadcast-close').unbind().click(function () {
         var button = $(this);

@@ -78,6 +78,8 @@ slmn_wovie_user_lists:
     pattern:  /lists/
     defaults: { _controller: SLMNWovieMainBundle:User:lists }
     methods:  [GET]
+    options:
+      expose: true
 slmn_wovie_user_list_details:
     pattern:  /lists/{listId}
     defaults: { _controller: SLMNWovieMainBundle:User:listDetails }
@@ -245,6 +247,12 @@ slmn_wovie_action_ajax_lists_create:
 slmn_wovie_action_ajax_lists_select:
     pattern:  /action/ajax/lists/select.json
     defaults: { _controller: SLMNWovieMainBundle:Action:listsSelect }
+    methods:  [POST]
+    options:
+        expose: true
+slmn_wovie_actions_ajax_lists_delete:
+    pattern:  /action/ajax/lists/delete.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:listsDelete }
     methods:  [POST]
     options:
         expose: true
