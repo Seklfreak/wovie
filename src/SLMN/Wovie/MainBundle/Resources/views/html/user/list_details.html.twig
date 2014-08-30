@@ -8,13 +8,46 @@
             <div class="row collapse">
                 <div class="large-12 small-12 columns">
                     <h4>
-                        {{ list.name }}
-                        <small>
-                            <b>{{ list.items|length }}</b> items
-                        </small>
-                        <a href="{{ path('slmn_wovie_user_list_edit', {'listId': list.id}) }}" class="button really-tiny">
-                            <i class="fa fa-pencil"></i>
-                        </a>
+                        <div class="small-12 large-6 columns">
+                            {{ list.name }}
+                            <small>
+                                <b>{{ list.items|length }}</b> items
+                            </small>
+                            <a href="{{ path('slmn_wovie_user_list_edit', {'listId': list.id}) }}" class="button really-tiny">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            {% set publicListUrl = url('slmn_wovie_public_list_details', {'username': list.createdBy.username, 'listId': list.id}) %}
+                        </div>
+                        <div class="small-12 large-6 columns">
+                            <div class="row collapse">
+                                <div class="large-4 small-10 columns">
+                                    <div class="row collapse">
+                                        <div class="large-2 small-2 medium-1 columns">
+                                            <i class="fa fa-globe list-globe"></i>
+                                        </div>
+                                        <div class="large-10 small-10 medium-11 columns">
+                                            <input
+                                                    type="text"
+                                                    disabled
+                                                    value="{{ publicListUrl }}"
+                                                    >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-1 small-2 columns">
+                                    <a
+                                            class="button postfix clipboard"
+                                            title="Click to copy"
+                                            data-clipboard-text="{{ publicListUrl }}"
+                                            >
+                                        <i class="fa fa-clipboard fa-fw"></i>
+                                    </a>
+                                </div>
+                                <div class="small-12 large-7 columns">
+                                    {{ wovie.share(publicListUrl) }}
+                                </div>
+                            </div>
+                        </div>
                     </h4>
                 </div>
             </div>

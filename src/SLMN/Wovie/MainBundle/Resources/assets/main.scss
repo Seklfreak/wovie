@@ -619,6 +619,14 @@ button.zeroclipboard-is-hover, .button.zeroclipboard-is-hover {
   }
 }
 
+@media #{$small-only} {
+  .list-globe {
+    font-size: 1.33333em;
+    line-height: 1.54em;
+    vertical-align: -15%;
+  }
+}
+
 /* GENERAL */
 @media #{$small-only} {
   .panel-collapse-fix {
