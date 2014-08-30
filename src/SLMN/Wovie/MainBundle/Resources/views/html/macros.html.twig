@@ -837,6 +837,8 @@
                         <i class="fa fa-eye"></i>
                     {% elseif activity.key == 'follow.added' %}
                         <i class="fa fa-user"></i>
+                    {% elseif activity.key == 'medialist.added' %}
+                        <i class="fa fa-list"></i>
                     {% endif %}
                     </span>
                     <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
@@ -960,6 +962,25 @@
                                         &nbsp;you
                                     {%- endif -%}
                                 </a>
+                            {%- else -%}
+                                deleted
+                            {%- endif -%}
+                            {%- if not loop.last -%},{%- endif -%}
+                        {% endfor %}
+                    {% elseif activity.key == 'medialist.added' %}
+                        created the following list{% if activity.value|length > 1 %}s{% endif %}
+                        {% for list in activity.value %}
+                            {% set myList = getListById(list.medialistId) %}
+                            {%- if myList -%}
+                                {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                    <a href="{{ path('slmn_wovie_public_list_details', {'username': myList.createdBy.username, 'listId': myList.id }) }}">
+                                        {{- myList.name -}}
+                                    </a>
+                                {%- else -%}
+                                    <a href="{{ path('slmn_wovie_user_list_details', {'listId': myList.id}) }}">
+                                        {{- myList.name -}}
+                                    </a>
+                                {%- endif -%}
                             {%- else -%}
                                 deleted
                             {%- endif -%}

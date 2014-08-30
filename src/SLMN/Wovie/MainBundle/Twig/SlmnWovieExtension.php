@@ -48,6 +48,7 @@ class SlmnWovieExtension extends \Twig_Extension
             'isFollowing' => new \Twig_Function_Method($this, 'isFollowingFunction'),
             'isInMyLibrary' => new \Twig_Function_Method($this, 'isInMyLibraryFunction'),
             'getMediaById' => new \Twig_Function_Method($this, 'getMediaByIdFunction'),
+            'getListById' => new \Twig_Function_Method($this, 'getListByIdFunction'),
             'getUserById' => new \Twig_Function_Method($this, 'getUserByIdFunction'),
             'timeAgo' => new \Twig_Function_Method($this, 'timeAgoFunction'),
             'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction'),
@@ -181,6 +182,12 @@ class SlmnWovieExtension extends \Twig_Extension
     {
         $mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
         return $mediasRepo->findOneById($mediaId);
+    }
+
+    public function getListByIdFunction($listId)
+    {
+        $listsRepo = $this->em->getRepository('SLMNWovieMainBundle:MediaList');
+        return $listsRepo->findOneById($listId);
     }
 
     public function getUserByIdFunction($userId)

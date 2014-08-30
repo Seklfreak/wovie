@@ -17,6 +17,7 @@ class CreateActivityConsumer implements ConsumerInterface
     protected $activitiesRepo;
     protected $usersRepo;
     protected $mediasRepo;
+    protected $medialistsRepo;
 
     public function __construct($doctrine, $mediaApi)
     {
@@ -62,6 +63,7 @@ class CreateActivityConsumer implements ConsumerInterface
         $this->activitiesRepo = $this->em->getRepository('SLMNWovieMainBundle:Activity');
         $this->usersRepo = $this->em->getRepository('SeklMainUserBundle:User');
         $this->mediasRepo = $this->em->getRepository('SLMNWovieMainBundle:Media');
+        $this->medialistsRepo = $this->em->getRepository('SLMNWovieMainBundle:MediaList');
     }
 
     public function execute(AMQPMessage $msg)
@@ -415,6 +417,55 @@ class CreateActivityConsumer implements ConsumerInterface
                     $this->em->persist($activity);
                     $this->em->flush();
                     echo ' => added user to activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                break;
+            case 'medialist.added':
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
+                if ($value['value']['medialistId'] == null)
+                {
+                    echo ' => no medialistId, is invalid'."\n";
+                    return true;
+                }
+                $user = $this->usersRepo->findOneById($value['userId']);
+                $medialist = $this->medialistsRepo->findOneById($value['value']['medialistId']);
+                if (!$user)
+                {
+                    echo ' => user #'.$value['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$medialist)
+                {
+                    echo ' => medialist #'.$value['value']['medialistId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                $activity = $this->getInTimerange($value['createdAt'], $value['key'], $user);
+                if ($activity == null)
+                {
+                    $activity = new Activity();
+                    $activity->setUser($user);
+                    $activity->setTime($value['createdAt']);
+                    $activity->setKey('medialist.added');
+                    $activity->setValue(array(
+                        array(
+                            'medialistId' => $value['value']['medialistId']
+                        )
+                    ));
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => created new activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                else
+                {
+                    $activityValue = $activity->getValue();
+                    $activityValue[] = array(
+                        'medialistId' => $value['value']['medialistId']
+                    );
+                    $activity->setValue($activityValue);
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => added medialist to activity: #'.$activity->getId()."\n";
                     return true;
                 }
                 break;

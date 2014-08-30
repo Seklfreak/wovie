@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use SLMN\Wovie\MainBundle\Entity\Follow;
 use SLMN\Wovie\MainBundle\Entity\Media;
 use SLMN\Wovie\MainBundle\Entity\View;
+use SLMN\Wovie\MainBundle\Entity\MediaList;
 
 class ActivityListener
 {
@@ -16,6 +17,7 @@ class ActivityListener
      * - view.added -> when an view from an user was added to the database
      * - follow.added -> when an follow from an user was added to the database
      * - favorite.added -> when an media was favorited
+     * - medialist.added -> when an medialist has been created
      */
 
     protected $container;
@@ -95,6 +97,18 @@ class ActivityListener
                 )
             )));
             $this->logger->info('Published activity "follow.added" for user #'.$this->getUser()->getId());
+        }
+        else if ($entity instanceof MediaList)
+        {
+            $this->rabbitCreateActivity->publish(serialize(array(
+                'key' => 'medialist.added',
+                'userId' => $this->getUser()->getId(),
+                'createdAt' => new \DateTime(),
+                'value' => array(
+                    'medialistId' => $entity->getId()
+                )
+            )));
+            $this->logger->info('Published activity "medialist.added" for user #'.$this->getUser()->getId());
         }
     }
 }
