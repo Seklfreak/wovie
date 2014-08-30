@@ -34,13 +34,17 @@ class MediaList
     protected $createdBy;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Media", inversedBy="medialist")
+     * @ORM\ManyToMany(targetEntity="Media", inversedBy="lists")
      * @ORM\JoinTable(name="medialists_items")
      */
     protected $items;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Sekl\Main\UserBundle\Entity\User", inversedBy="medialist")
+     * @ORM\ManyToMany(targetEntity="Sekl\Main\UserBundle\Entity\User")
+     * @ORM\JoinTable(name="medialists_followers",
+     *      joinColumns={@ORM\JoinColumn(name="medialist_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
      */
     protected $followers;
 
