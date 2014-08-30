@@ -1,0 +1,28 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - {{ user.username }}s lists{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row panel" style="margin-top: 15px; padding: 10px;">
+        <ul class="breadcrumbs profile-breadcrumbs">
+            <li>
+                <a href="{{ path('slmn_wovie_public_profile', { 'username': user.username }) }}">
+                    {{ user.username }}s profile
+                </a>
+            </li>
+            <li class="current">
+                <a href="{{ path('slmn_wovie_public_lists', { 'username': user.username }) }}">
+                    Lists
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="small-12 large-8 large-centered columns">
+                {% set myLists = getMyLists(user) %}
+                {% for list in myLists %}
+                    {{ wovie.list(list, true) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

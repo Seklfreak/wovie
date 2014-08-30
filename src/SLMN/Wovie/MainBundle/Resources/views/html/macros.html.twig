@@ -565,6 +565,48 @@
                     </div>
                 </div>
             {% endif %}
+            {% if public == false %}
+                <div class="row">
+                    <div class="small-12 columns">
+                        <button href="#" data-dropdown="medialists" aria-controls="medialists" aria-expanded="false" class="button small dropdown">Lists</button><br>
+                        <ul id="medialists" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+                            {% for list in getMyLists() %}
+                            <li>
+                                <input
+                                type="checkbox"
+                                name="list-{{ list.id }}"
+                                value="{{ list.id }}"
+                                id="list-{{ list.id }}"
+                                data-media-id="{{ media.id }}"
+                                {% if list.items.contains(media) %}checked{% endif %}
+                                ><label for="list-{{ list.id }}">{{ list.name }}</label>
+                            </li>
+                            {% endfor %}
+                            <form id="create-new-list" data-media-id="{{ media.id }}">
+                            <li>
+                                <a href="#">Create new list</a>
+                            </li>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            {% else %}
+                {% if media.lists|length > 0 %}
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <p>
+                            In {{ media.lists|length }} lists
+                            {% for list in media.lists %}
+                                <a href="{{ path('slmn_wovie_public_list_details', {'username': list.createdBy.username, 'listId': list.id}) }}">
+                                    {{- list.name -}}
+                                </a>
+                                {%- if not loop.last -%},{%- endif -%}
+                            {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
             {% set friendsThatHaveMedia = getFriendsThatHaveMedia(media) %}
             {% if friendsThatHaveMedia|length > 0 %}
                 <div class="row" style="margin-bottom: 10px;">
@@ -671,10 +713,17 @@
                         <i class="fa fa-plus"></i> Add
                     </a>
                 </li>
-                <li{% if app.request.get('_route') == 'slmn_wovie_user_movie_shelf' %} class="active"{% endif %}>
+                <li class="has-dropdown{% if app.request.get('_route') == 'slmn_wovie_user_movie_shelf' %} active{% endif %}">
                     <a id="shelf" href="{{ path('slmn_wovie_user_movie_shelf') }}">
-                        <i class="fa fa-list"></i> Library
+                        <i class="fa fa-th"></i> Library
                     </a>
+                    <ul class="dropdown">
+                        <li>
+                            <a href="{{ path('slmn_wovie_user_lists') }}">
+                                <i class="fa fa-list"></i> Lists
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li{% if app.request.get('_route') == 'slmn_wovie_user_activity' %} class="active"{% endif %}>
                     <a id="shelf" href="{{ path('slmn_wovie_user_activity') }}">
@@ -928,4 +977,20 @@
         </div>
     </div>
 </div>
+{% endmacro %}
+
+{% macro list(list, public) %}
+    {% if public is not defined %}{% set public = false %}{% endif %}
+    {% if public %}
+        {% set listUrl = path('slmn_wovie_public_list_details', {'username': list.createdBy.username, 'listId': list.id}) %}
+    {% else %}
+        {% set listUrl = path('slmn_wovie_user_list_details', {'listId': list.id}) %}
+    {% endif %}
+    <div class="row">
+        <div class="small-12 columns">
+            <h5><a href="{{ listUrl }}">
+                {{ list.name }} <small>{{ list.items|length }} items 999 follower 999 views</small>
+            </a></h5>
+        </div>
+    </div>
 {% endmacro %}

@@ -59,6 +59,7 @@
                 <div class="large-12 columns">
                     <p>
                         I have <b>{{ countMedia(user, 1) }} movies</b> and <b>{{ countMedia(user, 2) }} series</b> in my library.<br>
+                        I created <a href="{{ path('slmn_wovie_public_lists', {'username': user.username}) }}">{{ getMyLists(user)|length }} lists</a>.<br>
                         <span class="ajax-replace-mediatime" data-prefix="I " data-user-id="{{ user.id }}"></span>
                     </p>
                     {# TODO: Last i watched blablabla #}
@@ -144,6 +145,6 @@
             </div>
         </div>
     {% else %}
-        {# TODO: No videos #}
+        {{ main.alertBox('No movies found for ' ~ user.username ~ '.', 'secondary', 0) }}
     {% endif %}
 {% endblock body %}

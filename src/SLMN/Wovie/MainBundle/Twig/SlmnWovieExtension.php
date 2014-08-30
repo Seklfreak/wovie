@@ -53,8 +53,21 @@ class SlmnWovieExtension extends \Twig_Extension
             'getFriendsThatHaveMedia' => new \Twig_Function_Method($this, 'getFriendsThatHaveMediaFunction'),
             'getEnabledBroadcasts' => new \Twig_Function_Method($this, 'getEnabledBroadcastsFunction'),
             'hasSeenBroadcast' => new \Twig_Function_Method($this, 'hasSeenBroadcastFunction'),
-            'hasPublicProfile' => new \Twig_Function_Method($this, 'hasPublicProfileFunction')
+            'hasPublicProfile' => new \Twig_Function_Method($this, 'hasPublicProfileFunction'),
+            'getMyLists' => new \Twig_Function_Method($this, 'getMyListsFunction')
         );
+    }
+
+    public function getMyListsFunction($user=null)
+    {
+        $listsRepo = $this->em->getRepository('SLMNWovieMainBundle:MediaList');
+
+        if (!$user)
+        {
+            $user = $this->context->getToken()->getUser();
+        }
+
+        return $listsRepo->findByCreatedBy($user, array('name' => 'ASC'));
     }
 
     public function hasPublicProfileFunction($user=null)

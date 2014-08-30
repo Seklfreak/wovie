@@ -48,6 +48,18 @@ slmn_wovie_public_media_details:
     methods:  [GET]
     requirements:
         id: \d+
+slmn_wovie_public_lists:
+    pattern:  /u/{username}/lists
+    defaults: { _controller: SLMNWovieMainBundle:Public:profileLists }
+    methods:  [GET]
+    requirements:
+        id: \d+
+slmn_wovie_public_list_details:
+    pattern:  /u/{username}/lists/{listId}
+    defaults: { _controller: SLMNWovieMainBundle:Public:detailsList }
+    methods:  [GET]
+    requirements:
+        id: \d+
 
 # User
 slmn_wovie_user_dashboard:
@@ -62,6 +74,16 @@ slmn_wovie_user_movie_shelf:
     methods:  [GET]
     options:
       expose: true
+slmn_wovie_user_lists:
+    pattern:  /lists/
+    defaults: { _controller: SLMNWovieMainBundle:User:lists }
+    methods:  [GET]
+slmn_wovie_user_list_details:
+    pattern:  /lists/{listId}
+    defaults: { _controller: SLMNWovieMainBundle:User:listDetails }
+    methods:  [GET]
+    requirements:
+        listId: \d+
 slmn_wovie_user_movie_add:
     pattern:  /add/
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }
@@ -211,6 +233,18 @@ slmn_wovie_actions_ajax_deleteCoverImage:
 slmn_wovie_action_ajax_broadcast_markAsSeen:
     pattern:  /action/ajax/broadcast/mark_as_seen.json
     defaults: { _controller: SLMNWovieMainBundle:Action:markAsSeenBroadcast }
+    methods:  [POST]
+    options:
+        expose: true
+slmn_wovie_action_ajax_lists_create:
+    pattern:  /action/ajax/lists/create.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:listsCreate }
+    methods:  [POST]
+    options:
+        expose: true
+slmn_wovie_action_ajax_lists_select:
+    pattern:  /action/ajax/lists/select.json
+    defaults: { _controller: SLMNWovieMainBundle:Action:listsSelect }
     methods:  [POST]
     options:
         expose: true

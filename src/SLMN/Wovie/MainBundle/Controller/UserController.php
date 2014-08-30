@@ -833,4 +833,24 @@ class UserController extends Controller
 
         return $this->render('SLMNWovieMainBundle:html/user:activity.html.twig');
     }
+
+    public function listsAction()
+    {
+        return $this->render('SLMNWovieMainBundle:html/user:lists.html.twig');
+    }
+
+    public function listDetailsAction($listId)
+    {
+        $listsRepo = $this->getDoctrine()->getManager()->getRepository('SLMNWovieMainBundle:MediaList');
+        $myList = $listsRepo->findOneById($listId);
+
+        if (!$myList || $myList->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('List not found!');
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/user:list_details.html.twig', array(
+            'list' => $myList
+            ));
+    }
 }

@@ -124,6 +124,15 @@ class Media
     protected $customCoverKey;
 
     /**
+     * @ORM\ManyToMany(targetEntity="MediaList", mappedBy="items")
+     */
+    protected $lists;
+
+    public function __construct() {
+        $this->lists = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * @return mixed
      */
     public function getCustomCoverKey()
@@ -473,5 +482,29 @@ class Media
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * Gets the value of lists.
+     *
+     * @return mixed
+     */
+    public function getLists()
+    {
+        return $this->lists;
+    }
+    
+    /**
+     * Sets the value of lists.
+     *
+     * @param mixed $lists the lists 
+     *
+     * @return self
+     */
+    public function setLists($lists)
+    {
+        $this->lists = $lists;
+
+        return $this;
     }
 }

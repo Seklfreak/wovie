@@ -336,4 +336,62 @@ class PublicController extends Controller
         $this->get('session')->getFlashBag()->add('error', 'Account activated! You can now login.');
         return $this->redirect($this->generateUrl('login'));
     }
+
+    public function profileListsAction($username)
+    {
+        $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+        $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+        $myUser = $usersRepo->findOneByUsername($username);
+
+        if (!$myUser)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Profile not public viewable!');
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/public:lists.html.twig', array(
+                'user' => $myUser
+                )
+        );
+    }
+
+    public function detailsListAction($username, $listId)
+    {
+        $usersRepo = $this->getDoctrine()->getRepository('SeklMainUserBundle:User');
+        $listsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:MediaList');
+        $userOptionsRepo = $this->getDoctrine()->getRepository('SLMNWovieMainBundle:UserOption');
+
+        $myUser = $usersRepo->findOneByUsername($username);
+
+        if (!$myUser)
+        {
+            throw $this->createNotFoundException('Profile not found!');
+        }
+        $publicProfileBool = $userOptionsRepo->findOneBy(array('createdBy' => $myUser, 'key' => 'publicProfile'));
+        if (!$publicProfileBool || $publicProfileBool->getValue() == false)
+        {
+            throw $this->createNotFoundException('Profile not public viewable!');
+        }
+
+        $myList = $listsRepo->findOneBy(array(
+            'createdBy' => $myUser,
+            'id' => $listId
+            )
+        );
+
+        if (!$myList)
+        {
+            throw $this->createNotFoundException('List not found!');
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/public:list_details.html.twig', array(
+                'user' => $myUser,
+                'list' => $myList
+                )
+        );
+    }
 }

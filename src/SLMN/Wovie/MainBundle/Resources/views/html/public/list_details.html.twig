@@ -1,0 +1,41 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - {{ list.name }}{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row panel" style="margin-top: 15px; padding: 10px;">
+        <ul class="breadcrumbs profile-breadcrumbs">
+            <li>
+                <a href="{{ path('slmn_wovie_public_profile', { 'username': user.username }) }}">
+                    {{ user.username }}s profile
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('slmn_wovie_public_lists', { 'username': user.username }) }}">
+                    Lists
+                </a>
+            </li>
+            <li class="current">
+                <a href="{{ path('slmn_wovie_public_list_details', { 'username': user.username, 'listId': list.id }) }}">
+                    {{ list.name }}
+                </a>
+            </li>
+        </ul>
+        {% if list.items|length > 0 %}
+            <div class="small-12 large-centered columns">
+                <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-4" id="media-entries">
+                    {% for media in list.items %}
+                        <li
+                            class="media-entry"
+                            >
+                            {{ wovie.mediaItemPublic(media) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            {{ main.alertBox('No items in this list found.', 'secondary', 0) }}
+        {% endif %}
+        </div>
+    </div>
+{% endblock body %}

@@ -255,6 +255,58 @@ function init()
             }
         });
     }
+    // Lists
+    if ($('#medialists').length > 0) {
+        $('#medialists li > input').each(function() {
+            var $checkbox = $(this);
+            var listId = $checkbox.val();
+            var mediaId = $checkbox.data('media-id');
+            $checkbox.change(function() {
+                $.ajax({
+                    url: Routing.generate('slmn_wovie_action_ajax_lists_select'),
+                    type: "POST",
+                    data: { media_id: mediaId, list_id: listId, value: $checkbox.prop('checked') }
+                });
+                console.debug('Checkbox #' + listId + ' for #' + mediaId + ' checked:' + $checkbox.prop('checked'));
+            });
+        });;
+    }
+    if ($('#create-new-list').length > 0) {
+        var $form = $('#create-new-list');
+        var mediaId = $form.data('media-id');
+        $('#create-new-list > li > a').unbind().click(function() {
+            $form.html('<li> \
+                <input placeholder="name" type="text" required> \
+                <button name="submit" type="submit"><i class="fa fa-plus"></i></button> \
+                </li>');
+            $('#create-new-list > li > input').focus();
+            $form.submit(function(event) {
+                var listName = $('#create-new-list > li > input').val();
+                $form.html('<li> \
+                    <div class="loading"><i class="fa fa-spin fa-spinner"></i> please wait…</div> \
+                    </li>');
+                $.ajax({
+                    url: Routing.generate('slmn_wovie_action_ajax_lists_create'),
+                    type: "POST",
+                    data: { list_name: listName, list_add: [mediaId] }
+                })
+                    .success(function(data) {
+                        if (data.status == 'success')
+                        {
+                            refreshMediaContainers();
+                        }
+                        else
+                        {
+                            $form.html('<li> \
+                                <div class="error">Error!</div> \
+                                </li>');
+                        }
+                    });
+                event.preventDefault();
+            });
+            return false;
+        });
+    }
 }
 
 function resetFilter()

@@ -22,6 +22,7 @@ monolog:
                 - ^/phpTest
                 - ^/manager
                 - ^/robots.txt
+                - ^/webdav
         grouped:
             type:               group
             members:            [streamed, buffered_swift]

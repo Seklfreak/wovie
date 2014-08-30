@@ -1,0 +1,46 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - {{ list.name }}{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="row collapse">
+                <div class="large-12 small-12 columns">
+                    <h4>
+                        {{ list.name }}
+                        <small>
+                            <b>{{ list.items|length }}</b> items
+                        </small>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if list.items|length > 0 %}
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-4" id="media-entries">
+                    {% for media in list.items %}
+                        <li
+                                class="media-entry"
+                                >
+                                <div
+                                        data-media-id="{{ media.id }}"
+                                        data-src="{{ path('slmn_wovie_action_ajax_details_small', {'id': media.id}) }}"
+                                        class="refresh-media">
+                                    {{ wovie.mediaItem(media) }}
+                                </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="large-12 columns" style="margin-bottom: 0; margin-top: 10px;">
+                {{ main.alertBox('No items in this list found.', 'secondary', 0) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock body %}

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use SLMN\Wovie\MainBundle\Entity\MediaList;
 
 class ActionController extends Controller
 {
@@ -700,6 +701,113 @@ class ActionController extends Controller
                         'status' => 'success'
                     ));
                 }
+            }
+            else
+            {
+                $response->setData(array(
+                    'status' => 'error'
+                ));
+            }
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
+
+    public function listsCreateAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (($listName=trim($request->get('list_name'))) != null)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $newList = new MediaList();
+            $newList->setName($listName);
+            $newList->setCreatedAt(new \DateTime());
+            $newList->setCreatedBy($this->getUser());
+
+            if (is_array(($mediaList = $request->get('list_add'))))
+            {
+                $items = $newList->getItems();
+                foreach ($mediaList as $mediaId)
+                {
+                    $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+                    $myMedia = $mediaRepo->findOneById($mediaId);
+
+                    if ($myMedia != null && $myMedia->getCreatedBy() == $this->getUser())
+                    {
+                        if (!$items->contains($myMedia))
+                        {
+                            $items->add($myMedia);
+                        }
+                    }
+                }
+                $newList->setItems($items);
+            }
+
+            $em->persist($newList);
+            $em->flush();
+
+            $response->setData(array(
+                'status' => 'success'
+            ));
+        }
+        else
+        {
+            $response->setData(array(
+                'status' => 'error'
+            ));
+        }
+        return $response;
+    }
+
+    public function listsSelectAction(Request $request)
+    {
+        $response = new JsonResponse();
+        if (
+            ($mediaId=intval($request->get('media_id'))) != null &&
+            ($listId=intval($request->get('list_id'))) != null
+            )
+        {
+            $value = filter_var($request->get('value'), FILTER_VALIDATE_BOOLEAN);
+            if (!$value)
+            {
+                $value = false;
+            }
+            $logger = $this->get('logger');
+            $logger->debug('value: '.$value);
+            $em = $this->getDoctrine()->getManager();
+            $mediaRepo = $em->getRepository('SLMNWovieMainBundle:Media');
+            $listsRepo = $em->getRepository('SLMNWovieMainBundle:MediaList');
+
+            $myMedia = $mediaRepo->findOneById($mediaId);
+            $myList = $listsRepo->findOneById($listId);
+            if ($myMedia != null && $myMedia->getCreatedBy() == $this->getUser() &&
+                $myList != null && $myList->getCreatedBy() == $this->getUser())
+            {
+                $items = $myList->getItems();
+                if ($value == true)
+                {
+                    if (!$items->contains($myMedia))
+                    {
+                        $items->add($myMedia);
+                    }
+                }
+                else
+                {
+                    $items->removeElement($myMedia);
+                }
+                $myList->setItems($items);
+
+                $em->persist($myList);
+                $em->flush();
+
+                $response->setData(array(
+                    'status' => 'success'
+                ));
             }
             else
             {
