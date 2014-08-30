@@ -86,6 +86,12 @@ slmn_wovie_user_list_details:
     methods:  [GET]
     requirements:
         listId: \d+
+slmn_wovie_user_list_edit:
+    pattern:  /lists/{listId}/edit
+    defaults: { _controller: SLMNWovieMainBundle:User:listEdit }
+    methods:  [GET, POST]
+    requirements:
+        listId: \d+
 slmn_wovie_user_movie_add:
     pattern:  /add/
     defaults: { _controller: SLMNWovieMainBundle:User:addMovie }

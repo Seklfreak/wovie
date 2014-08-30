@@ -853,4 +853,34 @@ class UserController extends Controller
             'list' => $myList
             ));
     }
+
+    public function listEditAction(Request $request, $listId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $listsRepo = $em->getRepository('SLMNWovieMainBundle:MediaList');
+        $myList = $listsRepo->findOneById($listId);
+
+        if (!$myList || $myList->getCreatedBy() != $this->getUser())
+        {
+            throw $this->createNotFoundException('List not found!');
+        }
+
+        $myListForm = $this->createForm('medialist', $myList);
+        $myListForm->handleRequest($request);
+
+        if ($myListForm->isValid())
+        {
+            $em->persist($myList);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'List successfully edited.');
+            return $this->redirect($this->generateUrl('slmn_wovie_user_list_details', array(
+                'listId' => $myList->getId()
+                )));
+        }
+
+        return $this->render('SLMNWovieMainBundle:html/user:list_edit.html.twig', array(
+            'editListForm' => $myListForm->createView()
+            ));
+    }
 }

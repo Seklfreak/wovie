@@ -1,0 +1,49 @@
+{% extends "SLMNWovieMainBundle::html/layout.html.twig" %}
+
+{% block pagetitle %}WOVIE - edit {{ editListForm.vars.value.name }}{% endblock pagetitle %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="row collapse">
+                <div class="large-12 small-12 columns">
+                    <h4>
+                        Edit {{ editListForm.vars.value.name }} <small>#{{ editListForm.vars.value.id }}</small>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_start(editListForm) }}
+    <div class="row">
+        <div class="small-12 columns">
+            {{ form_errors(editListForm) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 large-8 columns">
+            {{ form_row(editListForm.name) }}
+        </div>
+        <div class="small-12 large-4 columns">
+            <div class="row collapse">
+                <div class="small-4 columns">
+                <a
+                data-list-id="{{ editListForm.vars.value.id }}"
+                class="action-list-delete button alert expand"
+                ><i class="fa fa-trash-o"></i></a>
+                </div>
+                <div class="small-8 columns">
+                    {{ form_row(
+                    editListForm.submit,
+                    {'label': 'Save'}
+                    ) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 columns">
+            {{ form_end(editListForm) }}
+        </div>
+    </div>
+{% endblock body %}

@@ -57,7 +57,8 @@ vhost: /wovie user: guest:guest (`$ rabbitmqctl add_vhost /wovie && rabbitmqctl 
 
 ## TODO
 - [ ] Lists (Like "Best Sci-Fi-Movies")
-	- Created list events
+    - In the private details site: shareinput and copy button like in the profile settings
+	- Rename lists
 	- Public lists are followable
         - added to list events
 - [ ] Advanced search (Actor, Length, …)

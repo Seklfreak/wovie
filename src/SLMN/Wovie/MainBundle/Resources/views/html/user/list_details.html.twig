@@ -12,8 +12,8 @@
                         <small>
                             <b>{{ list.items|length }}</b> items
                         </small>
-                        <a data-list-id="{{ list.id }}" class="action-list-delete button alert really-tiny">
-                            <i class="fa fa-trash-o"></i>
+                        <a href="{{ path('slmn_wovie_user_list_edit', {'listId': list.id}) }}" class="button really-tiny">
+                            <i class="fa fa-pencil"></i>
                         </a>
                     </h4>
                 </div>
