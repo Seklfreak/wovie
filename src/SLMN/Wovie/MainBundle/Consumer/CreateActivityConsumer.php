@@ -332,6 +332,7 @@ class CreateActivityConsumer implements ConsumerInterface
                                 $episodes = $this->mediaApi->fetchEpisodes($media->getFreebaseId(), true);
                             }
                             if (
+                                is_array($episodes) &&
                                 array_key_exists($value['value']['episodeId'], $episodes) &&
                                 array_key_exists('season', $episodes[$value['value']['episodeId']]) &&
                                 array_key_exists('episode', $episodes[$value['value']['episodeId']])
