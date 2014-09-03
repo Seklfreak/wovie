@@ -20,6 +20,7 @@ framework:
     trusted_proxies: ~
     session:
         name: "WOVIE_SESSID"
+        cookie_httponly: true
     fragments:       ~
     http_method_override: true
 

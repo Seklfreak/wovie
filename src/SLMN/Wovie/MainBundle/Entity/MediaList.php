@@ -48,8 +48,14 @@ class MediaList
      */
     protected $followers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MediaListView", mappedBy="medialist")
+     */
+    protected $views;
+
     public function __construct() {
         $this->items  = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->followers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -192,6 +198,30 @@ class MediaList
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of views.
+     *
+     * @return mixed
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+    
+    /**
+     * Sets the value of views.
+     *
+     * @param mixed $views the views 
+     *
+     * @return self
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
 
         return $this;
     }

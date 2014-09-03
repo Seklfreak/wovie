@@ -388,6 +388,8 @@ class PublicController extends Controller
             throw $this->createNotFoundException('List not found!');
         }
 
+        $this->getDoctrine()->getRepository('SLMNWovieMainBundle:MediaListView')->addView($myList);
+
         return $this->render('SLMNWovieMainBundle:html/public:list_details.html.twig', array(
                 'user' => $myUser,
                 'list' => $myList

@@ -38,18 +38,21 @@ events=PROCESS_STATE
 
 #### wovie.conf
 ```ini
-[program:wovie-rabbitmq-consumer-create-activity]
-command=/usr/bin/php /path/to/wovie/app/console rabbitmq:consumer -w -l 128 create_activity
-directory=/path/to/wovie
+[program:1wovie-rabbitmq-consumer-create-activity]
+command=/usr/bin/php /var/www/wovieapp.com/app/console rabbitmq:consumer -w -l 128 create_activity
+directory=/var/www/wovieapp.com
 autostart=true
 autorestart=true
-stdout_logfile=/path/to/wovie/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
+stdout_logfile=/var/www/wovieapp.com/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
 stdout_logfile_maxbytes=1MB
-stderr_logfile=/path/to/wovie/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
+stderr_logfile=/var/www/wovieapp.com/app/logs/rabbitmq/consumer-create-activity-%(process_num)s.log
 stderr_logfile_maxbytes=1MB
 user=www-data
 numprocs=1
 process_name=%(program_name)s_%(process_num)s
+
+[group:wovie]
+programs=wovie-rabbitmq-consumer-create-activity
 ```
 
 ### RabbitMQ
