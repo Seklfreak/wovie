@@ -40,22 +40,12 @@ class MediaList
     protected $items;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Sekl\Main\UserBundle\Entity\User")
-     * @ORM\JoinTable(name="medialists_followers",
-     *      joinColumns={@ORM\JoinColumn(name="medialist_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     *      )
-     */
-    protected $followers;
-
-    /**
      * @ORM\OneToMany(targetEntity="MediaListView", mappedBy="medialist")
      */
     protected $views;
 
     public function __construct() {
         $this->items  = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->followers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -150,30 +140,6 @@ class MediaList
     public function setItems($items)
     {
         $this->items = $items;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of followers.
-     *
-     * @return mixed
-     */
-    public function getFollowers()
-    {
-        return $this->followers;
-    }
-    
-    /**
-     * Sets the value of followers.
-     *
-     * @param mixed $followers the followers 
-     *
-     * @return self
-     */
-    public function setFollowers($followers)
-    {
-        $this->followers = $followers;
 
         return $this;
     }
