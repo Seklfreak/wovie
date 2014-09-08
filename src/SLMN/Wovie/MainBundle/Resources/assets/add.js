@@ -267,7 +267,6 @@ function init()
                     type: "POST",
                     data: { media_id: mediaId, list_id: listId, value: $checkbox.prop('checked') }
                 });
-                console.debug('Checkbox #' + listId + ' for #' + mediaId + ' checked:' + $checkbox.prop('checked'));
             });
         });;
     }

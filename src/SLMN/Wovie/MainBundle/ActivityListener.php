@@ -14,6 +14,7 @@ class ActivityListener
     /*
      * Activities:
      * - media.added -> when an media was added to an users library
+     * - media.addedtomedialist -> an media has been added to an medialist
      * - view.added -> when an view from an user was added to the database
      * - follow.added -> when an follow from an user was added to the database
      * - favorite.added -> when an media was favorited
@@ -52,6 +53,29 @@ class ActivityListener
                     )
                 )));
                 $this->logger->info('Published activity "favorite.added" for user #'.$this->getUser()->getId());
+            }
+        }
+        elseif ($entity instanceof MediaList)
+        {
+            $uow = $eventArgs->getEntityManager()->getUnitOfWork();
+            foreach ($uow->getScheduledCollectionUpdates() AS $col) {
+                if ($col->getOwner() instanceof MediaList)
+                {
+                    $this->logger->info('collection updates: '.$col->count());
+                    foreach ($col->getInsertDiff() as $insert)
+                    {
+                        $this->rabbitCreateActivity->publish(serialize(array(
+                            'key' => 'media.addedtomedialist',
+                            'userId' => $this->getUser()->getId(),
+                            'createdAt' => new \DateTime(),
+                            'value' => array(
+                                'mediaId' => $insert->getId(),
+                                'medialistId' => $entity->getId()
+                            )
+                        )));
+                        $this->logger->info('Published activity "media.addedtomedialist" for user #'.$this->getUser()->getId());
+                    }
+                }
             }
         }
     }
@@ -109,6 +133,22 @@ class ActivityListener
                 )
             )));
             $this->logger->info('Published activity "medialist.added" for user #'.$this->getUser()->getId());
+            if ($entity->getItems()->count() > 0)
+            {
+                foreach ($entity->getItems() as $newItem)
+                {
+                    $this->rabbitCreateActivity->publish(serialize(array(
+                        'key' => 'media.addedtomedialist',
+                        'userId' => $this->getUser()->getId(),
+                        'createdAt' => new \DateTime(),
+                        'value' => array(
+                            'mediaId' => $newItem->getId(),
+                            'medialistId' => $entity->getId()
+                        )
+                    )));
+                    $this->logger->info('Published activity "media.addedtomedialist" for user #'.$this->getUser()->getId());
+                }
+            }
         }
     }
 }

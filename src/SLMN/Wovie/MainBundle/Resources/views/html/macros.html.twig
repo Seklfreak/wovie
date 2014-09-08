@@ -839,6 +839,8 @@
                         <i class="fa fa-user"></i>
                     {% elseif activity.key == 'medialist.added' %}
                         <i class="fa fa-list"></i>
+                    {% elseif activity.key == 'media.addedtomedialist' %}
+                        <i class="fa fa-list"></i>
                     {% endif %}
                     </span>
                     <a href="{{ path('slmn_wovie_public_profile', {'username': activity.user.username}) }}">
@@ -986,6 +988,43 @@
                             {%- endif -%}
                             {%- if not loop.last -%},{%- endif -%}
                         {% endfor %}
+                    {% elseif activity.key == 'media.addedtomedialist' %}
+                        added
+                        {% for list in activity.value %}
+                            {% if not loop.first %}and{% endif %}
+                            {% set myList = getListById(list.medialistId) %}
+                            {% for media in list.itemsMediaId %}
+                                {% set myMedia = getMediaById(media) %}
+                                {% if myMedia %}
+                                    {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                        <a href="{{ path('slmn_wovie_public_media_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- else -%}
+                                        <a href="{{ path('slmn_wovie_user_movie_details', {'id': myMedia.id}) }}">
+                                            {{- myMedia.title -}}
+                                        </a>
+                                    {%- endif -%}
+                                {% else %}
+                                    deleted
+                                {% endif %}
+                                {%- if not loop.last -%},{%- endif -%}
+                            {% endfor %}
+                            to
+                            {% if myList %}
+                                {%- if app.security.getToken().getUser().username != activity.user.username -%}
+                                    <a href="{{ path('slmn_wovie_public_list_details', {'username': myList.createdBy.username, 'listId': myList.id }) }}">
+                                        {{- myList.name -}}
+                                    </a>
+                                {%- else -%}
+                                    <a href="{{ path('slmn_wovie_user_list_details', {'listId': myList.id}) }}">
+                                        {{- myList.name -}}
+                                    </a>
+                                {%- endif -%}
+                            {% else %}
+                                deleted
+                            {% endif %}
+                        {% endfor %}
                     {% else %}
                         #{{ activity.id }} {{ activity.key }}
                     {% endif %}
@@ -1010,7 +1049,7 @@
     <div class="row">
         <div class="small-12 columns">
             <h5><a href="{{ listUrl }}">
-                {{ list.name }} <small>{{ list.items|length }} items 999 follower {{ list.views|length }} views</small>
+                {{ list.name }} <small>{{ list.items|length }} items {{ list.views|length }} views</small>
             </a></h5>
         </div>
     </div>

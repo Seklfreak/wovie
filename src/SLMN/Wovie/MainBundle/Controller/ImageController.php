@@ -21,11 +21,17 @@ class ImageController extends Controller
         }
         $filename = $hash.'_'.$mediaId.'.jpeg';
 
+        $filecacheMaxAge = new \DateTime();
+        $filecacheMaxAge->modify('-1 day');
+
         if (empty($image))
         {
             if (file_exists($path.$filename) && is_readable($path.$filename))
             {
-                $image = file_get_contents($path.$filename);
+                if (filemtime($path.$filename) > $filecacheMaxAge->getTimestamp())
+                {
+                    $image = file_get_contents($path.$filename);
+                }
             }
         }
 

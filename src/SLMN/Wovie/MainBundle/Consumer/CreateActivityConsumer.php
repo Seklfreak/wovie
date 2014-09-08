@@ -470,6 +470,94 @@ class CreateActivityConsumer implements ConsumerInterface
                     return true;
                 }
                 break;
+            case 'media.addedtomedialist':
+                echo '['.$now->format('Y-m-d H:i:s').'] Received activity: '.$value['key']."\n";
+                if ($value['value']['medialistId'] == null)
+                {
+                    echo ' => no medialistId, is invalid'."\n";
+                    return true;
+                }
+                if ($value['value']['mediaId'] == null)
+                {
+                    echo ' => no mediaId, is invalid'."\n";
+                    return true;
+                }
+                $user = $this->usersRepo->findOneById($value['userId']);
+                $medialist = $this->medialistsRepo->findOneById($value['value']['medialistId']);
+                $media = $this->mediasRepo->findOneById($value['value']['mediaId']);
+                if (!$user)
+                {
+                    echo ' => user #'.$value['userId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$medialist)
+                {
+                    echo ' => medialist #'.$value['value']['medialistId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                if (!$media)
+                {
+                    echo ' => media #'.$value['value']['mediaId'].' not found. => rejected'."\n";
+                    return false;
+                }
+                $activity = $this->getInTimerange($value['createdAt'], $value['key'], $user);
+                if ($activity == null)
+                {
+                    $activity = new Activity();
+                    $activity->setUser($user);
+                    $activity->setTime($value['createdAt']);
+                    $activity->setKey('media.addedtomedialist');
+                    $activity->setValue(array(
+                        array(
+                            'medialistId' => $value['value']['medialistId'],
+                            'itemsMediaId' => array(
+                                $value['value']['mediaId']
+                                )
+                        )
+                    ));
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    echo ' => created new activity: #'.$activity->getId()."\n";
+                    return true;
+                }
+                else
+                {
+                    $foundInActivity = false;
+                    $activityValue = $activity->getValue();
+                    foreach ($activityValue as $key=>$obj)
+                    {
+                        if ($obj['medialistId'] == $value['value']['medialistId'])
+                        {
+                            if (!in_array($value['value']['mediaId'], $obj['itemsMediaId']))
+                            {
+                                $activityValue[$key]['itemsMediaId'][] = $value['value']['mediaId'];
+                                echo ' => added media to activity: #'.$activity->getId()."\n";
+                                $foundInActivity = true;
+                                break;
+                            }
+                            else
+                            {
+                                echo ' => media and medialist already in activity'."\n";
+                                return true;
+                            }
+                        }
+                    }
+                    if ($foundInActivity == false)
+                    {
+                        $activityValue[] = array(
+                            'medialistId' => $value['value']['medialistId'],
+                            'itemsMediaId' => array(
+                                $value['value']['mediaId']
+                                )
+                            );
+                        echo ' => added media and medialist to activity: #'.$activity->getId()."\n";
+                    }
+                    $activity->setValue($activityValue);
+                    $this->em->persist($activity);
+                    $this->em->flush();
+                    return true;
+                }
+                break;
             default:
                 break;
         }
