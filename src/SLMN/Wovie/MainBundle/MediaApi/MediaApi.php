@@ -25,6 +25,11 @@ class MediaApi
         $this->lang = $userOptions->get('language', 'en');
     }
 
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
     public function setLang($lang)
     {
         $this->lang = $lang;
