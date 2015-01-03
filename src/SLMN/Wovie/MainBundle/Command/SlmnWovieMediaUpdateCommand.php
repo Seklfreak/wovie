@@ -60,6 +60,11 @@ class SlmnWovieMediaUpdateCommand extends ContainerAwareCommand
                         $media->setEpisodes($episodes);
                         $media->setNumberOfEpisodes(count($episodes));
                     }
+                    else if ($media->getEpisodes() != $episodes)
+                    {
+                        $output->writeln('(user '.$media->getCreatedBy()->getEmail().', lang '.$mediaApi->getLang().') Updated episodes of #'.$media->getId().' ('.$media->getTitle().') with "'.$episodes[1]['name'].'"… ('.count($episodes).' episodes)');
+                        $media->setEpisodes($episodes);
+                    }
                 }
             }
             $progress->display();
